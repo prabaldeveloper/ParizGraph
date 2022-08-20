@@ -1,13 +1,9 @@
 {
-  "name": "buddy",
+  "name": "pariz",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ prabaldeveloper/buddy",
-    "create-local": "graph create --node http://localhost:8020/ prabaldeveloper/buddy",
-    "remove-local": "graph remove --node http://localhost:8020/ prabaldeveloper/buddy",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 prabaldeveloper/buddy"
+    "build": "graph build"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.21.1",

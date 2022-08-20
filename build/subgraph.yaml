@@ -1,9 +1,9 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: venue 
+    name: venue
     network: mumbai
     source:
       address: "0x85c7eE172B92F0f1393f98926adF320c434E3262"
@@ -17,14 +17,13 @@ dataSources:
         - VenueList
       abis:
         - name: venue
-          file: ./abis/venue.json
+          file: venue\abis\venue.json
       eventHandlers:
         - event: VenueAdded(indexed uint256,string,string,string,uint256,uint256,string,address)
           handler: handleVenueAdded
         - event: ERC20TokenUpdated(indexed address,bool)
           handler: handleErc20TokenUpdatedVenue
-      file: ./src/mapping.ts
-  
+      file: venue\venue.wasm
   - kind: ethereum/contract
     name: tokenDetails
     network: mumbai
@@ -40,14 +39,13 @@ dataSources:
         - TokenDetail
       abis:
         - name: tokenDetails
-          file: ./abis/tokenDetails.json
+          file: tokenDetails\abis\tokenDetails.json
       eventHandlers:
         - event: Erc20Details(indexed address,string,string,uint256,bool)
           handler: handleErc20Details
-      file: ./src/mapping.ts
-      
+      file: tokenDetails\tokenDetails.wasm
   - kind: ethereum/contract
-    name: events 
+    name: events
     network: mumbai
     source:
       address: "0x26705B80a694bD5F9451E29aB3000FDCb19c3b51"
@@ -61,15 +59,16 @@ dataSources:
         - Event
       abis:
         - name: events
-          file: ./abis/events.json
+          file: events\abis\events.json
       eventHandlers:
-        - event: EventAdded(indexed uint256,string,string,string,uint256,uint256,string,uint256,bool,bool,address,uint256)
+        - event: EventAdded(indexed
+            uint256,string,string,string,uint256,uint256,string,uint256,bool,bool,address,uint256)
           handler: handleEventAdded
         - event: DescriptionUpdated(indexed uint256,string)
           handler: handleDescriptionUpdated
         - event: StartTimeupdated(indexed uint256,uint256)
           handler: handleStartTimeUpdated
-        - event: TokenIPFSPathUpdated(indexed uint256,string) 
+        - event: TokenIPFSPathUpdated(indexed uint256,string)
           handler: handleIPFSPathUpdated
         - event: Featured(indexed uint256,bool)
           handler: handleFeatured
@@ -83,7 +82,4 @@ dataSources:
           handler: handleJoined
         - event: Bought(indexed uint256,address,address)
           handler: handleBought
-      file: ./src/mapping.ts
-
-
-
+      file: tokenDetails\tokenDetails.wasm
