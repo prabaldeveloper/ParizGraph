@@ -66,31 +66,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "paymentToken",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "buyer",
-        "type": "address"
-      }
-    ],
-    "name": "Bought",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "address",
         "name": "conversionContract",
@@ -104,90 +79,28 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
-      }
-    ],
-    "name": "DescriptionUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "uint256",
         "name": "percentage",
         "type": "uint256"
       }
     ],
-    "name": "DeviationPercentage",
+    "name": "DeviationPercentageUpdated",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
-      }
-    ],
-    "name": "ERC20TokenUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
+        "internalType": "string[3]",
+        "name": "details",
+        "type": "string[3]"
+      },
       {
         "indexed": true,
         "internalType": "uint256",
         "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "category",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "endTime",
         "type": "uint256"
       },
       {
@@ -225,9 +138,40 @@
         "internalType": "uint256",
         "name": "ticketPrice",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "ticketTought",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "ticketNFTAddress",
+        "type": "address"
       }
     ],
     "name": "EventAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isPublic",
+        "type": "bool"
+      }
+    ],
+    "name": "EventStatusUpdated",
     "type": "event"
   },
   {
@@ -285,25 +229,6 @@
       }
     ],
     "name": "Initialized",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "Joined",
     "type": "event"
   },
   {
@@ -385,19 +310,39 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
         "indexed": false,
         "internalType": "uint256",
-        "name": "startTime",
+        "name": "platformFeePercent",
         "type": "uint256"
       }
     ],
-    "name": "StartTimeupdated",
+    "name": "PlatformFeeUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "ticketCommissionPercent",
+        "type": "uint256"
+      }
+    ],
+    "name": "TicketCommissionUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "ticketMaster",
+        "type": "address"
+      }
+    ],
+    "name": "TicketMasterContractUpdated",
     "type": "event"
   },
   {
@@ -430,18 +375,18 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "tokenCID",
-        "type": "string"
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
       }
     ],
-    "name": "TokenIPFSPathUpdated",
+    "name": "TokenWhitelisted",
     "type": "event"
   },
   {
@@ -475,6 +420,38 @@
       {
         "indexed": false,
         "internalType": "address",
+        "name": "treasuryContract",
+        "type": "address"
+      }
+    ],
+    "name": "TreasuryContractUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "eventOrganiser",
+        "type": "address"
+      }
+    ],
+    "name": "VenueBooked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
         "name": "venueContract",
         "type": "address"
       }
@@ -488,13 +465,13 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "whiteListedAddress",
+        "name": "whitelistedAddress",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "_status",
+        "name": "status",
         "type": "bool"
       }
     ],
@@ -504,29 +481,14 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
+        "internalType": "string[3]",
+        "name": "details",
+        "type": "string[3]"
       },
       {
-        "internalType": "string",
-        "name": "category",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "endTime",
-        "type": "uint256"
+        "internalType": "uint256[2]",
+        "name": "time",
+        "type": "uint256[2]"
       },
       {
         "internalType": "string",
@@ -539,19 +501,24 @@
         "type": "uint256"
       },
       {
-        "internalType": "bool",
-        "name": "payNow",
-        "type": "bool"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "venueFeeAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ticketPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "feeToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "ticketToken",
+        "type": "address"
       },
       {
         "internalType": "bool",
@@ -559,9 +526,9 @@
         "type": "bool"
       },
       {
-        "internalType": "uint256",
-        "name": "ticketPrice",
-        "type": "uint256"
+        "internalType": "bool",
+        "name": "payNow",
+        "type": "bool"
       }
     ],
     "name": "add",
@@ -585,6 +552,25 @@
     "name": "approve",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "balance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -620,26 +606,68 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "blockTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
-      },
+      }
+    ],
+    "name": "burn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "venueTokenId",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "ticketPrice",
+        "name": "eventStartTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "eventEndTime",
         "type": "uint256"
       }
     ],
-    "name": "buyTicket",
-    "outputs": [],
-    "stateMutability": "payable",
+    "name": "calculateRent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_estimatedCost",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_platformFees",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_venueRentalCommissionFees",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -657,25 +685,6 @@
     ],
     "name": "checkDeviation",
     "outputs": [],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "erc20TokenStatus",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -830,6 +839,58 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getEventDetails",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "eventOrganiser",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "payNow",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "venueTokenId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getEventStatus",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "creator",
         "type": "address"
@@ -873,7 +934,7 @@
       },
       {
         "internalType": "string",
-        "name": "_type",
+        "name": "category",
         "type": "string"
       },
       {
@@ -892,24 +953,19 @@
         "type": "uint256"
       },
       {
-        "internalType": "string",
-        "name": "tokenCID",
-        "type": "string"
-      },
-      {
         "internalType": "uint256",
         "name": "venueTokenId",
         "type": "uint256"
       },
       {
+        "internalType": "bool",
+        "name": "payNow",
+        "type": "bool"
+      },
+      {
         "internalType": "address payable",
         "name": "eventOrganiser",
         "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "isEventPaid",
-        "type": "bool"
       },
       {
         "internalType": "uint256",
@@ -923,6 +979,32 @@
   {
     "inputs": [],
     "name": "getNextTokenId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPlatformFeePercent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTicketCommission",
     "outputs": [
       {
         "internalType": "uint256",
@@ -999,14 +1081,25 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "eventOrganiser",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "eventTokenId",
         "type": "uint256"
       }
     ],
-    "name": "join",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "isRentPaid",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1049,6 +1142,30 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "rentStatus",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -1161,38 +1278,14 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      },
+      }
+    ],
+    "name": "ticketNFTAddress",
+    "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "name": "ticketBoughtAddress",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "ticketSold",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1212,6 +1305,25 @@
         "internalType": "address payable",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "tokenStatus",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -1289,24 +1401,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
-      }
-    ],
-    "name": "updateDescription",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "_deviationPercentage",
         "type": "uint256"
       }
@@ -1319,17 +1413,12 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
         "internalType": "bool",
-        "name": "status",
+        "name": "_isPublic",
         "type": "bool"
       }
     ],
-    "name": "updateErc20TokenAddress",
+    "name": "updateEventStatus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1338,16 +1427,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "startTime",
+        "name": "_platformFeePercent",
         "type": "uint256"
       }
     ],
-    "name": "updateStartTime",
+    "name": "updatePlatformFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1356,16 +1440,24 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "_ticketCommissionPercent",
         "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "tokenCID",
-        "type": "string"
       }
     ],
-    "name": "updateTokenCID",
+    "name": "updateTicketCommission",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "_treasuryContract",
+        "type": "address"
+      }
+    ],
+    "name": "updateTreasuryContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1405,6 +1497,19 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "_ticketMaster",
+        "type": "address"
+      }
+    ],
+    "name": "updateticketMasterContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -1418,6 +1523,24 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
+      }
+    ],
+    "name": "whitelistTokenAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

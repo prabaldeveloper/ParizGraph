@@ -7,20 +7,15 @@ type VenueList @entity {
   location: String! 
   category: String!
   totalCapacity: BigInt! 
-  rentalAmount: BigInt!
+  rentPerBlock: BigInt!
   tokenCID: String!
   transactionHash: String!
   timestamp: BigInt!
 }
 
-
-type Erc20TokenVenue @entity {
+type VenueRental @entity {
   id: ID!
-  tokenAddress: Bytes
-  status: Boolean
-  tokenName: String
-  tokenSymbol: String
-  tokenDecimal: BigInt
+  venueRentalCommission: BigInt!
 }
 
 type EventList @entity {
@@ -41,8 +36,27 @@ type EventList @entity {
   eventOrganiserAddress: Bytes
   isFeatured: Boolean
   eventStatus: String
+  tokenAddress: Bytes
   participantsList: [Bytes!]
   ticketBoughtAddress: [Bytes!]
+}
+
+type PlatformFee @entity {
+  id: ID!
+  PlatformFeePercent: BigInt
+}
+
+type IsEventPublic @entity {
+  id: ID!
+  eventStatus: Boolean
+}
+
+type BaseToken @entity {
+  id: ID!
+  baseTokenAddress: Bytes
+  tokenName: String
+  tokenSymbol: String
+  tokenDecimal: BigInt
 }
 
 type WhiteList @entity {
@@ -72,4 +86,12 @@ type BookedTime @entity {
   eventTokenId: [BigInt!]
   eventStartTime: [BigInt!]
   eventEndTime: [BigInt!]
+  name: String!
+  location: String! 
+  category: String!
+  totalCapacity: BigInt! 
+  rentPerBlock: BigInt!
+  tokenCID: String!
+  transactionHash: String!
+  timestamp: BigInt!
 }

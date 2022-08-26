@@ -6,9 +6,9 @@ dataSources:
     name: venue 
     network: mumbai
     source:
-      address: "0x85c7eE172B92F0f1393f98926adF320c434E3262"
+      address: "0xD959B719922b7b70b2AC4b10D466aAbE3745d86c"
       abi: venue
-      startBlock: 27559034
+      startBlock: 27759690
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -21,38 +21,17 @@ dataSources:
       eventHandlers:
         - event: VenueAdded(indexed uint256,string,string,string,uint256,uint256,string,address)
           handler: handleVenueAdded
-        - event: ERC20TokenUpdated(indexed address,bool)
-          handler: handleErc20TokenUpdatedVenue
-      file: ./src/mapping.ts
-  
-  - kind: ethereum/contract
-    name: tokenDetails
-    network: mumbai
-    source:
-      address: "0x7da705a8107e7c2C07D5541D6Fb8d5dB29D21e98"
-      abi: tokenDetails
-      startBlock: 26569824
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - TokenDetail
-      abis:
-        - name: tokenDetails
-          file: ./abis/tokenDetails.json
-      eventHandlers:
-        - event: Erc20Details(indexed address,string,string,uint256,bool)
-          handler: handleErc20Details
+        - event: VenueRentalCommissionUpdated(uint256)
+          handler: handleRentalCommission
       file: ./src/mapping.ts
       
   - kind: ethereum/contract
     name: events 
     network: mumbai
     source:
-      address: "0x26705B80a694bD5F9451E29aB3000FDCb19c3b51"
+      address: "0x0816785347da7905fFfe9886217d961Cc922a86C"
       abi: events
-      startBlock: 27559129
+      startBlock: 27785745
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -63,26 +42,41 @@ dataSources:
         - name: events
           file: ./abis/events.json
       eventHandlers:
-        - event: EventAdded(indexed uint256,string,string,string,uint256,uint256,string,uint256,bool,bool,address,uint256)
+        - event: EventAdded(string[3],indexed uint256,string,uint256,bool,bool,address,uint256,address,address,address)
           handler: handleEventAdded
-        - event: DescriptionUpdated(indexed uint256,string)
-          handler: handleDescriptionUpdated
-        - event: StartTimeupdated(indexed uint256,uint256)
-          handler: handleStartTimeUpdated
-        - event: TokenIPFSPathUpdated(indexed uint256,string) 
-          handler: handleIPFSPathUpdated
         - event: Featured(indexed uint256,bool)
           handler: handleFeatured
         - event: Favourite(address,indexed uint256,bool)
           handler: handleFavourite
         - event: WhiteList(address,bool)
           handler: handleWhiteList
-        - event: ERC20TokenUpdated(indexed address,bool)
+        - event: TokenWhitelisted(indexed address,bool)
           handler: handleErc20TokenUpdatedEvent
-        - event: Joined(indexed uint256,indexed address)
-          handler: handleJoined
-        - event: Bought(indexed uint256,address,address)
-          handler: handleBought
+        - event: PlatformFeeUpdated(uint256)
+          handler: handlePlatformFee
+        - event: EventStatusUpdated(bool)
+          handler: handleEventStatus
+      file: ./src/mapping.ts
+
+  - kind: ethereum/contract
+    name: conversion 
+    network: mumbai
+    source:
+      address: "0x7E37935D71853f6094aff6aD691Eab5CBbD8cf6C"
+      abi: conversion
+      startBlock: 27785482
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscripts
+      entities:
+        - Event
+      abis:
+        - name: conversion
+          file: ./abis/conversion.json
+      eventHandlers:
+        - event: Erc20Details(indexed address,string,string,uint256)
+          handler: handleErc20Details
       file: ./src/mapping.ts
 
 

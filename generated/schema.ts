@@ -87,13 +87,13 @@ export class VenueList extends Entity {
     this.set("totalCapacity", Value.fromBigInt(value));
   }
 
-  get rentalAmount(): BigInt {
-    let value = this.get("rentalAmount");
+  get rentPerBlock(): BigInt {
+    let value = this.get("rentPerBlock");
     return value.toBigInt();
   }
 
-  set rentalAmount(value: BigInt) {
-    this.set("rentalAmount", Value.fromBigInt(value));
+  set rentPerBlock(value: BigInt) {
+    this.set("rentPerBlock", Value.fromBigInt(value));
   }
 
   get tokenCID(): string {
@@ -124,7 +124,7 @@ export class VenueList extends Entity {
   }
 }
 
-export class Erc20TokenVenue extends Entity {
+export class VenueRental extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -132,17 +132,17 @@ export class Erc20TokenVenue extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Erc20TokenVenue entity without an ID");
+    assert(id !== null, "Cannot save VenueRental entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Erc20TokenVenue entity with non-string ID. " +
+      "Cannot save VenueRental entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Erc20TokenVenue", id.toString(), this);
+    store.set("VenueRental", id.toString(), this);
   }
 
-  static load(id: string): Erc20TokenVenue | null {
-    return store.get("Erc20TokenVenue", id) as Erc20TokenVenue | null;
+  static load(id: string): VenueRental | null {
+    return store.get("VenueRental", id) as VenueRental | null;
   }
 
   get id(): string {
@@ -154,81 +154,13 @@ export class Erc20TokenVenue extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get tokenAddress(): Bytes | null {
-    let value = this.get("tokenAddress");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBytes();
-    }
+  get venueRentalCommission(): BigInt {
+    let value = this.get("venueRentalCommission");
+    return value.toBigInt();
   }
 
-  set tokenAddress(value: Bytes | null) {
-    if (value === null) {
-      this.unset("tokenAddress");
-    } else {
-      this.set("tokenAddress", Value.fromBytes(value as Bytes));
-    }
-  }
-
-  get status(): boolean {
-    let value = this.get("status");
-    return value.toBoolean();
-  }
-
-  set status(value: boolean) {
-    this.set("status", Value.fromBoolean(value));
-  }
-
-  get tokenName(): string | null {
-    let value = this.get("tokenName");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set tokenName(value: string | null) {
-    if (value === null) {
-      this.unset("tokenName");
-    } else {
-      this.set("tokenName", Value.fromString(value as string));
-    }
-  }
-
-  get tokenSymbol(): string | null {
-    let value = this.get("tokenSymbol");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set tokenSymbol(value: string | null) {
-    if (value === null) {
-      this.unset("tokenSymbol");
-    } else {
-      this.set("tokenSymbol", Value.fromString(value as string));
-    }
-  }
-
-  get tokenDecimal(): BigInt | null {
-    let value = this.get("tokenDecimal");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set tokenDecimal(value: BigInt | null) {
-    if (value === null) {
-      this.unset("tokenDecimal");
-    } else {
-      this.set("tokenDecimal", Value.fromBigInt(value as BigInt));
-    }
+  set venueRentalCommission(value: BigInt) {
+    this.set("venueRentalCommission", Value.fromBigInt(value));
   }
 }
 
@@ -510,6 +442,23 @@ export class EventList extends Entity {
     }
   }
 
+  get tokenAddress(): Bytes | null {
+    let value = this.get("tokenAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set tokenAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("tokenAddress");
+    } else {
+      this.set("tokenAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
   get participantsList(): Array<Bytes> | null {
     let value = this.get("participantsList");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -544,6 +493,193 @@ export class EventList extends Entity {
         "ticketBoughtAddress",
         Value.fromBytesArray(value as Array<Bytes>)
       );
+    }
+  }
+}
+
+export class PlatformFee extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save PlatformFee entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save PlatformFee entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("PlatformFee", id.toString(), this);
+  }
+
+  static load(id: string): PlatformFee | null {
+    return store.get("PlatformFee", id) as PlatformFee | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get PlatformFeePercent(): BigInt | null {
+    let value = this.get("PlatformFeePercent");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set PlatformFeePercent(value: BigInt | null) {
+    if (value === null) {
+      this.unset("PlatformFeePercent");
+    } else {
+      this.set("PlatformFeePercent", Value.fromBigInt(value as BigInt));
+    }
+  }
+}
+
+export class IsEventPublic extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save IsEventPublic entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save IsEventPublic entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("IsEventPublic", id.toString(), this);
+  }
+
+  static load(id: string): IsEventPublic | null {
+    return store.get("IsEventPublic", id) as IsEventPublic | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get eventStatus(): boolean {
+    let value = this.get("eventStatus");
+    return value.toBoolean();
+  }
+
+  set eventStatus(value: boolean) {
+    this.set("eventStatus", Value.fromBoolean(value));
+  }
+}
+
+export class BaseToken extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save BaseToken entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save BaseToken entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("BaseToken", id.toString(), this);
+  }
+
+  static load(id: string): BaseToken | null {
+    return store.get("BaseToken", id) as BaseToken | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get baseTokenAddress(): Bytes | null {
+    let value = this.get("baseTokenAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set baseTokenAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("baseTokenAddress");
+    } else {
+      this.set("baseTokenAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get tokenName(): string | null {
+    let value = this.get("tokenName");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tokenName(value: string | null) {
+    if (value === null) {
+      this.unset("tokenName");
+    } else {
+      this.set("tokenName", Value.fromString(value as string));
+    }
+  }
+
+  get tokenSymbol(): string | null {
+    let value = this.get("tokenSymbol");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tokenSymbol(value: string | null) {
+    if (value === null) {
+      this.unset("tokenSymbol");
+    } else {
+      this.set("tokenSymbol", Value.fromString(value as string));
+    }
+  }
+
+  get tokenDecimal(): BigInt | null {
+    let value = this.get("tokenDecimal");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set tokenDecimal(value: BigInt | null) {
+    if (value === null) {
+      this.unset("tokenDecimal");
+    } else {
+      this.set("tokenDecimal", Value.fromBigInt(value as BigInt));
     }
   }
 }
@@ -874,5 +1010,77 @@ export class BookedTime extends Entity {
     } else {
       this.set("eventEndTime", Value.fromBigIntArray(value as Array<BigInt>));
     }
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get location(): string {
+    let value = this.get("location");
+    return value.toString();
+  }
+
+  set location(value: string) {
+    this.set("location", Value.fromString(value));
+  }
+
+  get category(): string {
+    let value = this.get("category");
+    return value.toString();
+  }
+
+  set category(value: string) {
+    this.set("category", Value.fromString(value));
+  }
+
+  get totalCapacity(): BigInt {
+    let value = this.get("totalCapacity");
+    return value.toBigInt();
+  }
+
+  set totalCapacity(value: BigInt) {
+    this.set("totalCapacity", Value.fromBigInt(value));
+  }
+
+  get rentPerBlock(): BigInt {
+    let value = this.get("rentPerBlock");
+    return value.toBigInt();
+  }
+
+  set rentPerBlock(value: BigInt) {
+    this.set("rentPerBlock", Value.fromBigInt(value));
+  }
+
+  get tokenCID(): string {
+    let value = this.get("tokenCID");
+    return value.toString();
+  }
+
+  set tokenCID(value: string) {
+    this.set("tokenCID", Value.fromString(value));
+  }
+
+  get transactionHash(): string {
+    let value = this.get("transactionHash");
+    return value.toString();
+  }
+
+  set transactionHash(value: string) {
+    this.set("transactionHash", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 }

@@ -80,32 +80,6 @@ export class BaseURIUpdated__Params {
   }
 }
 
-export class Bought extends ethereum.Event {
-  get params(): Bought__Params {
-    return new Bought__Params(this);
-  }
-}
-
-export class Bought__Params {
-  _event: Bought;
-
-  constructor(event: Bought) {
-    this._event = event;
-  }
-
-  get tokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get paymentToken(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get buyer(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
 export class ConversionContractUpdated extends ethereum.Event {
   get params(): ConversionContractUpdated__Params {
     return new ConversionContractUpdated__Params(this);
@@ -124,65 +98,21 @@ export class ConversionContractUpdated__Params {
   }
 }
 
-export class DescriptionUpdated extends ethereum.Event {
-  get params(): DescriptionUpdated__Params {
-    return new DescriptionUpdated__Params(this);
+export class DeviationPercentageUpdated extends ethereum.Event {
+  get params(): DeviationPercentageUpdated__Params {
+    return new DeviationPercentageUpdated__Params(this);
   }
 }
 
-export class DescriptionUpdated__Params {
-  _event: DescriptionUpdated;
+export class DeviationPercentageUpdated__Params {
+  _event: DeviationPercentageUpdated;
 
-  constructor(event: DescriptionUpdated) {
-    this._event = event;
-  }
-
-  get tokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get description(): string {
-    return this._event.parameters[1].value.toString();
-  }
-}
-
-export class DeviationPercentage extends ethereum.Event {
-  get params(): DeviationPercentage__Params {
-    return new DeviationPercentage__Params(this);
-  }
-}
-
-export class DeviationPercentage__Params {
-  _event: DeviationPercentage;
-
-  constructor(event: DeviationPercentage) {
+  constructor(event: DeviationPercentageUpdated) {
     this._event = event;
   }
 
   get percentage(): BigInt {
     return this._event.parameters[0].value.toBigInt();
-  }
-}
-
-export class ERC20TokenUpdated extends ethereum.Event {
-  get params(): ERC20TokenUpdated__Params {
-    return new ERC20TokenUpdated__Params(this);
-  }
-}
-
-export class ERC20TokenUpdated__Params {
-  _event: ERC20TokenUpdated;
-
-  constructor(event: ERC20TokenUpdated) {
-    this._event = event;
-  }
-
-  get tokenAddress(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get status(): boolean {
-    return this._event.parameters[1].value.toBoolean();
   }
 }
 
@@ -199,52 +129,66 @@ export class EventAdded__Params {
     this._event = event;
   }
 
+  get details(): Array<string> {
+    return this._event.parameters[0].value.toStringArray();
+  }
+
   get tokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get name(): string {
-    return this._event.parameters[1].value.toString();
-  }
-
-  get category(): string {
-    return this._event.parameters[2].value.toString();
-  }
-
-  get description(): string {
-    return this._event.parameters[3].value.toString();
-  }
-
-  get startTime(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-
-  get endTime(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get tokenCID(): string {
-    return this._event.parameters[6].value.toString();
+    return this._event.parameters[2].value.toString();
   }
 
   get venueTokenId(): BigInt {
-    return this._event.parameters[7].value.toBigInt();
+    return this._event.parameters[3].value.toBigInt();
   }
 
   get isVenueFeesPaid(): boolean {
-    return this._event.parameters[8].value.toBoolean();
+    return this._event.parameters[4].value.toBoolean();
   }
 
   get isEventPaid(): boolean {
-    return this._event.parameters[9].value.toBoolean();
+    return this._event.parameters[5].value.toBoolean();
   }
 
   get eventOrganiser(): Address {
-    return this._event.parameters[10].value.toAddress();
+    return this._event.parameters[6].value.toAddress();
   }
 
   get ticketPrice(): BigInt {
-    return this._event.parameters[11].value.toBigInt();
+    return this._event.parameters[7].value.toBigInt();
+  }
+
+  get ticketTought(): Address {
+    return this._event.parameters[8].value.toAddress();
+  }
+
+  get tokenAddress(): Address {
+    return this._event.parameters[9].value.toAddress();
+  }
+
+  get ticketNFTAddress(): Address {
+    return this._event.parameters[10].value.toAddress();
+  }
+}
+
+export class EventStatusUpdated extends ethereum.Event {
+  get params(): EventStatusUpdated__Params {
+    return new EventStatusUpdated__Params(this);
+  }
+}
+
+export class EventStatusUpdated__Params {
+  _event: EventStatusUpdated;
+
+  constructor(event: EventStatusUpdated) {
+    this._event = event;
+  }
+
+  get isPublic(): boolean {
+    return this._event.parameters[0].value.toBoolean();
   }
 }
 
@@ -311,28 +255,6 @@ export class Initialized__Params {
 
   get version(): i32 {
     return this._event.parameters[0].value.toI32();
-  }
-}
-
-export class Joined extends ethereum.Event {
-  get params(): Joined__Params {
-    return new Joined__Params(this);
-  }
-}
-
-export class Joined__Params {
-  _event: Joined;
-
-  constructor(event: Joined) {
-    this._event = event;
-  }
-
-  get tokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get user(): Address {
-    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -414,25 +336,57 @@ export class OwnershipTransferred__Params {
   }
 }
 
-export class StartTimeupdated extends ethereum.Event {
-  get params(): StartTimeupdated__Params {
-    return new StartTimeupdated__Params(this);
+export class PlatformFeeUpdated extends ethereum.Event {
+  get params(): PlatformFeeUpdated__Params {
+    return new PlatformFeeUpdated__Params(this);
   }
 }
 
-export class StartTimeupdated__Params {
-  _event: StartTimeupdated;
+export class PlatformFeeUpdated__Params {
+  _event: PlatformFeeUpdated;
 
-  constructor(event: StartTimeupdated) {
+  constructor(event: PlatformFeeUpdated) {
     this._event = event;
   }
 
-  get tokenId(): BigInt {
+  get platformFeePercent(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
+}
 
-  get startTime(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+export class TicketCommissionUpdated extends ethereum.Event {
+  get params(): TicketCommissionUpdated__Params {
+    return new TicketCommissionUpdated__Params(this);
+  }
+}
+
+export class TicketCommissionUpdated__Params {
+  _event: TicketCommissionUpdated;
+
+  constructor(event: TicketCommissionUpdated) {
+    this._event = event;
+  }
+
+  get ticketCommissionPercent(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
+export class TicketMasterContractUpdated extends ethereum.Event {
+  get params(): TicketMasterContractUpdated__Params {
+    return new TicketMasterContractUpdated__Params(this);
+  }
+}
+
+export class TicketMasterContractUpdated__Params {
+  _event: TicketMasterContractUpdated;
+
+  constructor(event: TicketMasterContractUpdated) {
+    this._event = event;
+  }
+
+  get ticketMaster(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -462,25 +416,25 @@ export class TokenCreatorUpdated__Params {
   }
 }
 
-export class TokenIPFSPathUpdated extends ethereum.Event {
-  get params(): TokenIPFSPathUpdated__Params {
-    return new TokenIPFSPathUpdated__Params(this);
+export class TokenWhitelisted extends ethereum.Event {
+  get params(): TokenWhitelisted__Params {
+    return new TokenWhitelisted__Params(this);
   }
 }
 
-export class TokenIPFSPathUpdated__Params {
-  _event: TokenIPFSPathUpdated;
+export class TokenWhitelisted__Params {
+  _event: TokenWhitelisted;
 
-  constructor(event: TokenIPFSPathUpdated) {
+  constructor(event: TokenWhitelisted) {
     this._event = event;
   }
 
-  get tokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+  get tokenAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 
-  get tokenCID(): string {
-    return this._event.parameters[1].value.toString();
+  get status(): boolean {
+    return this._event.parameters[1].value.toBoolean();
   }
 }
 
@@ -507,6 +461,46 @@ export class Transfer__Params {
 
   get tokenId(): BigInt {
     return this._event.parameters[2].value.toBigInt();
+  }
+}
+
+export class TreasuryContractUpdated extends ethereum.Event {
+  get params(): TreasuryContractUpdated__Params {
+    return new TreasuryContractUpdated__Params(this);
+  }
+}
+
+export class TreasuryContractUpdated__Params {
+  _event: TreasuryContractUpdated;
+
+  constructor(event: TreasuryContractUpdated) {
+    this._event = event;
+  }
+
+  get treasuryContract(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class VenueBooked extends ethereum.Event {
+  get params(): VenueBooked__Params {
+    return new VenueBooked__Params(this);
+  }
+}
+
+export class VenueBooked__Params {
+  _event: VenueBooked;
+
+  constructor(event: VenueBooked) {
+    this._event = event;
+  }
+
+  get eventTokenId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get eventOrganiser(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -541,12 +535,64 @@ export class WhiteList__Params {
     this._event = event;
   }
 
-  get whiteListedAddress(): Address {
+  get whitelistedAddress(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get _status(): boolean {
+  get status(): boolean {
     return this._event.parameters[1].value.toBoolean();
+  }
+}
+
+export class events__calculateRentResult {
+  value0: BigInt;
+  value1: BigInt;
+  value2: BigInt;
+
+  constructor(value0: BigInt, value1: BigInt, value2: BigInt) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
+    return map;
+  }
+}
+
+export class events__getEventDetailsResult {
+  value0: BigInt;
+  value1: BigInt;
+  value2: Address;
+  value3: boolean;
+  value4: BigInt;
+
+  constructor(
+    value0: BigInt,
+    value1: BigInt,
+    value2: Address,
+    value3: boolean,
+    value4: BigInt
+  ) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+    this.value3 = value3;
+    this.value4 = value4;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromAddress(this.value2));
+    map.set("value3", ethereum.Value.fromBoolean(this.value3));
+    map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
+    return map;
   }
 }
 
@@ -557,11 +603,10 @@ export class events__getInfoResult {
   value3: string;
   value4: BigInt;
   value5: BigInt;
-  value6: string;
-  value7: BigInt;
+  value6: BigInt;
+  value7: boolean;
   value8: Address;
-  value9: boolean;
-  value10: BigInt;
+  value9: BigInt;
 
   constructor(
     value0: BigInt,
@@ -570,11 +615,10 @@ export class events__getInfoResult {
     value3: string,
     value4: BigInt,
     value5: BigInt,
-    value6: string,
-    value7: BigInt,
+    value6: BigInt,
+    value7: boolean,
     value8: Address,
-    value9: boolean,
-    value10: BigInt
+    value9: BigInt
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -586,7 +630,6 @@ export class events__getInfoResult {
     this.value7 = value7;
     this.value8 = value8;
     this.value9 = value9;
-    this.value10 = value10;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -597,11 +640,10 @@ export class events__getInfoResult {
     map.set("value3", ethereum.Value.fromString(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
-    map.set("value6", ethereum.Value.fromString(this.value6));
-    map.set("value7", ethereum.Value.fromUnsignedBigInt(this.value7));
+    map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
+    map.set("value7", ethereum.Value.fromBoolean(this.value7));
     map.set("value8", ethereum.Value.fromAddress(this.value8));
-    map.set("value9", ethereum.Value.fromBoolean(this.value9));
-    map.set("value10", ethereum.Value.fromUnsignedBigInt(this.value10));
+    map.set("value9", ethereum.Value.fromUnsignedBigInt(this.value9));
     return map;
   }
 }
@@ -609,6 +651,25 @@ export class events__getInfoResult {
 export class events extends ethereum.SmartContract {
   static bind(address: Address): events {
     return new events("events", address);
+  }
+
+  balance(param0: BigInt): BigInt {
+    let result = super.call("balance", "balance(uint256):(uint256)", [
+      ethereum.Value.fromUnsignedBigInt(param0)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_balance(param0: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("balance", "balance(uint256):(uint256)", [
+      ethereum.Value.fromUnsignedBigInt(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   balanceOf(owner: Address): BigInt {
@@ -645,27 +706,68 @@ export class events extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toString());
   }
 
-  erc20TokenStatus(param0: Address): boolean {
-    let result = super.call(
-      "erc20TokenStatus",
-      "erc20TokenStatus(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
-    );
+  blockTime(): BigInt {
+    let result = super.call("blockTime", "blockTime():(uint256)", []);
 
-    return result[0].toBoolean();
+    return result[0].toBigInt();
   }
 
-  try_erc20TokenStatus(param0: Address): ethereum.CallResult<boolean> {
+  try_blockTime(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("blockTime", "blockTime():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  calculateRent(
+    venueTokenId: BigInt,
+    eventStartTime: BigInt,
+    eventEndTime: BigInt
+  ): events__calculateRentResult {
+    let result = super.call(
+      "calculateRent",
+      "calculateRent(uint256,uint256,uint256):(uint256,uint256,uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(venueTokenId),
+        ethereum.Value.fromUnsignedBigInt(eventStartTime),
+        ethereum.Value.fromUnsignedBigInt(eventEndTime)
+      ]
+    );
+
+    return new events__calculateRentResult(
+      result[0].toBigInt(),
+      result[1].toBigInt(),
+      result[2].toBigInt()
+    );
+  }
+
+  try_calculateRent(
+    venueTokenId: BigInt,
+    eventStartTime: BigInt,
+    eventEndTime: BigInt
+  ): ethereum.CallResult<events__calculateRentResult> {
     let result = super.tryCall(
-      "erc20TokenStatus",
-      "erc20TokenStatus(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
+      "calculateRent",
+      "calculateRent(uint256,uint256,uint256):(uint256,uint256,uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(venueTokenId),
+        ethereum.Value.fromUnsignedBigInt(eventStartTime),
+        ethereum.Value.fromUnsignedBigInt(eventEndTime)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
+    return ethereum.CallResult.fromValue(
+      new events__calculateRentResult(
+        value[0].toBigInt(),
+        value[1].toBigInt(),
+        value[2].toBigInt()
+      )
+    );
   }
 
   eventsInVenue(param0: BigInt, param1: BigInt): BigInt {
@@ -822,6 +924,60 @@ export class events extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getEventDetails(tokenId: BigInt): events__getEventDetailsResult {
+    let result = super.call(
+      "getEventDetails",
+      "getEventDetails(uint256):(uint256,uint256,address,bool,uint256)",
+      [ethereum.Value.fromUnsignedBigInt(tokenId)]
+    );
+
+    return new events__getEventDetailsResult(
+      result[0].toBigInt(),
+      result[1].toBigInt(),
+      result[2].toAddress(),
+      result[3].toBoolean(),
+      result[4].toBigInt()
+    );
+  }
+
+  try_getEventDetails(
+    tokenId: BigInt
+  ): ethereum.CallResult<events__getEventDetailsResult> {
+    let result = super.tryCall(
+      "getEventDetails",
+      "getEventDetails(uint256):(uint256,uint256,address,bool,uint256)",
+      [ethereum.Value.fromUnsignedBigInt(tokenId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new events__getEventDetailsResult(
+        value[0].toBigInt(),
+        value[1].toBigInt(),
+        value[2].toAddress(),
+        value[3].toBoolean(),
+        value[4].toBigInt()
+      )
+    );
+  }
+
+  getEventStatus(): boolean {
+    let result = super.call("getEventStatus", "getEventStatus():(bool)", []);
+
+    return result[0].toBoolean();
+  }
+
+  try_getEventStatus(): ethereum.CallResult<boolean> {
+    let result = super.tryCall("getEventStatus", "getEventStatus():(bool)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   getHasCreatorMintedIPFSHash(
     creator: Address,
     tokenIPFSPath: string
@@ -860,7 +1016,7 @@ export class events extends ethereum.SmartContract {
   getInfo(param0: BigInt): events__getInfoResult {
     let result = super.call(
       "getInfo",
-      "getInfo(uint256):(uint256,string,string,string,uint256,uint256,string,uint256,address,bool,uint256)",
+      "getInfo(uint256):(uint256,string,string,string,uint256,uint256,uint256,bool,address,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
@@ -871,18 +1027,17 @@ export class events extends ethereum.SmartContract {
       result[3].toString(),
       result[4].toBigInt(),
       result[5].toBigInt(),
-      result[6].toString(),
-      result[7].toBigInt(),
+      result[6].toBigInt(),
+      result[7].toBoolean(),
       result[8].toAddress(),
-      result[9].toBoolean(),
-      result[10].toBigInt()
+      result[9].toBigInt()
     );
   }
 
   try_getInfo(param0: BigInt): ethereum.CallResult<events__getInfoResult> {
     let result = super.tryCall(
       "getInfo",
-      "getInfo(uint256):(uint256,string,string,string,uint256,uint256,string,uint256,address,bool,uint256)",
+      "getInfo(uint256):(uint256,string,string,string,uint256,uint256,uint256,bool,address,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -897,11 +1052,10 @@ export class events extends ethereum.SmartContract {
         value[3].toString(),
         value[4].toBigInt(),
         value[5].toBigInt(),
-        value[6].toString(),
-        value[7].toBigInt(),
+        value[6].toBigInt(),
+        value[7].toBoolean(),
         value[8].toAddress(),
-        value[9].toBoolean(),
-        value[10].toBigInt()
+        value[9].toBigInt()
       )
     );
   }
@@ -916,6 +1070,52 @@ export class events extends ethereum.SmartContract {
     let result = super.tryCall(
       "getNextTokenId",
       "getNextTokenId():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getPlatformFeePercent(): BigInt {
+    let result = super.call(
+      "getPlatformFeePercent",
+      "getPlatformFeePercent():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getPlatformFeePercent(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getPlatformFeePercent",
+      "getPlatformFeePercent():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getTicketCommission(): BigInt {
+    let result = super.call(
+      "getTicketCommission",
+      "getTicketCommission():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getTicketCommission(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getTicketCommission",
+      "getTicketCommission():(uint256)",
       []
     );
     if (result.reverted) {
@@ -993,6 +1193,38 @@ export class events extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  isRentPaid(eventOrganiser: Address, eventTokenId: BigInt): boolean {
+    let result = super.call(
+      "isRentPaid",
+      "isRentPaid(address,uint256):(bool)",
+      [
+        ethereum.Value.fromAddress(eventOrganiser),
+        ethereum.Value.fromUnsignedBigInt(eventTokenId)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_isRentPaid(
+    eventOrganiser: Address,
+    eventTokenId: BigInt
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isRentPaid",
+      "isRentPaid(address,uint256):(bool)",
+      [
+        ethereum.Value.fromAddress(eventOrganiser),
+        ethereum.Value.fromUnsignedBigInt(eventTokenId)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   name(): string {
     let result = super.call("name", "name():(string)", []);
 
@@ -1042,6 +1274,38 @@ export class events extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  rentStatus(param0: Address, param1: BigInt): boolean {
+    let result = super.call(
+      "rentStatus",
+      "rentStatus(address,uint256):(bool)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_rentStatus(
+    param0: Address,
+    param1: BigInt
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "rentStatus",
+      "rentStatus(address,uint256):(bool)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   supportsInterface(interfaceId: Bytes): boolean {
     let result = super.call(
       "supportsInterface",
@@ -1080,55 +1344,27 @@ export class events extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toString());
   }
 
-  ticketBoughtAddress(param0: BigInt, param1: Address): boolean {
+  ticketNFTAddress(param0: BigInt): Address {
     let result = super.call(
-      "ticketBoughtAddress",
-      "ticketBoughtAddress(uint256,address):(bool)",
-      [
-        ethereum.Value.fromUnsignedBigInt(param0),
-        ethereum.Value.fromAddress(param1)
-      ]
+      "ticketNFTAddress",
+      "ticketNFTAddress(uint256):(address)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
-    return result[0].toBoolean();
+    return result[0].toAddress();
   }
 
-  try_ticketBoughtAddress(
-    param0: BigInt,
-    param1: Address
-  ): ethereum.CallResult<boolean> {
+  try_ticketNFTAddress(param0: BigInt): ethereum.CallResult<Address> {
     let result = super.tryCall(
-      "ticketBoughtAddress",
-      "ticketBoughtAddress(uint256,address):(bool)",
-      [
-        ethereum.Value.fromUnsignedBigInt(param0),
-        ethereum.Value.fromAddress(param1)
-      ]
+      "ticketNFTAddress",
+      "ticketNFTAddress(uint256):(address)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  ticketSold(param0: BigInt): BigInt {
-    let result = super.call("ticketSold", "ticketSold(uint256):(uint256)", [
-      ethereum.Value.fromUnsignedBigInt(param0)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_ticketSold(param0: BigInt): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("ticketSold", "ticketSold(uint256):(uint256)", [
-      ethereum.Value.fromUnsignedBigInt(param0)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   tokenCreator(tokenId: BigInt): Address {
@@ -1150,6 +1386,25 @@ export class events extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  tokenStatus(param0: Address): boolean {
+    let result = super.call("tokenStatus", "tokenStatus(address):(bool)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_tokenStatus(param0: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall("tokenStatus", "tokenStatus(address):(bool)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   tokenURI(tokenId: BigInt): string {
@@ -1212,52 +1467,44 @@ export class AddCall__Inputs {
     this._call = call;
   }
 
-  get name(): string {
-    return this._call.inputValues[0].value.toString();
+  get details(): Array<string> {
+    return this._call.inputValues[0].value.toStringArray();
   }
 
-  get category(): string {
-    return this._call.inputValues[1].value.toString();
-  }
-
-  get description(): string {
-    return this._call.inputValues[2].value.toString();
-  }
-
-  get startTime(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get endTime(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+  get time(): Array<BigInt> {
+    return this._call.inputValues[1].value.toBigIntArray();
   }
 
   get tokenCID(): string {
-    return this._call.inputValues[5].value.toString();
+    return this._call.inputValues[2].value.toString();
   }
 
   get venueTokenId(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
-  }
-
-  get payNow(): boolean {
-    return this._call.inputValues[7].value.toBoolean();
-  }
-
-  get tokenAddress(): Address {
-    return this._call.inputValues[8].value.toAddress();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get venueFeeAmount(): BigInt {
-    return this._call.inputValues[9].value.toBigInt();
-  }
-
-  get isEventPaid(): boolean {
-    return this._call.inputValues[10].value.toBoolean();
+    return this._call.inputValues[4].value.toBigInt();
   }
 
   get ticketPrice(): BigInt {
-    return this._call.inputValues[11].value.toBigInt();
+    return this._call.inputValues[5].value.toBigInt();
+  }
+
+  get feeToken(): Address {
+    return this._call.inputValues[6].value.toAddress();
+  }
+
+  get ticketToken(): Address {
+    return this._call.inputValues[7].value.toAddress();
+  }
+
+  get isEventPaid(): boolean {
+    return this._call.inputValues[8].value.toBoolean();
+  }
+
+  get payNow(): boolean {
+    return this._call.inputValues[9].value.toBoolean();
   }
 }
 
@@ -1303,40 +1550,32 @@ export class ApproveCall__Outputs {
   }
 }
 
-export class BuyTicketCall extends ethereum.Call {
-  get inputs(): BuyTicketCall__Inputs {
-    return new BuyTicketCall__Inputs(this);
+export class BurnCall extends ethereum.Call {
+  get inputs(): BurnCall__Inputs {
+    return new BurnCall__Inputs(this);
   }
 
-  get outputs(): BuyTicketCall__Outputs {
-    return new BuyTicketCall__Outputs(this);
+  get outputs(): BurnCall__Outputs {
+    return new BurnCall__Outputs(this);
   }
 }
 
-export class BuyTicketCall__Inputs {
-  _call: BuyTicketCall;
+export class BurnCall__Inputs {
+  _call: BurnCall;
 
-  constructor(call: BuyTicketCall) {
+  constructor(call: BurnCall) {
     this._call = call;
   }
 
   get tokenId(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
-
-  get tokenAddress(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get ticketPrice(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
 }
 
-export class BuyTicketCall__Outputs {
-  _call: BuyTicketCall;
+export class BurnCall__Outputs {
+  _call: BurnCall;
 
-  constructor(call: BuyTicketCall) {
+  constructor(call: BurnCall) {
     this._call = call;
   }
 }
@@ -1431,36 +1670,6 @@ export class InitializeCall__Outputs {
   _call: InitializeCall;
 
   constructor(call: InitializeCall) {
-    this._call = call;
-  }
-}
-
-export class JoinCall extends ethereum.Call {
-  get inputs(): JoinCall__Inputs {
-    return new JoinCall__Inputs(this);
-  }
-
-  get outputs(): JoinCall__Outputs {
-    return new JoinCall__Outputs(this);
-  }
-}
-
-export class JoinCall__Inputs {
-  _call: JoinCall;
-
-  constructor(call: JoinCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class JoinCall__Outputs {
-  _call: JoinCall;
-
-  constructor(call: JoinCall) {
     this._call = call;
   }
 }
@@ -1677,40 +1886,6 @@ export class UpdateConversionContractCall__Outputs {
   }
 }
 
-export class UpdateDescriptionCall extends ethereum.Call {
-  get inputs(): UpdateDescriptionCall__Inputs {
-    return new UpdateDescriptionCall__Inputs(this);
-  }
-
-  get outputs(): UpdateDescriptionCall__Outputs {
-    return new UpdateDescriptionCall__Outputs(this);
-  }
-}
-
-export class UpdateDescriptionCall__Inputs {
-  _call: UpdateDescriptionCall;
-
-  constructor(call: UpdateDescriptionCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get description(): string {
-    return this._call.inputValues[1].value.toString();
-  }
-}
-
-export class UpdateDescriptionCall__Outputs {
-  _call: UpdateDescriptionCall;
-
-  constructor(call: UpdateDescriptionCall) {
-    this._call = call;
-  }
-}
-
 export class UpdateDeviationCall extends ethereum.Call {
   get inputs(): UpdateDeviationCall__Inputs {
     return new UpdateDeviationCall__Inputs(this);
@@ -1741,104 +1916,122 @@ export class UpdateDeviationCall__Outputs {
   }
 }
 
-export class UpdateErc20TokenAddressCall extends ethereum.Call {
-  get inputs(): UpdateErc20TokenAddressCall__Inputs {
-    return new UpdateErc20TokenAddressCall__Inputs(this);
+export class UpdateEventStatusCall extends ethereum.Call {
+  get inputs(): UpdateEventStatusCall__Inputs {
+    return new UpdateEventStatusCall__Inputs(this);
   }
 
-  get outputs(): UpdateErc20TokenAddressCall__Outputs {
-    return new UpdateErc20TokenAddressCall__Outputs(this);
+  get outputs(): UpdateEventStatusCall__Outputs {
+    return new UpdateEventStatusCall__Outputs(this);
   }
 }
 
-export class UpdateErc20TokenAddressCall__Inputs {
-  _call: UpdateErc20TokenAddressCall;
+export class UpdateEventStatusCall__Inputs {
+  _call: UpdateEventStatusCall;
 
-  constructor(call: UpdateErc20TokenAddressCall) {
+  constructor(call: UpdateEventStatusCall) {
     this._call = call;
   }
 
-  get tokenAddress(): Address {
+  get _isPublic(): boolean {
+    return this._call.inputValues[0].value.toBoolean();
+  }
+}
+
+export class UpdateEventStatusCall__Outputs {
+  _call: UpdateEventStatusCall;
+
+  constructor(call: UpdateEventStatusCall) {
+    this._call = call;
+  }
+}
+
+export class UpdatePlatformFeeCall extends ethereum.Call {
+  get inputs(): UpdatePlatformFeeCall__Inputs {
+    return new UpdatePlatformFeeCall__Inputs(this);
+  }
+
+  get outputs(): UpdatePlatformFeeCall__Outputs {
+    return new UpdatePlatformFeeCall__Outputs(this);
+  }
+}
+
+export class UpdatePlatformFeeCall__Inputs {
+  _call: UpdatePlatformFeeCall;
+
+  constructor(call: UpdatePlatformFeeCall) {
+    this._call = call;
+  }
+
+  get _platformFeePercent(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class UpdatePlatformFeeCall__Outputs {
+  _call: UpdatePlatformFeeCall;
+
+  constructor(call: UpdatePlatformFeeCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateTicketCommissionCall extends ethereum.Call {
+  get inputs(): UpdateTicketCommissionCall__Inputs {
+    return new UpdateTicketCommissionCall__Inputs(this);
+  }
+
+  get outputs(): UpdateTicketCommissionCall__Outputs {
+    return new UpdateTicketCommissionCall__Outputs(this);
+  }
+}
+
+export class UpdateTicketCommissionCall__Inputs {
+  _call: UpdateTicketCommissionCall;
+
+  constructor(call: UpdateTicketCommissionCall) {
+    this._call = call;
+  }
+
+  get _ticketCommissionPercent(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class UpdateTicketCommissionCall__Outputs {
+  _call: UpdateTicketCommissionCall;
+
+  constructor(call: UpdateTicketCommissionCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateTreasuryContractCall extends ethereum.Call {
+  get inputs(): UpdateTreasuryContractCall__Inputs {
+    return new UpdateTreasuryContractCall__Inputs(this);
+  }
+
+  get outputs(): UpdateTreasuryContractCall__Outputs {
+    return new UpdateTreasuryContractCall__Outputs(this);
+  }
+}
+
+export class UpdateTreasuryContractCall__Inputs {
+  _call: UpdateTreasuryContractCall;
+
+  constructor(call: UpdateTreasuryContractCall) {
+    this._call = call;
+  }
+
+  get _treasuryContract(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
-
-  get status(): boolean {
-    return this._call.inputValues[1].value.toBoolean();
-  }
 }
 
-export class UpdateErc20TokenAddressCall__Outputs {
-  _call: UpdateErc20TokenAddressCall;
+export class UpdateTreasuryContractCall__Outputs {
+  _call: UpdateTreasuryContractCall;
 
-  constructor(call: UpdateErc20TokenAddressCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateStartTimeCall extends ethereum.Call {
-  get inputs(): UpdateStartTimeCall__Inputs {
-    return new UpdateStartTimeCall__Inputs(this);
-  }
-
-  get outputs(): UpdateStartTimeCall__Outputs {
-    return new UpdateStartTimeCall__Outputs(this);
-  }
-}
-
-export class UpdateStartTimeCall__Inputs {
-  _call: UpdateStartTimeCall;
-
-  constructor(call: UpdateStartTimeCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get startTime(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class UpdateStartTimeCall__Outputs {
-  _call: UpdateStartTimeCall;
-
-  constructor(call: UpdateStartTimeCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateTokenCIDCall extends ethereum.Call {
-  get inputs(): UpdateTokenCIDCall__Inputs {
-    return new UpdateTokenCIDCall__Inputs(this);
-  }
-
-  get outputs(): UpdateTokenCIDCall__Outputs {
-    return new UpdateTokenCIDCall__Outputs(this);
-  }
-}
-
-export class UpdateTokenCIDCall__Inputs {
-  _call: UpdateTokenCIDCall;
-
-  constructor(call: UpdateTokenCIDCall) {
-    this._call = call;
-  }
-
-  get tokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get tokenCID(): string {
-    return this._call.inputValues[1].value.toString();
-  }
-}
-
-export class UpdateTokenCIDCall__Outputs {
-  _call: UpdateTokenCIDCall;
-
-  constructor(call: UpdateTokenCIDCall) {
+  constructor(call: UpdateTreasuryContractCall) {
     this._call = call;
   }
 }
@@ -1903,6 +2096,70 @@ export class UpdateWhitelistCall__Outputs {
   _call: UpdateWhitelistCall;
 
   constructor(call: UpdateWhitelistCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateticketMasterContractCall extends ethereum.Call {
+  get inputs(): UpdateticketMasterContractCall__Inputs {
+    return new UpdateticketMasterContractCall__Inputs(this);
+  }
+
+  get outputs(): UpdateticketMasterContractCall__Outputs {
+    return new UpdateticketMasterContractCall__Outputs(this);
+  }
+}
+
+export class UpdateticketMasterContractCall__Inputs {
+  _call: UpdateticketMasterContractCall;
+
+  constructor(call: UpdateticketMasterContractCall) {
+    this._call = call;
+  }
+
+  get _ticketMaster(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpdateticketMasterContractCall__Outputs {
+  _call: UpdateticketMasterContractCall;
+
+  constructor(call: UpdateticketMasterContractCall) {
+    this._call = call;
+  }
+}
+
+export class WhitelistTokenAddressCall extends ethereum.Call {
+  get inputs(): WhitelistTokenAddressCall__Inputs {
+    return new WhitelistTokenAddressCall__Inputs(this);
+  }
+
+  get outputs(): WhitelistTokenAddressCall__Outputs {
+    return new WhitelistTokenAddressCall__Outputs(this);
+  }
+}
+
+export class WhitelistTokenAddressCall__Inputs {
+  _call: WhitelistTokenAddressCall;
+
+  constructor(call: WhitelistTokenAddressCall) {
+    this._call = call;
+  }
+
+  get tokenAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get status(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
+  }
+}
+
+export class WhitelistTokenAddressCall__Outputs {
+  _call: WhitelistTokenAddressCall;
+
+  constructor(call: WhitelistTokenAddressCall) {
     this._call = call;
   }
 }
