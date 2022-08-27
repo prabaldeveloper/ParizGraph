@@ -11,7 +11,7 @@ dataSources:
       startBlock: 27788386
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.4
       language: wasm/assemblyscripts
       entities:
         - VenueList
@@ -33,7 +33,7 @@ dataSources:
       startBlock: 27793815
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.4
       language: wasm/assemblyscripts
       entities:
         - Event
@@ -66,7 +66,7 @@ dataSources:
       startBlock: 27785482
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.4
       language: wasm/assemblyscripts
       entities:
         - Event

@@ -180,6 +180,7 @@ export function handleErc20TokenUpdatedEvent(event: Erc20TokenUpdatedEvent): voi
     tokenDetail.status = event.params.status;
   }
   else {
+    // tokenDetail = Erc20TokenEvent.load(event.params.tokenAddress.toString());
     tokenDetail.status = event.params.status;
     tokenDetail.tokenAddress = event.params.tokenAddress;
   }
@@ -342,9 +343,9 @@ export function handleErc20Details(event: Erc20DetailsEvent): void {
     //   //}
     }
     token.save();
-
   }
   else {
+    // tokenValue = Erc20TokenEvent.load(event.params.tokenAddress.toString());
     tokenValue.tokenName = event.params.name;
     tokenValue.tokenSymbol = event.params.symbol;
     tokenValue.tokenDecimal = event.params.decimal;
