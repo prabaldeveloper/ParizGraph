@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 schema:
   file: ./schema.graphql
 dataSources:
@@ -6,12 +6,12 @@ dataSources:
     name: venue 
     network: mumbai
     source:
-      address: "0xD959B719922b7b70b2AC4b10D466aAbE3745d86c"
+      address: "0xe63C1CdC958963c12744bdd823Cdc9354F517C5d"
       abi: venue
-      startBlock: 27759690
+      startBlock: 27788386
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscripts
       entities:
         - VenueList
@@ -29,12 +29,12 @@ dataSources:
     name: events 
     network: mumbai
     source:
-      address: "0x0816785347da7905fFfe9886217d961Cc922a86C"
+      address: "0x75CeFe0A146130B2132A69c84CEbEC273C813988"
       abi: events
-      startBlock: 27785745
+      startBlock: 27793815
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscripts
       entities:
         - Event
@@ -42,7 +42,7 @@ dataSources:
         - name: events
           file: ./abis/events.json
       eventHandlers:
-        - event: EventAdded(string[3],indexed uint256,string,uint256,bool,bool,address,uint256,address,address,address)
+        - event: EventAdded(indexed uint256,string,uint256,bool,bool,address,uint256,address,address,address)
           handler: handleEventAdded
         - event: Featured(indexed uint256,bool)
           handler: handleFeatured
@@ -67,7 +67,7 @@ dataSources:
       startBlock: 27785482
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscripts
       entities:
         - Event

@@ -41,8 +41,8 @@ export function handleEventAdded(event: EventAdded): void {
     token.eventName = value.value1;
     token.eventCategory = value.value2;
     token.eventDescription = value.value3;
-    token.eventStartTime = value.value4;
-    token.eventEndTime = value.value5;
+    token.eventStartTime = value.value5;
+    token.eventEndTime = value.value6;
     token.tokenCID = event.params.tokenCID;
     token.isVenueFeesPaid = event.params.isVenueFeesPaid;
     token.isPaid = event.params.isEventPaid;
