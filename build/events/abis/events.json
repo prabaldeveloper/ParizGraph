@@ -92,12 +92,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "string[3]",
-        "name": "details",
-        "type": "string[3]"
-      },
-      {
         "indexed": true,
         "internalType": "uint256",
         "name": "tokenId",
@@ -923,11 +917,6 @@
     "name": "getInfo",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
         "internalType": "string",
         "name": "name",
         "type": "string"
@@ -941,6 +930,11 @@
         "internalType": "string",
         "name": "description",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",

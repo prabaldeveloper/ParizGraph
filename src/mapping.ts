@@ -38,11 +38,11 @@ export function handleEventAdded(event: EventAdded): void {
     let value = contract.getInfo(event.params.tokenId);
     token.eventTokenId = event.params.tokenId;
     token.venueTokenId = event.params.venueTokenId;
-    token.eventName = value.value1;
-    token.eventCategory = value.value2;
-    token.eventDescription = value.value3;
-    token.eventStartTime = value.value5;
-    token.eventEndTime = value.value6;
+    token.eventName = value.value0;
+    token.eventCategory = value.value1;
+    token.eventDescription = value.value2;
+    token.eventStartTime = value.value4;
+    token.eventEndTime = value.value5;
     token.tokenCID = event.params.tokenCID;
     token.isVenueFeesPaid = event.params.isVenueFeesPaid;
     token.isPaid = event.params.isEventPaid;
@@ -336,10 +336,10 @@ export function handleErc20Details(event: Erc20DetailsEvent): void {
         token.tokenSymbol = "TT";
         token.tokenDecimal = BigInt.fromI32(18);
         
-        // token.tokenName = event.params.name;
-        // token.tokenSymbol = event.params.symbol;
-        // token.tokenDecimal = event.params.decimal;
-      //}
+    //     // token.tokenName = event.params.name;
+    //     // token.tokenSymbol = event.params.symbol;
+    //     // token.tokenDecimal = event.params.decimal;
+    //   //}
     }
     token.save();
 
@@ -355,16 +355,16 @@ export function handleErc20Details(event: Erc20DetailsEvent): void {
     if(!token) {
       token = new BaseToken(address.toString());
       token.baseTokenAddress = address;
-      // if(address == event.params.tokenAddress) {
+    //   // if(address == event.params.tokenAddress) {
         token.tokenName = "Trace Test";
         token.tokenSymbol = "TT";
         token.tokenDecimal = BigInt.fromI32(18);
-        // token.tokenName = event.params.name;
-        // token.tokenSymbol = event.params.symbol;
-        // token.tokenDecimal = event.params.decimal;
-      //}
+    //     // token.tokenName = event.params.name;
+    //     // token.tokenSymbol = event.params.symbol;
+    //     // token.tokenDecimal = event.params.decimal;
+    //   //}
     }
     token.save();
   }
-  tokenValue.save();
+   tokenValue.save();
 }

@@ -129,48 +129,44 @@ export class EventAdded__Params {
     this._event = event;
   }
 
-  get details(): Array<string> {
-    return this._event.parameters[0].value.toStringArray();
-  }
-
   get tokenId(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[0].value.toBigInt();
   }
 
   get tokenCID(): string {
-    return this._event.parameters[2].value.toString();
+    return this._event.parameters[1].value.toString();
   }
 
   get venueTokenId(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 
   get isVenueFeesPaid(): boolean {
-    return this._event.parameters[4].value.toBoolean();
+    return this._event.parameters[3].value.toBoolean();
   }
 
   get isEventPaid(): boolean {
-    return this._event.parameters[5].value.toBoolean();
+    return this._event.parameters[4].value.toBoolean();
   }
 
   get eventOrganiser(): Address {
-    return this._event.parameters[6].value.toAddress();
+    return this._event.parameters[5].value.toAddress();
   }
 
   get ticketPrice(): BigInt {
-    return this._event.parameters[7].value.toBigInt();
+    return this._event.parameters[6].value.toBigInt();
   }
 
   get ticketTought(): Address {
-    return this._event.parameters[8].value.toAddress();
+    return this._event.parameters[7].value.toAddress();
   }
 
   get tokenAddress(): Address {
-    return this._event.parameters[9].value.toAddress();
+    return this._event.parameters[8].value.toAddress();
   }
 
   get ticketNFTAddress(): Address {
-    return this._event.parameters[10].value.toAddress();
+    return this._event.parameters[9].value.toAddress();
   }
 }
 
@@ -597,10 +593,10 @@ export class events__getEventDetailsResult {
 }
 
 export class events__getInfoResult {
-  value0: BigInt;
+  value0: string;
   value1: string;
   value2: string;
-  value3: string;
+  value3: BigInt;
   value4: BigInt;
   value5: BigInt;
   value6: BigInt;
@@ -609,10 +605,10 @@ export class events__getInfoResult {
   value9: BigInt;
 
   constructor(
-    value0: BigInt,
+    value0: string,
     value1: string,
     value2: string,
-    value3: string,
+    value3: BigInt,
     value4: BigInt,
     value5: BigInt,
     value6: BigInt,
@@ -634,10 +630,10 @@ export class events__getInfoResult {
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value0", ethereum.Value.fromString(this.value0));
     map.set("value1", ethereum.Value.fromString(this.value1));
     map.set("value2", ethereum.Value.fromString(this.value2));
-    map.set("value3", ethereum.Value.fromString(this.value3));
+    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
     map.set("value6", ethereum.Value.fromUnsignedBigInt(this.value6));
@@ -1016,15 +1012,15 @@ export class events extends ethereum.SmartContract {
   getInfo(param0: BigInt): events__getInfoResult {
     let result = super.call(
       "getInfo",
-      "getInfo(uint256):(uint256,string,string,string,uint256,uint256,uint256,bool,address,uint256)",
+      "getInfo(uint256):(string,string,string,uint256,uint256,uint256,uint256,bool,address,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
     return new events__getInfoResult(
-      result[0].toBigInt(),
+      result[0].toString(),
       result[1].toString(),
       result[2].toString(),
-      result[3].toString(),
+      result[3].toBigInt(),
       result[4].toBigInt(),
       result[5].toBigInt(),
       result[6].toBigInt(),
@@ -1037,7 +1033,7 @@ export class events extends ethereum.SmartContract {
   try_getInfo(param0: BigInt): ethereum.CallResult<events__getInfoResult> {
     let result = super.tryCall(
       "getInfo",
-      "getInfo(uint256):(uint256,string,string,string,uint256,uint256,uint256,bool,address,uint256)",
+      "getInfo(uint256):(string,string,string,uint256,uint256,uint256,uint256,bool,address,uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -1046,10 +1042,10 @@ export class events extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(
       new events__getInfoResult(
-        value[0].toBigInt(),
+        value[0].toString(),
         value[1].toString(),
         value[2].toString(),
-        value[3].toString(),
+        value[3].toBigInt(),
         value[4].toBigInt(),
         value[5].toBigInt(),
         value[6].toBigInt(),
