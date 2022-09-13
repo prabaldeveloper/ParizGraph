@@ -40,6 +40,32 @@ export class Erc20Details__Params {
   }
 }
 
+export class Erc721Details extends ethereum.Event {
+  get params(): Erc721Details__Params {
+    return new Erc721Details__Params(this);
+  }
+}
+
+export class Erc721Details__Params {
+  _event: Erc721Details;
+
+  constructor(event: Erc721Details) {
+    this._event = event;
+  }
+
+  get tokenAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get name(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get symbol(): string {
+    return this._event.parameters[2].value.toString();
+  }
+}
+
 export class Initialized extends ethereum.Event {
   get params(): Initialized__Params {
     return new Initialized__Params(this);
@@ -385,6 +411,36 @@ export class GetERC20DetailsCall__Outputs {
   _call: GetERC20DetailsCall;
 
   constructor(call: GetERC20DetailsCall) {
+    this._call = call;
+  }
+}
+
+export class GetERC721DetailsCall extends ethereum.Call {
+  get inputs(): GetERC721DetailsCall__Inputs {
+    return new GetERC721DetailsCall__Inputs(this);
+  }
+
+  get outputs(): GetERC721DetailsCall__Outputs {
+    return new GetERC721DetailsCall__Outputs(this);
+  }
+}
+
+export class GetERC721DetailsCall__Inputs {
+  _call: GetERC721DetailsCall;
+
+  constructor(call: GetERC721DetailsCall) {
+    this._call = call;
+  }
+
+  get _tokenAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class GetERC721DetailsCall__Outputs {
+  _call: GetERC721DetailsCall;
+
+  constructor(call: GetERC721DetailsCall) {
     this._call = call;
   }
 }

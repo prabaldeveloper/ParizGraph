@@ -1,5 +1,3 @@
-
-
 type VenueList @entity {
   id: ID!
   venueId: BigInt!
@@ -35,10 +33,18 @@ type EventList @entity {
   timestamp: BigInt
   eventOrganiserAddress: Bytes
   isFeatured: Boolean
+  burnStatus: String
   eventStatus: String
   tokenAddress: Bytes
-  participantsList: [Bytes!]
-  ticketBoughtAddress: [Bytes!]
+  venueFeeAmount: BigInt
+  ticketNFTAddress: Bytes
+  isEventCanceled: Boolean
+  canceledTime: BigInt
+  isEventStarted: Boolean
+  participantsList: [Join]!
+  ticketBoughtList: [TicketBought]!
+  ticketBalance: [TicketBalance]!
+  conversionAddress: Bytes
 }
 
 type PlatformFee @entity {
@@ -48,6 +54,7 @@ type PlatformFee @entity {
 
 type IsEventPublic @entity {
   id: ID!
+  eventContract: Bytes
   eventStatus: Boolean
 }
 
@@ -77,12 +84,13 @@ type Erc20TokenEvent @entity {
 type Favourite @entity {
   id: ID!
   userAddress: Bytes
-  eventTokenId: [BigInt!]
+  eventTokenId: BigInt
+  isFavourite: Boolean
 }
 
 type BookedTime @entity {
   id: ID!
-  venueTokenId: BigInt
+  venueId: BigInt
   eventTokenId: [BigInt!]
   eventStartTime: [BigInt!]
   eventEndTime: [BigInt!]
@@ -94,4 +102,86 @@ type BookedTime @entity {
   tokenCID: String!
   transactionHash: String!
   timestamp: BigInt!
+  times: [EventTime]!
+}
+
+type EventTime @entity {
+  id: ID!
+  venueId: BigInt
+  eventTokenId: BigInt
+  eventStartTime: BigInt
+  eventEndTime: BigInt
+  isEventCanceled: Boolean
+}
+
+type Agenda @entity {
+  id: ID!
+  agendaId: BigInt
+  eventTokenId: BigInt
+  agendaStartTime: BigInt
+  agendaEndTime: BigInt
+  agendaName: String
+  agendaStatus: String
+  guestName: [String!]
+  guestAddress: [String!]
+  initiateStatus: Int
+  isAgendaDeleted: Boolean
+} 
+
+type History @entity {
+  id: ID!
+  eventTokenId: BigInt
+  data: String
+}
+
+type Join @entity {
+  id: ID!
+  eventTokenId: BigInt
+  userAddress: Bytes
+  joinTime: BigInt
+  ticketId: BigInt
+}
+
+type TicketBought @entity{
+  id: ID!
+  eventTokenId: BigInt
+  ticketId: BigInt
+  userAddress: Bytes
+  tokenAddress: Bytes
+  ticketFeeAmount: BigInt
+}
+
+type TicketBalance @entity{
+  id: ID!
+  ticketId: BigInt
+  ownerAddress: Bytes
+  from: Bytes
+  ticketNFTAddress: Bytes
+  isUsed: Boolean
+  balance: BigInt
+  tokenAddress: Bytes
+  ticketFeeAmount: BigInt
+  eventTokenId: BigInt
+
+}
+
+type TicketRefund @entity{
+  id: ID!
+  eventTokenId: BigInt
+  ticketId: BigInt
+  userAddress: Bytes
+  refundStatus: Boolean
+}
+
+type VenueRefund @entity{
+  id: ID!
+  eventTokenId: BigInt
+  eventOrganiser: Bytes
+  refundStatus: Boolean
+}
+
+type EventId @entity {
+  id: ID!
+  eventId: BigInt
+  ticketNFTAddress: Bytes
 }

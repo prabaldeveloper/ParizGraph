@@ -6,9 +6,9 @@ dataSources:
     name: venue 
     network: mumbai
     source:
-      address: "0xe63C1CdC958963c12744bdd823Cdc9354F517C5d"
+      address: "0xb63E63e8FbA2Ab8cde4AC85bE137565A584c9BC9"
       abi: venue
-      startBlock: 27788386
+      startBlock: 27888712
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -29,9 +29,9 @@ dataSources:
     name: events 
     network: mumbai
     source:
-      address: "0x75CeFe0A146130B2132A69c84CEbEC273C813988"
+      address: "0x091AA33A8c95E0C3Ac5AF2D281514b98a231f02C"
       abi: events
-      startBlock: 27793815
+      startBlock: 28082364
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -42,7 +42,7 @@ dataSources:
         - name: events
           file: ./abis/events.json
       eventHandlers:
-        - event: EventAdded(indexed uint256,string,uint256,bool,bool,address,uint256,address,address,address)
+        - event: EventAdded(indexed uint256,string,uint256,bool,bool,address,uint256,uint256,address)
           handler: handleEventAdded
         - event: Featured(indexed uint256,bool)
           handler: handleFeatured
@@ -50,21 +50,37 @@ dataSources:
           handler: handleFavourite
         - event: WhiteList(address,bool)
           handler: handleWhiteList
-        - event: TokenWhitelisted(indexed address,bool)
+        - event: Erc20TokenUpdated(indexed address,bool)
           handler: handleErc20TokenUpdatedEvent
+        - event: Erc721TokenUpdated(indexed address,bool)
+          handler: handleErc721TokenUpdatedEvent
         - event: PlatformFeeUpdated(uint256)
           handler: handlePlatformFee
         - event: EventStatusUpdated(bool)
           handler: handleEventStatus
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event:  EventStarted(uint256)
+          handler: handleEventStarted
+        - event: EventPaid(indexed uint256,bool,uint256)
+          handler: handleEventPaid
+        - event: EventCancelled(indexed uint256)
+          handler: handleCanceledEvent
+        - event: EventUpdated(indexed uint256,string,uint256,uint256,uint256)
+          handler: handleTimeUpdated
+        - event: VenueFeesRefunded(indexed uint256,address)
+          handler: handleVenueRefund
+        - event: Joined(indexed uint256,indexed address,uint256,uint256)
+          handler: handleJoined
       file: ./src/mapping.ts
 
   - kind: ethereum/contract
     name: conversion 
     network: mumbai
     source:
-      address: "0x7E37935D71853f6094aff6aD691Eab5CBbD8cf6C"
+      address: "0x2a6ce88ea8da865451e071abac974f90a1c257a5"
       abi: conversion
-      startBlock: 27785482
+      startBlock: 28082220
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -77,7 +93,98 @@ dataSources:
       eventHandlers:
         - event: Erc20Details(indexed address,string,string,uint256)
           handler: handleErc20Details
+        - event: Erc721Details(indexed address,string,string)
+          handler: handleErc721Details
       file: ./src/mapping.ts
 
+  - kind: ethereum/contract
+    name: history 
+    network: mumbai
+    source:
+      address: "0xeEB50eF0BbA2591Ca81A8BAEf3060388C7Bca6B5"
+      abi: history
+      startBlock: 27800134
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscripts
+      entities:
+        - Event
+      abis:
+        - name: history
+          file: ./abis/history.json
+      eventHandlers:
+        - event: DataAdded(indexed uint256,string)
+          handler: handleDataAdded
+      file: ./src/mapping.ts
 
+  - kind: ethereum/contract
+    name: manageEvent 
+    network: mumbai
+    source:
+      address: "0xf9e3c15338D44C2BA35D2F81971B01BCFeE07c63"
+      abi: manageEvent
+      startBlock: 28082376
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Event
+      abis:
+        - name: manageEvent
+          file: ./abis/manageEvent.json
+      eventHandlers:
+        - event:  AgendaAdded(indexed uint256,uint256,uint256,uint256,string,string[],string[],uint8)  
+          handler: handleAgendaAdded
+        - event: AgendaStarted(indexed uint256,uint256)
+          handler: handleAgendaStarted
+        - event: AgendaDeleted(indexed uint256,indexed uint256,bool)
+          handler: handleAgendaDeleted
+        - event: AgendaUpdated(indexed uint256,uint256,uint256,uint256,string,string[],string[],uint8)
+          handler: handleAgendaUpdated
+      file: ./src/mapping.ts
 
+  - kind: ethereum/contract
+    name: ticketMaster 
+    network: mumbai
+    source:
+      address: "0x372843e569c4899cb015A620F69C282Cf2aAA90F"
+      abi: ticketMaster
+      startBlock: 28082361
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscripts
+      entities:
+        - Event
+      abis:
+        - name: ticketMaster
+          file: ./abis/ticketMaster.json
+      eventHandlers:
+        - event: Bought(indexed uint256,indexed address,uint256,address,uint256)
+          handler: handleTicketBought
+        - event: TicketFeesRefund(indexed uint256,address,uint256)
+          handler: handleTicketRefund
+      file: ./src/mapping.ts
+
+templates:
+  - kind: ethereum/contract
+    name: ticket
+    network: mumbai
+    source:
+      abi: ticket
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Collection
+        - History
+      abis:
+        - name: ticket
+          file: ./abis/ticket.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTicketTransfer
