@@ -474,6 +474,29 @@ export class ticketMaster extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  getEventContract(): Address {
+    let result = super.call(
+      "getEventContract",
+      "getEventContract():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getEventContract(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getEventContract",
+      "getEventContract():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   getJoinEventStatus(_ticketNftAddress: Address, _ticketId: BigInt): boolean {
     let result = super.call(
       "getJoinEventStatus",
@@ -516,6 +539,29 @@ export class ticketMaster extends ethereum.SmartContract {
     let result = super.tryCall(
       "getNextTokenId",
       "getNextTokenId():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getTicketCommissionPercent(): BigInt {
+    let result = super.call(
+      "getTicketCommissionPercent",
+      "getTicketCommissionPercent():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getTicketCommissionPercent(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getTicketCommissionPercent",
+      "getTicketCommissionPercent():(uint256)",
       []
     );
     if (result.reverted) {

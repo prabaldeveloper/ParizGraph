@@ -4,6 +4,12 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "userAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
@@ -20,6 +26,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "userAddress",
+        "type": "address"
+      },
       {
         "internalType": "uint256",
         "name": "eventTokenId",
@@ -45,6 +56,25 @@
       }
     ],
     "name": "tokenIdToData",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "userData",
     "outputs": [
       {
         "internalType": "string",

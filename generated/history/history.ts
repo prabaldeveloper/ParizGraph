@@ -23,12 +23,16 @@ export class DataAdded__Params {
     this._event = event;
   }
 
+  get userAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
   get tokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get data(): string {
-    return this._event.parameters[1].value.toString();
+    return this._event.parameters[2].value.toString();
   }
 }
 
@@ -59,6 +63,25 @@ export class history extends ethereum.SmartContract {
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
   }
+
+  userData(param0: Address): string {
+    let result = super.call("userData", "userData(address):(string)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+
+    return result[0].toString();
+  }
+
+  try_userData(param0: Address): ethereum.CallResult<string> {
+    let result = super.tryCall("userData", "userData(address):(string)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
+  }
 }
 
 export class AddDataCall extends ethereum.Call {
@@ -78,12 +101,16 @@ export class AddDataCall__Inputs {
     this._call = call;
   }
 
+  get userAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
   get eventTokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get data(): string {
-    return this._call.inputValues[1].value.toString();
+    return this._call.inputValues[2].value.toString();
   }
 }
 

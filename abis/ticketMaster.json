@@ -499,6 +499,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getEventContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -525,6 +538,19 @@
   {
     "inputs": [],
     "name": "getNextTokenId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTicketCommissionPercent",
     "outputs": [
       {
         "internalType": "uint256",

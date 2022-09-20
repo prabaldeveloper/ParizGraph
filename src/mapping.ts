@@ -1,7 +1,8 @@
 import { Address, BigInt, Bytes, DataSourceTemplate } from "@graphprotocol/graph-ts";
 import {
   VenueAdded,
-  VenueRentalCommissionUpdated
+  VenueRentalCommissionUpdated,
+  VenueFeesUpdated
 } from "../generated/Venue/Venue";
 
 import {
@@ -12,7 +13,7 @@ import {
 
 import { VenueList, EventList, WhiteList, Erc20TokenEvent, Favourite, 
   BookedTime, VenueRental, PlatformFee, IsEventPublic, BaseToken, History, Agenda,
-  Join, TicketBought, TicketBalance, EventTime, TicketRefund, VenueRefund, EventId, Erc721TokenEvent } from "../generated/schema";
+  Join, TicketBought, TicketBalance, EventTime, TicketRefund, VenueRefund, EventId, Erc721TokenEvent, Erc721Token } from "../generated/schema";
 
 import {
   events as EventsContract,
@@ -26,9 +27,8 @@ import {
   PlatformFeeUpdated as PlatformFeeUpdated,
   EventStatusUpdated,
   Transfer as TransferToken,
-  EventStarted,
   EventPaid,
-  EventCancelled,
+  EventEnded,
   Joined,
   VenueFeesRefunded
 } from "../generated/events/events";
@@ -40,7 +40,9 @@ import {
 import {
   AgendaAdded,
   AgendaUpdated,
-  AgendaDeleted
+  AgendaDeleted,
+  EventStarted,
+  EventCancelled,
 } from "../generated/manageEvent/manageEvent";
 
 import {
@@ -60,6 +62,10 @@ import {
 import {
   ticket as TicketNFTContract
 } from "../generated/templates";
+
+import {
+  Transfer as TransferErc721
+} from "../generated/erc721Token/erc721Token";
 
 export function handleEventAdded(event: EventAdded): void {
   let token = EventList.load(event.params.tokenId.toString());
@@ -95,6 +101,7 @@ export function handleEventAdded(event: EventAdded): void {
       token.ticketNFTAddress = event.params.ticketNFTAddress;
       token.isEventCanceled = false;
       token.isEventStarted = false;
+      token.isEventEnded = false;
       
       token.save();
       let tokenValue = BookedTime.load(event.params.venueTokenId.toString());
@@ -169,8 +176,8 @@ export function handleEventAdded(event: EventAdded): void {
         tokenTime.isEventCanceled = false;
       }
       tokenTime.save();
-      let temp = tokenValue.times;
-      tokenValue.times = temp.concat([tokenTime.id]);
+      let tokenTimes = tokenValue.times;
+      tokenValue.times = tokenTimes.concat([tokenTime.id]);
       tokenValue.save();
 
       let tokenValues = EventId.load(event.params.ticketNFTAddress.toString());
@@ -200,8 +207,8 @@ export function handleTimeUpdated(event: EventUpdated): void {
     tokenTime.eventEndTime = event.params.endTime;
   }
   let tokenValue = BookedTime.load(tokenTime.venueId.toString());
-  let temp = tokenValue.times;
-  tokenValue.times = temp.concat([tokenTime.id]);
+  let tokenTimes = tokenValue.times;
+  tokenValue.times = tokenTimes.concat([tokenTime.id]);
 
   tokenTime.save();
   tokenValue.save();
@@ -239,7 +246,6 @@ export function handleErc20TokenUpdatedEvent(event: Erc20TokenUpdatedEvent): voi
     tokenDetail.status = event.params.status;
   }
   else {
-    // tokenDetail = Erc20TokenEvent.load(event.params.tokenAddress.toString());
     tokenDetail.status = event.params.status;
     tokenDetail.tokenAddress = event.params.tokenAddress;
   }
@@ -269,7 +275,6 @@ export function handleFavourite(event: FavouriteEvent): void {
     token.isFavourite = event.params.isFavourite;
   }
   else {
-    token = Favourite.load(event.params.user.toString()  + event.params.tokenId.toString());
     token.isFavourite = event.params.isFavourite;
   }
   token.save();
@@ -309,27 +314,6 @@ export function handleEventPaid(event: EventPaid): void {
   token.save();
 }
 
-export function handleEventStarted(event: EventStarted): void {
-  let token = EventList.load(event.params.eventTokenId.toString());
-  if(token) {
-    token.isEventStarted = true;
-  }
-  token.save();
-}
-
-export function handleCanceledEvent(event: EventCancelled): void {
-  let token = EventList.load(event.params.eventTokenId.toString());
-  if(token) {
-    token.isEventCanceled = true;
-    token.canceledTime = event.block.timestamp;
-  }
-  let times = EventTime.load(event.params.eventTokenId.toString());
-  if(times) {
-    times.isEventCanceled = true;
-  }
-  times.save();
-  token.save();
-}
 
 export function handleTransfer(event: TransferToken): void {
   // let token = EventList.load(event.params.tokenId.toString());
@@ -357,6 +341,32 @@ export function handleVenueRefund(event: VenueFeesRefunded): void{
     token.refundStatus = true;
   }
   token.save();
+}
+
+export function handleJoined(event: Joined): void {
+  let token = Join.load(event.params.tokenId.toString() + event.params.user.toString());
+  if(!token) {
+    token = new Join(event.params.tokenId.toString() + event.params.user.toString());
+    token.eventTokenId = event.params.tokenId;
+    token.userAddress = event.params.user;
+    token.joinTime = event.params.joiningTime;
+    token.ticketId = event.params.ticketId;
+  }
+  else {
+    token.joinTime = event.params.joiningTime;
+    token.userAddress = event.params.user;
+  }
+  let contract = EventsContract.bind(event.address);
+  let nftAddress = contract.ticketNFTAddress(event.params.tokenId);
+  let ticketBalance = TicketBalance.load(nftAddress.toString() + event.params.ticketId.toString());
+  ticketBalance.isUsed = true;
+  let tokenValue = EventList.load(event.params.tokenId.toString());
+  if(tokenValue) {
+    let userAddress = tokenValue.participantsList;
+    tokenValue.participantsList = userAddress.concat([token.id]);
+  }
+  token.save();
+  tokenValue.save();
 }
 
 /******************************* Venue Functions  *******************************************/
@@ -389,8 +399,8 @@ export function handleVenueAdded(event: VenueAdded): void {
       token.times = [null];
     }
     token.save();
-
   }
+
   entity.save();
 }
 
@@ -464,6 +474,23 @@ export function handleErc20Details(event: Erc20DetailsEvent): void {
    tokenValue.save();
 }
 
+export function handleVenueFeesUpdated(event: VenueFeesUpdated): void {
+  let token = VenueList.load(event.params.tokenId.toHex());
+  if(token) {
+    token.rentPerBlock = event.params.rentPerBlock;
+    token.venueId = event.params.tokenId;
+  }
+  let tokenValue = BookedTime.load(event.params.tokenId.toString());
+  if(tokenValue) {
+    tokenValue.rentPerBlock = event.params.rentPerBlock;
+    tokenValue.transactionHash = event.transaction.hash.toHex();
+    tokenValue.timestamp = event.block.timestamp;
+  }
+ tokenValue.save();
+ token.save();
+
+}
+
 export function handleErc721Details(event: Erc721DetailsEvent): void {
   let tokenValue = Erc721TokenEvent.load(event.params.tokenAddress.toString());
   if(!tokenValue) {
@@ -472,16 +499,18 @@ export function handleErc721Details(event: Erc721DetailsEvent): void {
     tokenValue.tokenSymbol = event.params.symbol;
     tokenValue.tokenDecimal = "0";
     tokenValue.tokenAddress = event.params.tokenAddress;
+    //Erc721Contract.create(event.params.tokenAddress);
   }
   else {
     tokenValue.tokenName = event.params.name;
     tokenValue.tokenSymbol = event.params.symbol;
     tokenValue.tokenDecimal = "0";
     tokenValue.tokenAddress = event.params.tokenAddress;  
+    //Erc721Contract.create(event.params.tokenAddress);
   }
-   tokenValue.save();
-}
+  tokenValue.save();
 
+}
 
 export function handleDataAdded(event: DataAdded): void {
   let token = History.load(event.params.tokenId.toString());
@@ -489,9 +518,11 @@ export function handleDataAdded(event: DataAdded): void {
     token = new History(event.params.tokenId.toString());
     token.eventTokenId = event.params.tokenId;
     token.data = event.params.data;
+    token.userAddress = event.params.userAddress;
   }
   else {
     token.data = event.params.data;
+    token.userAddress = event.params.userAddress;
   }
   token.save();
 }
@@ -506,7 +537,7 @@ export function handleAgendaAdded(event: AgendaAdded): void {
      token.eventTokenId = event.params.eventTokenId;
      token.agendaStartTime = event.params.agendaStartTime;
      token.agendaEndTime = event.params.agendaEndTime;
-     token.agendaName = event.params.agendaType;
+     token.agendaName = event.params.agendaName;
      token.guestName = event.params.guestName;
      token.agendaStatus = "Agenda Added";
      token.guestAddress = event.params.guestAddress;
@@ -523,7 +554,7 @@ export function handleAgendaUpdated(event: AgendaUpdated): void {
      token.eventTokenId = event.params.eventTokenId;
      token.agendaStartTime = event.params.agendaStartTime;
      token.agendaEndTime = event.params.agendaEndTime;
-     token.agendaName = event.params.agendaType;
+     token.agendaName = event.params.agenda;
      token.guestName = event.params.guestName;
      token.agendaStatus = "Agenda Updated";
      token.guestAddress = event.params.guestAddress;
@@ -544,46 +575,37 @@ export function handleAgendaDeleted(event: AgendaDeleted): void {
 
 }
 
-/*********************************** TicketMaster Functions ******************************************/
-
-export function handleJoined(event: Joined): void {
-  let token = Join.load(event.params.tokenId.toString() + event.params.user.toString());
-  if(!token) {
-    token = new Join(event.params.tokenId.toString() + event.params.user.toString());
-    token.eventTokenId = event.params.tokenId;
-    token.userAddress = event.params.user;
-    token.joinTime = event.params.joiningTime;
-    token.ticketId = event.params.ticketId;
-  }
-  else {
-    token.joinTime = event.params.joiningTime;
-    token.userAddress = event.params.user;
-  }
-  let contract = EventsContract.bind(event.address);
-  let nftAddress = contract.ticketNFTAddress(event.params.tokenId);
-  let ticketBalance = TicketBalance.load(nftAddress.toString() + event.params.ticketId.toString());
-  ticketBalance.isUsed = true;
-  let tokenValue = EventList.load(event.params.tokenId.toString());
-  if(tokenValue) {
-    let temp = tokenValue.participantsList;
-    tokenValue.participantsList = temp.concat([token.id]);
+export function handleEventStarted(event: EventStarted): void {
+  let token = EventList.load(event.params.eventTokenId.toString());
+  if(token) {
+    token.isEventStarted = true;
   }
   token.save();
-  tokenValue.save();
-  
-  // let token = EventList.load(event.params.tokenId.toString());
-  // if(token) {
-  //   if(token.participantsList.length == 0) {
-  //     let userAddress = token.participantsList;
-  //     token.participantsList = userAddress.concat([event.params.user]);
-  //   }
-  //   else {
-  //     let userAddress = token.participantsList;
-  //     token.participantsList = userAddress.concat([event.params.user]);
-  //   }
-  //   token.save();
-  // }
 }
+
+export function handleCanceledEvent(event: EventCancelled): void {
+  let token = EventList.load(event.params.eventTokenId.toString());
+  if(token) {
+    token.isEventCanceled = true;
+    token.canceledTime = event.block.timestamp;
+  }
+  let times = EventTime.load(event.params.eventTokenId.toString());
+  if(times) {
+    times.isEventCanceled = true;
+  }
+  times.save();
+  token.save();
+}
+
+export function handleEventEnded(event: EventEnded): void {
+  let token = EventList.load(event.params.eventTokenId.toString());
+  if(token) {
+    token.isEventEnded = true;
+  }
+  token.save();
+}
+
+/*********************************** TicketMaster Functions ******************************************/
 
 export function handleTicketBought(event: Bought): void {
   let token = TicketBought.load(event.params.tokenId.toString() + event.params.ticketId.toString());
@@ -597,8 +619,8 @@ export function handleTicketBought(event: Bought): void {
   }
   let tokenValue = EventList.load(event.params.tokenId.toString());
   if(tokenValue) {
-    let temp = tokenValue.ticketBoughtList;
-    tokenValue.ticketBoughtList = temp.concat([token.id]);
+    let userAddress = tokenValue.ticketBoughtList;
+    tokenValue.ticketBoughtList = userAddress.concat([token.id]);
   }
   let contract = TicketMasterContract.bind(event.address);
   let nftAddress = contract.ticketNFTAddress(event.params.tokenId);
@@ -611,19 +633,7 @@ export function handleTicketBought(event: Bought): void {
   tokenValues2.save();
   tokenValue.save();
   token.save();
-    
-  // let token = EventList.load(event.params.tokenId.toString());
-  // if(token) {
-  //   if(token.ticketBoughtAddress.length == 0) {
-  //     let userAddress = token.ticketBoughtAddress;
-  //     token.participantsList = userAddress.concat([event.params.buyer]);
-  //   }
-  //   else {
-  //     let userAddress = token.ticketBoughtAddress;
-  //     token.ticketBoughtAddress = userAddress.concat([event.params.buyer]);
-  //   }
-  //   token.save();
-  // }
+
 }
 
 export function handleTicketRefund(event: TicketRefundEvent): void{
@@ -658,8 +668,8 @@ export function handleTicketTransfer(event: TransferTicket): void {
   let contract = TicketTokenContract.bind(event.address);
   token.balance = contract.balanceOf(event.params.to);
   let eventList = EventList.load(tokenValues.eventId.toString());
-  let temp = eventList.ticketBalance;
-  eventList.ticketBalance = temp.concat([token.id]);
+  let balance = eventList.ticketBalance;
+  eventList.ticketBalance = balance.concat([token.id]);
   
   tokenValues.save();
   eventList.save();
@@ -669,3 +679,21 @@ export function handleTicketTransfer(event: TransferTicket): void {
   token.save();
 }
 
+/*************************************** ERC721 contract *********************************************************/
+export function handleErc721Transfer(event: TransferErc721): void {
+  let token = Erc721Token.load(event.address.toString() + event.params.tokenId.toString());
+  if(!token) {
+    token = new Erc721Token(event.address.toString() + event.params.tokenId.toString());
+    token.tokenID = event.params.tokenId;
+    token.owner = event.params.to;
+    token.nftContractAddress = event.address; 
+    token.from = event.params.from;   
+  }
+  else {
+    token.owner = event.params.to;
+    token.tokenID = event.params.tokenId;
+    token.nftContractAddress = event.address;
+    token.from = event.params.from;
+  }
+  token.save();
+}

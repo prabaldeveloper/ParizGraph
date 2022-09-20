@@ -274,6 +274,28 @@ export class VenueAdded__Params {
   }
 }
 
+export class VenueFeesUpdated extends ethereum.Event {
+  get params(): VenueFeesUpdated__Params {
+    return new VenueFeesUpdated__Params(this);
+  }
+}
+
+export class VenueFeesUpdated__Params {
+  _event: VenueFeesUpdated;
+
+  constructor(event: VenueFeesUpdated) {
+    this._event = event;
+  }
+
+  get tokenId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get rentPerBlock(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class VenueRentalCommissionUpdated extends ethereum.Event {
   get params(): VenueRentalCommissionUpdated__Params {
     return new VenueRentalCommissionUpdated__Params(this);
@@ -1065,6 +1087,40 @@ export class TransferOwnershipCall__Outputs {
   _call: TransferOwnershipCall;
 
   constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateVenueFeesCall extends ethereum.Call {
+  get inputs(): UpdateVenueFeesCall__Inputs {
+    return new UpdateVenueFeesCall__Inputs(this);
+  }
+
+  get outputs(): UpdateVenueFeesCall__Outputs {
+    return new UpdateVenueFeesCall__Outputs(this);
+  }
+}
+
+export class UpdateVenueFeesCall__Inputs {
+  _call: UpdateVenueFeesCall;
+
+  constructor(call: UpdateVenueFeesCall) {
+    this._call = call;
+  }
+
+  get venueTokenId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get rentPerBlock(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class UpdateVenueFeesCall__Outputs {
+  _call: UpdateVenueFeesCall;
+
+  constructor(call: UpdateVenueFeesCall) {
     this._call = call;
   }
 }

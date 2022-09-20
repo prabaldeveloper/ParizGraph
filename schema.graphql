@@ -1,14 +1,14 @@
 type VenueList @entity {
   id: ID!
-  venueId: BigInt!
-  name: String!
-  location: String! 
-  category: String!
-  totalCapacity: BigInt! 
-  rentPerBlock: BigInt!
-  tokenCID: String!
-  transactionHash: String!
-  timestamp: BigInt!
+  venueId: BigInt
+  name: String
+  location: String
+  category: String
+  totalCapacity: BigInt
+  rentPerBlock: BigInt
+  tokenCID: String
+  transactionHash: String
+  timestamp: BigInt
 }
 
 type VenueRental @entity {
@@ -41,6 +41,7 @@ type EventList @entity {
   isEventCanceled: Boolean
   canceledTime: BigInt
   isEventStarted: Boolean
+  isEventEnded: Boolean
   participantsList: [Join]!
   ticketBoughtList: [TicketBought]!
   ticketBalance: [TicketBalance]!
@@ -103,14 +104,14 @@ type BookedTime @entity {
   eventTokenId: [BigInt!]
   eventStartTime: [BigInt!]
   eventEndTime: [BigInt!]
-  name: String!
-  location: String! 
-  category: String!
-  totalCapacity: BigInt! 
-  rentPerBlock: BigInt!
-  tokenCID: String!
-  transactionHash: String!
-  timestamp: BigInt!
+  name: String
+  location: String
+  category: String
+  totalCapacity: BigInt
+  rentPerBlock: BigInt
+  tokenCID: String
+  transactionHash: String
+  timestamp: BigInt
   times: [EventTime]!
 }
 
@@ -141,6 +142,7 @@ type History @entity {
   id: ID!
   eventTokenId: BigInt
   data: String
+  userAddress: Bytes
 }
 
 type Join @entity {
@@ -193,4 +195,12 @@ type EventId @entity {
   id: ID!
   eventId: BigInt
   ticketNFTAddress: Bytes
+}
+
+type Erc721Token @entity {
+  id: ID!
+  owner: Bytes
+  from: Bytes
+  tokenID: BigInt
+  nftContractAddress: Bytes
 }

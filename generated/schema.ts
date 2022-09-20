@@ -42,85 +42,157 @@ export class VenueList extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get venueId(): BigInt {
+  get venueId(): BigInt | null {
     let value = this.get("venueId");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set venueId(value: BigInt) {
-    this.set("venueId", Value.fromBigInt(value));
+  set venueId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("venueId");
+    } else {
+      this.set("venueId", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get name(): string {
+  get name(): string | null {
     let value = this.get("name");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
+  set name(value: string | null) {
+    if (value === null) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(value as string));
+    }
   }
 
-  get location(): string {
+  get location(): string | null {
     let value = this.get("location");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set location(value: string) {
-    this.set("location", Value.fromString(value));
+  set location(value: string | null) {
+    if (value === null) {
+      this.unset("location");
+    } else {
+      this.set("location", Value.fromString(value as string));
+    }
   }
 
-  get category(): string {
+  get category(): string | null {
     let value = this.get("category");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set category(value: string) {
-    this.set("category", Value.fromString(value));
+  set category(value: string | null) {
+    if (value === null) {
+      this.unset("category");
+    } else {
+      this.set("category", Value.fromString(value as string));
+    }
   }
 
-  get totalCapacity(): BigInt {
+  get totalCapacity(): BigInt | null {
     let value = this.get("totalCapacity");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set totalCapacity(value: BigInt) {
-    this.set("totalCapacity", Value.fromBigInt(value));
+  set totalCapacity(value: BigInt | null) {
+    if (value === null) {
+      this.unset("totalCapacity");
+    } else {
+      this.set("totalCapacity", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get rentPerBlock(): BigInt {
+  get rentPerBlock(): BigInt | null {
     let value = this.get("rentPerBlock");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set rentPerBlock(value: BigInt) {
-    this.set("rentPerBlock", Value.fromBigInt(value));
+  set rentPerBlock(value: BigInt | null) {
+    if (value === null) {
+      this.unset("rentPerBlock");
+    } else {
+      this.set("rentPerBlock", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get tokenCID(): string {
+  get tokenCID(): string | null {
     let value = this.get("tokenCID");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set tokenCID(value: string) {
-    this.set("tokenCID", Value.fromString(value));
+  set tokenCID(value: string | null) {
+    if (value === null) {
+      this.unset("tokenCID");
+    } else {
+      this.set("tokenCID", Value.fromString(value as string));
+    }
   }
 
-  get transactionHash(): string {
+  get transactionHash(): string | null {
     let value = this.get("transactionHash");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set transactionHash(value: string) {
-    this.set("transactionHash", Value.fromString(value));
+  set transactionHash(value: string | null) {
+    if (value === null) {
+      this.unset("transactionHash");
+    } else {
+      this.set("transactionHash", Value.fromString(value as string));
+    }
   }
 
-  get timestamp(): BigInt {
+  get timestamp(): BigInt | null {
     let value = this.get("timestamp");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
+  set timestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromBigInt(value as BigInt));
+    }
   }
 }
 
@@ -543,6 +615,15 @@ export class EventList extends Entity {
 
   set isEventStarted(value: boolean) {
     this.set("isEventStarted", Value.fromBoolean(value));
+  }
+
+  get isEventEnded(): boolean {
+    let value = this.get("isEventEnded");
+    return value.toBoolean();
+  }
+
+  set isEventEnded(value: boolean) {
+    this.set("isEventEnded", Value.fromBoolean(value));
   }
 
   get participantsList(): Array<string | null> {
@@ -1239,76 +1320,140 @@ export class BookedTime extends Entity {
     }
   }
 
-  get name(): string {
+  get name(): string | null {
     let value = this.get("name");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
+  set name(value: string | null) {
+    if (value === null) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(value as string));
+    }
   }
 
-  get location(): string {
+  get location(): string | null {
     let value = this.get("location");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set location(value: string) {
-    this.set("location", Value.fromString(value));
+  set location(value: string | null) {
+    if (value === null) {
+      this.unset("location");
+    } else {
+      this.set("location", Value.fromString(value as string));
+    }
   }
 
-  get category(): string {
+  get category(): string | null {
     let value = this.get("category");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set category(value: string) {
-    this.set("category", Value.fromString(value));
+  set category(value: string | null) {
+    if (value === null) {
+      this.unset("category");
+    } else {
+      this.set("category", Value.fromString(value as string));
+    }
   }
 
-  get totalCapacity(): BigInt {
+  get totalCapacity(): BigInt | null {
     let value = this.get("totalCapacity");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set totalCapacity(value: BigInt) {
-    this.set("totalCapacity", Value.fromBigInt(value));
+  set totalCapacity(value: BigInt | null) {
+    if (value === null) {
+      this.unset("totalCapacity");
+    } else {
+      this.set("totalCapacity", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get rentPerBlock(): BigInt {
+  get rentPerBlock(): BigInt | null {
     let value = this.get("rentPerBlock");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set rentPerBlock(value: BigInt) {
-    this.set("rentPerBlock", Value.fromBigInt(value));
+  set rentPerBlock(value: BigInt | null) {
+    if (value === null) {
+      this.unset("rentPerBlock");
+    } else {
+      this.set("rentPerBlock", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get tokenCID(): string {
+  get tokenCID(): string | null {
     let value = this.get("tokenCID");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set tokenCID(value: string) {
-    this.set("tokenCID", Value.fromString(value));
+  set tokenCID(value: string | null) {
+    if (value === null) {
+      this.unset("tokenCID");
+    } else {
+      this.set("tokenCID", Value.fromString(value as string));
+    }
   }
 
-  get transactionHash(): string {
+  get transactionHash(): string | null {
     let value = this.get("transactionHash");
-    return value.toString();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set transactionHash(value: string) {
-    this.set("transactionHash", Value.fromString(value));
+  set transactionHash(value: string | null) {
+    if (value === null) {
+      this.unset("transactionHash");
+    } else {
+      this.set("transactionHash", Value.fromString(value as string));
+    }
   }
 
-  get timestamp(): BigInt {
+  get timestamp(): BigInt | null {
     let value = this.get("timestamp");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
+  set timestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get times(): Array<string | null> {
@@ -1675,6 +1820,23 @@ export class History extends Entity {
       this.unset("data");
     } else {
       this.set("data", Value.fromString(value as string));
+    }
+  }
+
+  get userAddress(): Bytes | null {
+    let value = this.get("userAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set userAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("userAddress");
+    } else {
+      this.set("userAddress", Value.fromBytes(value as Bytes));
     }
   }
 }
@@ -2296,6 +2458,105 @@ export class EventId extends Entity {
       this.unset("ticketNFTAddress");
     } else {
       this.set("ticketNFTAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+}
+
+export class Erc721Token extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Erc721Token entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Erc721Token entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Erc721Token", id.toString(), this);
+  }
+
+  static load(id: string): Erc721Token | null {
+    return store.get("Erc721Token", id) as Erc721Token | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get owner(): Bytes | null {
+    let value = this.get("owner");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set owner(value: Bytes | null) {
+    if (value === null) {
+      this.unset("owner");
+    } else {
+      this.set("owner", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get from(): Bytes | null {
+    let value = this.get("from");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set from(value: Bytes | null) {
+    if (value === null) {
+      this.unset("from");
+    } else {
+      this.set("from", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get tokenID(): BigInt | null {
+    let value = this.get("tokenID");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set tokenID(value: BigInt | null) {
+    if (value === null) {
+      this.unset("tokenID");
+    } else {
+      this.set("tokenID", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get nftContractAddress(): Bytes | null {
+    let value = this.get("nftContractAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set nftContractAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("nftContractAddress");
+    } else {
+      this.set("nftContractAddress", Value.fromBytes(value as Bytes));
     }
   }
 }
