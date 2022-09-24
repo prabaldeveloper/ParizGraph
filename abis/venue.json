@@ -275,19 +275,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "venueRentalCommission",
-        "type": "uint256"
-      }
-    ],
-    "name": "VenueRentalCommissionUpdated",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -582,19 +569,6 @@
   },
   {
     "inputs": [],
-    "name": "getVenueRentalCommission",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "_venueRentalCommission",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -858,19 +832,6 @@
       }
     ],
     "name": "updateVenueFees",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_venueRentalCommission",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateVenueRentalCommission",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

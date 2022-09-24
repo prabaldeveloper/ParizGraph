@@ -186,24 +186,6 @@ export class EventCompleted__Params {
   }
 }
 
-export class EventContractUpdated extends ethereum.Event {
-  get params(): EventContractUpdated__Params {
-    return new EventContractUpdated__Params(this);
-  }
-}
-
-export class EventContractUpdated__Params {
-  _event: EventContractUpdated;
-
-  constructor(event: EventContractUpdated) {
-    this._event = event;
-  }
-
-  get eventContract(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-}
-
 export class EventEnded extends ethereum.Event {
   get params(): EventEnded__Params {
     return new EventEnded__Params(this);
@@ -306,6 +288,58 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class TicketFeesClaimed extends ethereum.Event {
+  get params(): TicketFeesClaimed__Params {
+    return new TicketFeesClaimed__Params(this);
+  }
+}
+
+export class TicketFeesClaimed__Params {
+  _event: TicketFeesClaimed;
+
+  constructor(event: TicketFeesClaimed) {
+    this._event = event;
+  }
+
+  get eventTokenId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get eventOrganiser(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get tokenAddress(): Array<Address> {
+    return this._event.parameters[2].value.toAddressArray();
+  }
+}
+
+export class TicketFeesRefund extends ethereum.Event {
+  get params(): TicketFeesRefund__Params {
+    return new TicketFeesRefund__Params(this);
+  }
+}
+
+export class TicketFeesRefund__Params {
+  _event: TicketFeesRefund;
+
+  constructor(event: TicketFeesRefund) {
+    this._event = event;
+  }
+
+  get eventTokenId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get user(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get ticketId(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
 export class manageEvent__getAgendaInfoResult {
   value0: BigInt;
   value1: BigInt;
@@ -350,6 +384,25 @@ export class manageEvent extends ethereum.SmartContract {
     return new manageEvent("manageEvent", address);
   }
 
+  adminContract(): Address {
+    let result = super.call("adminContract", "adminContract():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_adminContract(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "adminContract",
+      "adminContract():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   agendaInEvents(param0: BigInt, param1: BigInt): BigInt {
     let result = super.call(
       "agendaInEvents",
@@ -380,6 +433,70 @@ export class manageEvent extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  claimERC20TicketStatus(param0: BigInt, param1: Address): boolean {
+    let result = super.call(
+      "claimERC20TicketStatus",
+      "claimERC20TicketStatus(uint256,address):(bool)",
+      [
+        ethereum.Value.fromUnsignedBigInt(param0),
+        ethereum.Value.fromAddress(param1)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_claimERC20TicketStatus(
+    param0: BigInt,
+    param1: Address
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "claimERC20TicketStatus",
+      "claimERC20TicketStatus(uint256,address):(bool)",
+      [
+        ethereum.Value.fromUnsignedBigInt(param0),
+        ethereum.Value.fromAddress(param1)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  claimERC721TicketStatus(param0: BigInt, param1: BigInt): boolean {
+    let result = super.call(
+      "claimERC721TicketStatus",
+      "claimERC721TicketStatus(uint256,uint256):(bool)",
+      [
+        ethereum.Value.fromUnsignedBigInt(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_claimERC721TicketStatus(
+    param0: BigInt,
+    param1: BigInt
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "claimERC721TicketStatus",
+      "claimERC721TicketStatus(uint256,uint256):(bool)",
+      [
+        ethereum.Value.fromUnsignedBigInt(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   eventCancelledStatus(param0: BigInt): boolean {
@@ -557,68 +674,6 @@ export class manageEvent extends ethereum.SmartContract {
     );
   }
 
-  getEventContract(): Address {
-    let result = super.call(
-      "getEventContract",
-      "getEventContract():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_getEventContract(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "getEventContract",
-      "getEventContract():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  getMessageHash(
-    ticketHolder: Address,
-    eventTokenId: BigInt,
-    ticketId: BigInt
-  ): Bytes {
-    let result = super.call(
-      "getMessageHash",
-      "getMessageHash(address,uint256,uint256):(bytes32)",
-      [
-        ethereum.Value.fromAddress(ticketHolder),
-        ethereum.Value.fromUnsignedBigInt(eventTokenId),
-        ethereum.Value.fromUnsignedBigInt(ticketId)
-      ]
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_getMessageHash(
-    ticketHolder: Address,
-    eventTokenId: BigInt,
-    ticketId: BigInt
-  ): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "getMessageHash",
-      "getMessageHash(address,uint256,uint256):(bytes32)",
-      [
-        ethereum.Value.fromAddress(ticketHolder),
-        ethereum.Value.fromUnsignedBigInt(eventTokenId),
-        ethereum.Value.fromUnsignedBigInt(ticketId)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
   isEventCancelled(eventId: BigInt): boolean {
     let result = super.call(
       "isEventCancelled",
@@ -720,30 +775,36 @@ export class manageEvent extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  recoverSigner(hash: Bytes, signature: Bytes): Address {
+  refundTicketFeesStatus(param0: BigInt, param1: BigInt): boolean {
     let result = super.call(
-      "recoverSigner",
-      "recoverSigner(bytes32,bytes):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromBytes(signature)]
+      "refundTicketFeesStatus",
+      "refundTicketFeesStatus(uint256,uint256):(bool)",
+      [
+        ethereum.Value.fromUnsignedBigInt(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
 
-    return result[0].toAddress();
+    return result[0].toBoolean();
   }
 
-  try_recoverSigner(
-    hash: Bytes,
-    signature: Bytes
-  ): ethereum.CallResult<Address> {
+  try_refundTicketFeesStatus(
+    param0: BigInt,
+    param1: BigInt
+  ): ethereum.CallResult<boolean> {
     let result = super.tryCall(
-      "recoverSigner",
-      "recoverSigner(bytes32,bytes):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromBytes(signature)]
+      "refundTicketFeesStatus",
+      "refundTicketFeesStatus(uint256,uint256):(bool)",
+      [
+        ethereum.Value.fromUnsignedBigInt(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 }
 
@@ -827,6 +888,40 @@ export class CancelEventCall__Outputs {
   _call: CancelEventCall;
 
   constructor(call: CancelEventCall) {
+    this._call = call;
+  }
+}
+
+export class ClaimTicketFeesCall extends ethereum.Call {
+  get inputs(): ClaimTicketFeesCall__Inputs {
+    return new ClaimTicketFeesCall__Inputs(this);
+  }
+
+  get outputs(): ClaimTicketFeesCall__Outputs {
+    return new ClaimTicketFeesCall__Outputs(this);
+  }
+}
+
+export class ClaimTicketFeesCall__Inputs {
+  _call: ClaimTicketFeesCall;
+
+  constructor(call: ClaimTicketFeesCall) {
+    this._call = call;
+  }
+
+  get eventTokenId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get tokenAddress(): Array<Address> {
+    return this._call.inputValues[1].value.toAddressArray();
+  }
+}
+
+export class ClaimTicketFeesCall__Outputs {
+  _call: ClaimTicketFeesCall;
+
+  constructor(call: ClaimTicketFeesCall) {
     this._call = call;
   }
 }
@@ -1031,6 +1126,40 @@ export class InitiateSessionCall__Outputs {
   }
 }
 
+export class RefundTicketFeesCall extends ethereum.Call {
+  get inputs(): RefundTicketFeesCall__Inputs {
+    return new RefundTicketFeesCall__Inputs(this);
+  }
+
+  get outputs(): RefundTicketFeesCall__Outputs {
+    return new RefundTicketFeesCall__Outputs(this);
+  }
+}
+
+export class RefundTicketFeesCall__Inputs {
+  _call: RefundTicketFeesCall;
+
+  constructor(call: RefundTicketFeesCall) {
+    this._call = call;
+  }
+
+  get eventTokenId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get ticketIds(): Array<BigInt> {
+    return this._call.inputValues[1].value.toBigIntArray();
+  }
+}
+
+export class RefundTicketFeesCall__Outputs {
+  _call: RefundTicketFeesCall;
+
+  constructor(call: RefundTicketFeesCall) {
+    this._call = call;
+  }
+}
+
 export class StartEventCall extends ethereum.Call {
   get inputs(): StartEventCall__Inputs {
     return new StartEventCall__Inputs(this);
@@ -1091,6 +1220,36 @@ export class TransferOwnershipCall__Outputs {
   }
 }
 
+export class UpdateAdminContractCall extends ethereum.Call {
+  get inputs(): UpdateAdminContractCall__Inputs {
+    return new UpdateAdminContractCall__Inputs(this);
+  }
+
+  get outputs(): UpdateAdminContractCall__Outputs {
+    return new UpdateAdminContractCall__Outputs(this);
+  }
+}
+
+export class UpdateAdminContractCall__Inputs {
+  _call: UpdateAdminContractCall;
+
+  constructor(call: UpdateAdminContractCall) {
+    this._call = call;
+  }
+
+  get _adminContract(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class UpdateAdminContractCall__Outputs {
+  _call: UpdateAdminContractCall;
+
+  constructor(call: UpdateAdminContractCall) {
+    this._call = call;
+  }
+}
+
 export class UpdateAgendaCall extends ethereum.Call {
   get inputs(): UpdateAgendaCall__Inputs {
     return new UpdateAgendaCall__Inputs(this);
@@ -1145,36 +1304,6 @@ export class UpdateAgendaCall__Outputs {
   _call: UpdateAgendaCall;
 
   constructor(call: UpdateAgendaCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateEventContractCall extends ethereum.Call {
-  get inputs(): UpdateEventContractCall__Inputs {
-    return new UpdateEventContractCall__Inputs(this);
-  }
-
-  get outputs(): UpdateEventContractCall__Outputs {
-    return new UpdateEventContractCall__Outputs(this);
-  }
-}
-
-export class UpdateEventContractCall__Inputs {
-  _call: UpdateEventContractCall;
-
-  constructor(call: UpdateEventContractCall) {
-    this._call = call;
-  }
-
-  get _eventContract(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class UpdateEventContractCall__Outputs {
-  _call: UpdateEventContractCall;
-
-  constructor(call: UpdateEventContractCall) {
     this._call = call;
   }
 }

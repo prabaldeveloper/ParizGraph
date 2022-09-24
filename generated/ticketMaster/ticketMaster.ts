@@ -158,76 +158,6 @@ export class OwnershipTransferred__Params {
   }
 }
 
-export class TicketCommissionUpdated extends ethereum.Event {
-  get params(): TicketCommissionUpdated__Params {
-    return new TicketCommissionUpdated__Params(this);
-  }
-}
-
-export class TicketCommissionUpdated__Params {
-  _event: TicketCommissionUpdated;
-
-  constructor(event: TicketCommissionUpdated) {
-    this._event = event;
-  }
-
-  get ticketCommissionPercent(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-}
-
-export class TicketFeesClaimed extends ethereum.Event {
-  get params(): TicketFeesClaimed__Params {
-    return new TicketFeesClaimed__Params(this);
-  }
-}
-
-export class TicketFeesClaimed__Params {
-  _event: TicketFeesClaimed;
-
-  constructor(event: TicketFeesClaimed) {
-    this._event = event;
-  }
-
-  get eventTokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get eventOrganiser(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get tokenAddress(): Array<Address> {
-    return this._event.parameters[2].value.toAddressArray();
-  }
-}
-
-export class TicketFeesRefund extends ethereum.Event {
-  get params(): TicketFeesRefund__Params {
-    return new TicketFeesRefund__Params(this);
-  }
-}
-
-export class TicketFeesRefund__Params {
-  _event: TicketFeesRefund;
-
-  constructor(event: TicketFeesRefund) {
-    this._event = event;
-  }
-
-  get eventTokenId(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get user(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get ticketId(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-}
-
 export class TokenCreatorUpdated extends ethereum.Event {
   get params(): TokenCreatorUpdated__Params {
     return new TokenCreatorUpdated__Params(this);
@@ -280,6 +210,23 @@ export class Transfer__Params {
   }
 }
 
+export class ticketMaster__getUserTicketDetailsResult {
+  value0: BigInt;
+  value1: Address;
+
+  constructor(value0: BigInt, value1: Address) {
+    this.value0 = value0;
+    this.value1 = value1;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
+    map.set("value1", ethereum.Value.fromAddress(this.value1));
+    return map;
+  }
+}
+
 export class ticketMaster extends ethereum.SmartContract {
   static bind(address: Address): ticketMaster {
     return new ticketMaster("ticketMaster", address);
@@ -321,6 +268,25 @@ export class ticketMaster extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  adminContract(): Address {
+    let result = super.call("adminContract", "adminContract():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_adminContract(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "adminContract",
+      "adminContract():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   balanceOf(owner: Address): BigInt {
@@ -474,29 +440,6 @@ export class ticketMaster extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  getEventContract(): Address {
-    let result = super.call(
-      "getEventContract",
-      "getEventContract():(address)",
-      []
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_getEventContract(): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "getEventContract",
-      "getEventContract():(address)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   getJoinEventStatus(_ticketNftAddress: Address, _ticketId: BigInt): boolean {
     let result = super.call(
       "getJoinEventStatus",
@@ -548,27 +491,125 @@ export class ticketMaster extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getTicketCommissionPercent(): BigInt {
+  getTicketFeesBalance(eventTokenId: BigInt, tokenAddress: Address): BigInt {
     let result = super.call(
-      "getTicketCommissionPercent",
-      "getTicketCommissionPercent():(uint256)",
-      []
+      "getTicketFeesBalance",
+      "getTicketFeesBalance(uint256,address):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(eventTokenId),
+        ethereum.Value.fromAddress(tokenAddress)
+      ]
     );
 
     return result[0].toBigInt();
   }
 
-  try_getTicketCommissionPercent(): ethereum.CallResult<BigInt> {
+  try_getTicketFeesBalance(
+    eventTokenId: BigInt,
+    tokenAddress: Address
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "getTicketCommissionPercent",
-      "getTicketCommissionPercent():(uint256)",
-      []
+      "getTicketFeesBalance",
+      "getTicketFeesBalance(uint256,address):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(eventTokenId),
+        ethereum.Value.fromAddress(tokenAddress)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  getTicketIds(tokenAddress: Address): Array<BigInt> {
+    let result = super.call(
+      "getTicketIds",
+      "getTicketIds(address):(uint256[])",
+      [ethereum.Value.fromAddress(tokenAddress)]
+    );
+
+    return result[0].toBigIntArray();
+  }
+
+  try_getTicketIds(tokenAddress: Address): ethereum.CallResult<Array<BigInt>> {
+    let result = super.tryCall(
+      "getTicketIds",
+      "getTicketIds(address):(uint256[])",
+      [ethereum.Value.fromAddress(tokenAddress)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
+  }
+
+  getTicketNFTAddress(eventTokenId: BigInt): Address {
+    let result = super.call(
+      "getTicketNFTAddress",
+      "getTicketNFTAddress(uint256):(address)",
+      [ethereum.Value.fromUnsignedBigInt(eventTokenId)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getTicketNFTAddress(eventTokenId: BigInt): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getTicketNFTAddress",
+      "getTicketNFTAddress(uint256):(address)",
+      [ethereum.Value.fromUnsignedBigInt(eventTokenId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  getUserTicketDetails(
+    eventTokenId: BigInt,
+    ticketId: BigInt
+  ): ticketMaster__getUserTicketDetailsResult {
+    let result = super.call(
+      "getUserTicketDetails",
+      "getUserTicketDetails(uint256,uint256):(uint256,address)",
+      [
+        ethereum.Value.fromUnsignedBigInt(eventTokenId),
+        ethereum.Value.fromUnsignedBigInt(ticketId)
+      ]
+    );
+
+    return new ticketMaster__getUserTicketDetailsResult(
+      result[0].toBigInt(),
+      result[1].toAddress()
+    );
+  }
+
+  try_getUserTicketDetails(
+    eventTokenId: BigInt,
+    ticketId: BigInt
+  ): ethereum.CallResult<ticketMaster__getUserTicketDetailsResult> {
+    let result = super.tryCall(
+      "getUserTicketDetails",
+      "getUserTicketDetails(uint256,uint256):(uint256,address)",
+      [
+        ethereum.Value.fromUnsignedBigInt(eventTokenId),
+        ethereum.Value.fromUnsignedBigInt(ticketId)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new ticketMaster__getUserTicketDetailsResult(
+        value[0].toBigInt(),
+        value[1].toAddress()
+      )
+    );
   }
 
   isApprovedForAll(owner: Address, operator: Address): boolean {
@@ -589,6 +630,31 @@ export class ticketMaster extends ethereum.SmartContract {
       "isApprovedForAll",
       "isApprovedForAll(address,address):(bool)",
       [ethereum.Value.fromAddress(owner), ethereum.Value.fromAddress(operator)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  isERC721TokenAddress(tokenAddress: Address): boolean {
+    let result = super.call(
+      "isERC721TokenAddress",
+      "isERC721TokenAddress(address):(bool)",
+      [ethereum.Value.fromAddress(tokenAddress)]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_isERC721TokenAddress(
+    tokenAddress: Address
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isERC721TokenAddress",
+      "isERC721TokenAddress(address):(bool)",
+      [ethereum.Value.fromAddress(tokenAddress)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -629,6 +695,38 @@ export class ticketMaster extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
+  nftIdPassStatus(param0: Address, param1: BigInt): boolean {
+    let result = super.call(
+      "nftIdPassStatus",
+      "nftIdPassStatus(address,uint256):(bool)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_nftIdPassStatus(
+    param0: Address,
+    param1: BigInt
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "nftIdPassStatus",
+      "nftIdPassStatus(address,uint256):(bool)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   nftTicketIds(param0: Address, param1: BigInt): BigInt {
@@ -1024,40 +1122,6 @@ export class BuyTicketCall__Outputs {
   }
 }
 
-export class ClaimTicketFeesCall extends ethereum.Call {
-  get inputs(): ClaimTicketFeesCall__Inputs {
-    return new ClaimTicketFeesCall__Inputs(this);
-  }
-
-  get outputs(): ClaimTicketFeesCall__Outputs {
-    return new ClaimTicketFeesCall__Outputs(this);
-  }
-}
-
-export class ClaimTicketFeesCall__Inputs {
-  _call: ClaimTicketFeesCall;
-
-  constructor(call: ClaimTicketFeesCall) {
-    this._call = call;
-  }
-
-  get eventTokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get tokenAddress(): Array<Address> {
-    return this._call.inputValues[1].value.toAddressArray();
-  }
-}
-
-export class ClaimTicketFeesCall__Outputs {
-  _call: ClaimTicketFeesCall;
-
-  constructor(call: ClaimTicketFeesCall) {
-    this._call = call;
-  }
-}
-
 export class DeployTicketNFTCall extends ethereum.Call {
   get inputs(): DeployTicketNFTCall__Inputs {
     return new DeployTicketNFTCall__Inputs(this);
@@ -1211,40 +1275,6 @@ export class MintCall__Outputs {
 
   get tokenId(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
-  }
-}
-
-export class RefundTicketFeesCall extends ethereum.Call {
-  get inputs(): RefundTicketFeesCall__Inputs {
-    return new RefundTicketFeesCall__Inputs(this);
-  }
-
-  get outputs(): RefundTicketFeesCall__Outputs {
-    return new RefundTicketFeesCall__Outputs(this);
-  }
-}
-
-export class RefundTicketFeesCall__Inputs {
-  _call: RefundTicketFeesCall;
-
-  constructor(call: RefundTicketFeesCall) {
-    this._call = call;
-  }
-
-  get eventTokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get ticketIds(): Array<BigInt> {
-    return this._call.inputValues[1].value.toBigIntArray();
-  }
-}
-
-export class RefundTicketFeesCall__Outputs {
-  _call: RefundTicketFeesCall;
-
-  constructor(call: RefundTicketFeesCall) {
-    this._call = call;
   }
 }
 
@@ -1430,62 +1460,32 @@ export class TransferOwnershipCall__Outputs {
   }
 }
 
-export class UpdateEventContractCall extends ethereum.Call {
-  get inputs(): UpdateEventContractCall__Inputs {
-    return new UpdateEventContractCall__Inputs(this);
+export class UpdateAdminContractCall extends ethereum.Call {
+  get inputs(): UpdateAdminContractCall__Inputs {
+    return new UpdateAdminContractCall__Inputs(this);
   }
 
-  get outputs(): UpdateEventContractCall__Outputs {
-    return new UpdateEventContractCall__Outputs(this);
+  get outputs(): UpdateAdminContractCall__Outputs {
+    return new UpdateAdminContractCall__Outputs(this);
   }
 }
 
-export class UpdateEventContractCall__Inputs {
-  _call: UpdateEventContractCall;
+export class UpdateAdminContractCall__Inputs {
+  _call: UpdateAdminContractCall;
 
-  constructor(call: UpdateEventContractCall) {
+  constructor(call: UpdateAdminContractCall) {
     this._call = call;
   }
 
-  get _eventContract(): Address {
+  get _adminContract(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class UpdateEventContractCall__Outputs {
-  _call: UpdateEventContractCall;
+export class UpdateAdminContractCall__Outputs {
+  _call: UpdateAdminContractCall;
 
-  constructor(call: UpdateEventContractCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateTicketCommissionCall extends ethereum.Call {
-  get inputs(): UpdateTicketCommissionCall__Inputs {
-    return new UpdateTicketCommissionCall__Inputs(this);
-  }
-
-  get outputs(): UpdateTicketCommissionCall__Outputs {
-    return new UpdateTicketCommissionCall__Outputs(this);
-  }
-}
-
-export class UpdateTicketCommissionCall__Inputs {
-  _call: UpdateTicketCommissionCall;
-
-  constructor(call: UpdateTicketCommissionCall) {
-    this._call = call;
-  }
-
-  get _ticketCommissionPercent(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class UpdateTicketCommissionCall__Outputs {
-  _call: UpdateTicketCommissionCall;
-
-  constructor(call: UpdateTicketCommissionCall) {
+  constructor(call: UpdateAdminContractCall) {
     this._call = call;
   }
 }

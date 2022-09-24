@@ -1040,7 +1040,7 @@ export class Erc20TokenEvent extends Entity {
   }
 }
 
-export class Erc721TokenEvent extends Entity {
+export class Erc721EventToken extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -1048,17 +1048,17 @@ export class Erc721TokenEvent extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Erc721TokenEvent entity without an ID");
+    assert(id !== null, "Cannot save Erc721EventToken entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Erc721TokenEvent entity with non-string ID. " +
+      "Cannot save Erc721EventToken entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Erc721TokenEvent", id.toString(), this);
+    store.set("Erc721EventToken", id.toString(), this);
   }
 
-  static load(id: string): Erc721TokenEvent | null {
-    return store.get("Erc721TokenEvent", id) as Erc721TokenEvent | null;
+  static load(id: string): Erc721EventToken | null {
+    return store.get("Erc721EventToken", id) as Erc721EventToken | null;
   }
 
   get id(): string {
@@ -1144,6 +1144,23 @@ export class Erc721TokenEvent extends Entity {
       this.unset("tokenDecimal");
     } else {
       this.set("tokenDecimal", Value.fromString(value as string));
+    }
+  }
+
+  get freePass(): BigInt | null {
+    let value = this.get("freePass");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set freePass(value: BigInt | null) {
+    if (value === null) {
+      this.unset("freePass");
+    } else {
+      this.set("freePass", Value.fromBigInt(value as BigInt));
     }
   }
 }
@@ -2462,7 +2479,7 @@ export class EventId extends Entity {
   }
 }
 
-export class Erc721Token extends Entity {
+export class Erc721UserToken extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -2470,17 +2487,17 @@ export class Erc721Token extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Erc721Token entity without an ID");
+    assert(id !== null, "Cannot save Erc721UserToken entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Erc721Token entity with non-string ID. " +
+      "Cannot save Erc721UserToken entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Erc721Token", id.toString(), this);
+    store.set("Erc721UserToken", id.toString(), this);
   }
 
-  static load(id: string): Erc721Token | null {
-    return store.get("Erc721Token", id) as Erc721Token | null;
+  static load(id: string): Erc721UserToken | null {
+    return store.get("Erc721UserToken", id) as Erc721UserToken | null;
   }
 
   get id(): string {
@@ -2558,5 +2575,31 @@ export class Erc721Token extends Entity {
     } else {
       this.set("nftContractAddress", Value.fromBytes(value as Bytes));
     }
+  }
+
+  get balance(): BigInt | null {
+    let value = this.get("balance");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set balance(value: BigInt | null) {
+    if (value === null) {
+      this.unset("balance");
+    } else {
+      this.set("balance", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get isUsed(): boolean {
+    let value = this.get("isUsed");
+    return value.toBoolean();
+  }
+
+  set isUsed(value: boolean) {
+    this.set("isUsed", Value.fromBoolean(value));
   }
 }

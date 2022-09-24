@@ -1,7 +1,6 @@
 import { Address, BigInt, Bytes, DataSourceTemplate } from "@graphprotocol/graph-ts";
 import {
   VenueAdded,
-  VenueRentalCommissionUpdated,
   VenueFeesUpdated
 } from "../generated/Venue/Venue";
 
@@ -13,25 +12,28 @@ import {
 
 import { VenueList, EventList, WhiteList, Erc20TokenEvent, Favourite, 
   BookedTime, VenueRental, PlatformFee, IsEventPublic, BaseToken, History, Agenda,
-  Join, TicketBought, TicketBalance, EventTime, TicketRefund, VenueRefund, EventId, Erc721TokenEvent, Erc721Token } from "../generated/schema";
+  Join, TicketBought, TicketBalance, EventTime, TicketRefund, VenueRefund, EventId, Erc721EventToken, Erc721UserToken } from "../generated/schema";
 
 import {
   events as EventsContract,
   EventAdded as EventAdded,
   EventUpdated,
   Featured as FeaturedEvent,
-  WhiteList as WhiteListEvent,
-  Erc20TokenUpdated as Erc20TokenUpdatedEvent,
-  Erc721TokenUpdated as Erc721TokenUpdatedEvent,
   Favourite as FavouriteEvent,
-  PlatformFeeUpdated as PlatformFeeUpdated,
-  EventStatusUpdated,
   Transfer as TransferToken,
   EventPaid,
-  EventEnded,
   Joined,
   VenueFeesRefunded
 } from "../generated/events/events";
+
+import {
+  WhiteList as WhiteListEvent,
+  Erc20TokenUpdated as Erc20TokenUpdatedEvent,
+  Erc721TokenUpdated as Erc721TokenUpdatedEvent,
+  PlatformFeeUpdated as PlatformFeeUpdated,
+  EventStatusUpdated,
+  VenueRentalCommissionUpdated
+} from "../generated/admin/admin";
 
 import {
   DataAdded
@@ -43,11 +45,12 @@ import {
   AgendaDeleted,
   EventStarted,
   EventCancelled,
+  EventEnded,
+  TicketFeesRefund as TicketRefundEvent
 } from "../generated/manageEvent/manageEvent";
 
 import {
   Bought,
-  TicketFeesRefund as TicketRefundEvent,
   ticketMaster as TicketMasterContract
 } from "../generated/ticketMaster/ticketMaster";
 
@@ -64,8 +67,20 @@ import {
 } from "../generated/templates";
 
 import {
-  Transfer as TransferErc721
+  Transfer as TransferErc721,
+  erc721Token as Erc721Contract 
 } from "../generated/erc721Token/erc721Token";
+
+import {
+  Transfer as TransferRareGuys,
+  RareGuys as RareGuysContract 
+} from "../generated/RareGuys/RareGuys";
+
+import {
+  Transfer as TransferEarnWithRK,
+  EarnWithRK as EarnWithRKContract 
+} from "../generated/EarnWithRK/EarnWithRK";
+
 
 export function handleEventAdded(event: EventAdded): void {
   let token = EventList.load(event.params.tokenId.toString());
@@ -92,8 +107,8 @@ export function handleEventAdded(event: EventAdded): void {
       token.ticketBoughtList = [null];
       token.ticketBalance = [null];
       
-      let conversionContract = conversionContractAddress.bind(contract.getConversionContract());
-      token.conversionAddress = contract.getConversionContract();
+      // let conversionContract = conversionContractAddress.bind(contract.getConversionContract());
+      // token.conversionAddress = contract.getConversionContract();
       //let address = conversionContract.getBaseToken();
       // token.tokenAddress = address;
       token.tokenAddress = Address.fromString("0xD028C2a5156069c7eFaeA40acCA7d9Da6f219A5f");
@@ -179,7 +194,6 @@ export function handleEventAdded(event: EventAdded): void {
       let tokenTimes = tokenValue.times;
       tokenValue.times = tokenTimes.concat([tokenTime.id]);
       tokenValue.save();
-
       let tokenValues = EventId.load(event.params.ticketNFTAddress.toString());
       if(!tokenValues) {
         tokenValues = new EventId(event.params.ticketNFTAddress.toString());
@@ -224,48 +238,6 @@ export function handleFeatured(event: FeaturedEvent): void {
   token.save();
 }
 
-export function handleWhiteList(event: WhiteListEvent): void {
-  let token = WhiteList.load(event.params.whitelistedAddress.toString());
-  if(!token) {
-    token = new WhiteList(event.params.whitelistedAddress.toString());
-    token.userAddress = event.params.whitelistedAddress;
-    token.status = event.params.status;
-  }
-  else{
-    token.userAddress = event.params.whitelistedAddress;
-    token.status = event.params.status;
-  }
-  token.save();
-}
-
-export function handleErc20TokenUpdatedEvent(event: Erc20TokenUpdatedEvent): void {
-  let tokenDetail = Erc20TokenEvent.load(event.params.tokenAddress.toString());
-  if(!tokenDetail) {
-    tokenDetail = new Erc20TokenEvent(event.params.tokenAddress.toString());
-    tokenDetail.tokenAddress = event.params.tokenAddress;
-    tokenDetail.status = event.params.status;
-  }
-  else {
-    tokenDetail.status = event.params.status;
-    tokenDetail.tokenAddress = event.params.tokenAddress;
-  }
-  tokenDetail.save();
-}
-
-export function handleErc721TokenUpdatedEvent(event: Erc721TokenUpdatedEvent): void {
-  let tokenDetail = Erc721TokenEvent.load(event.params.tokenAddress.toString());
-  if(!tokenDetail) {
-    tokenDetail = new Erc721TokenEvent(event.params.tokenAddress.toString());
-    tokenDetail.tokenAddress = event.params.tokenAddress;
-    tokenDetail.status = event.params.status;
-  }
-  else {
-    tokenDetail.status = event.params.status;
-    tokenDetail.tokenAddress = event.params.tokenAddress;
-  }
-  tokenDetail.save();
-}
-
 export function handleFavourite(event: FavouriteEvent): void {
   let token = Favourite.load(event.params.user.toString() + event.params.tokenId.toString());
   if(!token){
@@ -280,31 +252,6 @@ export function handleFavourite(event: FavouriteEvent): void {
   token.save();
 }
 
-export function handlePlatformFee(event: PlatformFeeUpdated): void {
-  let token = PlatformFee.load(event.params.platformFeePercent.toString());
-  if(!token){
-    token = new PlatformFee(event.params.platformFeePercent.toString());
-    token.PlatformFeePercent = event.params.platformFeePercent;
-  }
-  else {
-    token.PlatformFeePercent = event.params.platformFeePercent;
-  }
-  token.save();
-}
-
-export function handleEventStatus(event: EventStatusUpdated): void {
-  let token = IsEventPublic.load(event.address.toString());
-  if(!token){
-    token = new IsEventPublic(event.address.toString());
-    token.eventStatus = event.params.isPublic;
-    token.eventContract = event.address;
-  }
-  else {
-    token.eventStatus = event.params.isPublic;
-  }
-  token.save();
-}
-
 export function handleEventPaid(event: EventPaid): void {
   let token = EventList.load(event.params.eventTokenId.toString());
   if(token) {
@@ -312,24 +259,6 @@ export function handleEventPaid(event: EventPaid): void {
     token.venueFeeAmount = event.params.venueFeeAmount;
   }
   token.save();
-}
-
-
-export function handleTransfer(event: TransferToken): void {
-  // let token = EventList.load(event.params.tokenId.toString());
-  // if(!token) {
-  //   token = new EventList(event.params.tokenId.toString());
-  //   token.eventOrganiserAddress = event.params.to;
-  //   token.eventTokenId = event.params.tokenId;
-  // }
-  // else {
-  //   if(event.params.to == Address.fromString("0x0000000000000000000000000000000000000000")) {
-  //     token.eventOrganiserAddress = event.params.to;
-  //     token.burnStatus = "Token Burned";
-      
-  //   }
-  // }
-  // token.save();
 }
 
 export function handleVenueRefund(event: VenueFeesRefunded): void{
@@ -369,6 +298,108 @@ export function handleJoined(event: Joined): void {
   tokenValue.save();
 }
 
+/******************************************************* Admin Functions **********************************************************/
+
+
+export function handleWhiteList(event: WhiteListEvent): void {
+  let token = WhiteList.load(event.params.whitelistedAddress.toString());
+  if(!token) {
+    token = new WhiteList(event.params.whitelistedAddress.toString());
+    token.userAddress = event.params.whitelistedAddress;
+    token.status = event.params.status;
+  }
+  else{
+    token.userAddress = event.params.whitelistedAddress;
+    token.status = event.params.status;
+  }
+  token.save();
+}
+
+export function handleErc20TokenUpdatedEvent(event: Erc20TokenUpdatedEvent): void {
+  let tokenDetail = Erc20TokenEvent.load(event.params.tokenAddress.toString());
+  if(!tokenDetail) {
+    tokenDetail = new Erc20TokenEvent(event.params.tokenAddress.toString());
+    tokenDetail.tokenAddress = event.params.tokenAddress;
+    tokenDetail.status = event.params.status;
+  }
+  else {
+    tokenDetail.status = event.params.status;
+    tokenDetail.tokenAddress = event.params.tokenAddress;
+  }
+  tokenDetail.save();
+}
+
+export function handleErc721TokenUpdatedEvent(event: Erc721TokenUpdatedEvent): void {
+  let tokenDetail = Erc721EventToken.load(event.params.tokenAddress.toString());
+  if(!tokenDetail) {
+    tokenDetail = new Erc721EventToken(event.params.tokenAddress.toString());
+    tokenDetail.tokenAddress = event.params.tokenAddress;
+    tokenDetail.status = event.params.status;
+    tokenDetail.freePass = event.params.freePassStatus;
+  }
+  else {
+    tokenDetail.status = event.params.status;
+    tokenDetail.tokenAddress = event.params.tokenAddress;
+    tokenDetail.freePass = event.params.freePassStatus;
+  }
+  tokenDetail.save();
+}
+
+export function handlePlatformFee(event: PlatformFeeUpdated): void {
+  let token = PlatformFee.load(event.params.platformFeePercent.toString());
+  if(!token){
+    token = new PlatformFee(event.params.platformFeePercent.toString());
+    token.PlatformFeePercent = event.params.platformFeePercent;
+  }
+  else {
+    token.PlatformFeePercent = event.params.platformFeePercent;
+  }
+  token.save();
+}
+
+export function handleEventStatus(event: EventStatusUpdated): void {
+  let token = IsEventPublic.load(event.address.toString());
+  if(!token){
+    token = new IsEventPublic(event.address.toString());
+    token.eventStatus = event.params.isPublic;
+    token.eventContract = event.address;
+  }
+  else {
+    token.eventStatus = event.params.isPublic;
+  }
+  token.save();
+}
+
+export function handleTransfer(event: TransferToken): void {
+  // let token = EventList.load(event.params.tokenId.toString());
+  // if(!token) {
+  //   token = new EventList(event.params.tokenId.toString());
+  //   token.eventOrganiserAddress = event.params.to;
+  //   token.eventTokenId = event.params.tokenId;
+  // }
+  // else {
+  //   if(event.params.to == Address.fromString("0x0000000000000000000000000000000000000000")) {
+  //     token.eventOrganiserAddress = event.params.to;
+  //     token.burnStatus = "Token Burned";
+      
+  //   }
+  // }
+  // token.save();
+}
+
+export function handleRentalCommission(event: VenueRentalCommissionUpdated): void {
+  let token = VenueRental.load(event.params.venueRentalCommission.toString());
+  if(!token) {
+    token = new VenueRental(event.params.venueRentalCommission.toString());
+    token.venueRentalCommission = event.params.venueRentalCommission;
+  }
+  else {
+    token.venueRentalCommission = event.params.venueRentalCommission;
+  }
+  token.save();
+}
+
+
 /******************************* Venue Functions  *******************************************/
 
 export function handleVenueAdded(event: VenueAdded): void {
@@ -402,18 +433,6 @@ export function handleVenueAdded(event: VenueAdded): void {
   }
 
   entity.save();
-}
-
-export function handleRentalCommission(event: VenueRentalCommissionUpdated): void {
-  let token = VenueRental.load(event.params.venueRentalCommission.toString());
-  if(!token) {
-    token = new VenueRental(event.params.venueRentalCommission.toString());
-    token.venueRentalCommission = event.params.venueRentalCommission;
-  }
-  else {
-    token.venueRentalCommission = event.params.venueRentalCommission;
-  }
-  token.save();
 }
 
 export function handleErc20Details(event: Erc20DetailsEvent): void {
@@ -492,9 +511,9 @@ export function handleVenueFeesUpdated(event: VenueFeesUpdated): void {
 }
 
 export function handleErc721Details(event: Erc721DetailsEvent): void {
-  let tokenValue = Erc721TokenEvent.load(event.params.tokenAddress.toString());
+  let tokenValue = Erc721EventToken.load(event.params.tokenAddress.toString());
   if(!tokenValue) {
-    tokenValue = new Erc721TokenEvent(event.params.tokenAddress.toString());
+    tokenValue = new Erc721EventToken(event.params.tokenAddress.toString());
     tokenValue.tokenName = event.params.name;
     tokenValue.tokenSymbol = event.params.symbol;
     tokenValue.tokenDecimal = "0";
@@ -605,6 +624,18 @@ export function handleEventEnded(event: EventEnded): void {
   token.save();
 }
 
+export function handleTicketRefund(event: TicketRefundEvent): void{
+  let token = TicketRefund.load(event.params.eventTokenId.toString() + event.params.ticketId.toString());
+  if(!token) {
+    token = new TicketRefund(event.params.eventTokenId.toString() + event.params.ticketId.toString());
+    token.eventTokenId = event.params.eventTokenId;
+    token.ticketId = event.params.ticketId;
+    token.userAddress = event.params.user;
+    token.refundStatus = true;
+  }
+  token.save();
+}
+
 /*********************************** TicketMaster Functions ******************************************/
 
 export function handleTicketBought(event: Bought): void {
@@ -630,23 +661,25 @@ export function handleTicketBought(event: Bought): void {
     tokenValues2.ticketFeeAmount = event.params.tokenAmount;
     tokenValues2.eventTokenId = event.params.tokenId;
   }
+  let tokenUsed = Erc721UserToken.load(event.params.tokenAddress.toString() + event.params.tokenAmount.toString());
+  if(tokenUsed) {
+    tokenUsed.isUsed = true;
+  }
+  else {
+    tokenUsed = new Erc721UserToken(event.params.tokenAddress.toString() + event.params.tokenAmount.toString());
+    tokenUsed.nftContractAddress = event.params.tokenAddress;
+    tokenUsed.tokenID = event.params.tokenAmount;
+    tokenUsed.isUsed = true;
+
+
+  }
+  tokenUsed.save();
   tokenValues2.save();
   tokenValue.save();
   token.save();
 
 }
 
-export function handleTicketRefund(event: TicketRefundEvent): void{
-  let token = TicketRefund.load(event.params.eventTokenId.toString() + event.params.ticketId.toString());
-  if(!token) {
-    token = new TicketRefund(event.params.eventTokenId.toString() + event.params.ticketId.toString());
-    token.eventTokenId = event.params.eventTokenId;
-    token.ticketId = event.params.ticketId;
-    token.userAddress = event.params.user;
-    token.refundStatus = true;
-  }
-  token.save();
-}
 /*************************************** Ticket Transfer Contract ************************************************/
 
 export function handleTicketTransfer(event: TransferTicket): void {
@@ -681,19 +714,70 @@ export function handleTicketTransfer(event: TransferTicket): void {
 
 /*************************************** ERC721 contract *********************************************************/
 export function handleErc721Transfer(event: TransferErc721): void {
-  let token = Erc721Token.load(event.address.toString() + event.params.tokenId.toString());
+  let token = Erc721UserToken.load(event.address.toString() + event.params.tokenId.toString());
   if(!token) {
-    token = new Erc721Token(event.address.toString() + event.params.tokenId.toString());
+    token = new Erc721UserToken(event.address.toString() + event.params.tokenId.toString());
     token.tokenID = event.params.tokenId;
     token.owner = event.params.to;
     token.nftContractAddress = event.address; 
     token.from = event.params.from;   
+    let erc721Contract = Erc721Contract.bind(event.address);
+    token.balance = erc721Contract.balanceOf(event.params.to);
+    token.isUsed = false;
   }
   else {
     token.owner = event.params.to;
     token.tokenID = event.params.tokenId;
     token.nftContractAddress = event.address;
     token.from = event.params.from;
+    let erc721Contract = Erc721Contract.bind(event.address);
+    token.balance = erc721Contract.balanceOf(event.params.to);
+  }
+  token.save();
+}
+
+export function handleRareGuysTransfer(event:TransferRareGuys): void {
+  let token = Erc721UserToken.load(event.address.toString() + event.params.tokenId.toString());
+  if(!token) {
+    token = new Erc721UserToken(event.address.toString() + event.params.tokenId.toString());
+    token.tokenID = event.params.tokenId;
+    token.owner = event.params.to;
+    token.nftContractAddress = event.address; 
+    token.from = event.params.from;   
+    let erc721Contract = RareGuysContract.bind(event.address);
+    token.balance = erc721Contract.balanceOf(event.params.to);
+    token.isUsed = false;
+  }
+  else {
+    token.owner = event.params.to;
+    token.tokenID = event.params.tokenId;
+    token.nftContractAddress = event.address;
+    token.from = event.params.from;
+    let erc721Contract = RareGuysContract.bind(event.address);
+    token.balance = erc721Contract.balanceOf(event.params.to);
+  }
+  token.save();
+}
+
+export function handleEarnWithRKTransfer(event:TransferEarnWithRK): void {
+  let token = Erc721UserToken.load(event.address.toString() + event.params.tokenId.toString());
+  if(!token) {
+    token = new Erc721UserToken(event.address.toString() + event.params.tokenId.toString());
+    token.tokenID = event.params.tokenId;
+    token.owner = event.params.to;
+    token.nftContractAddress = event.address; 
+    token.from = event.params.from;   
+    let erc721Contract = EarnWithRKContract.bind(event.address);
+    token.balance = erc721Contract.balanceOf(event.params.to);
+    token.isUsed = false;
+  }
+  else {
+    token.owner = event.params.to;
+    token.tokenID = event.params.tokenId;
+    token.nftContractAddress = event.address;
+    token.from = event.params.from;
+    let erc721Contract = EarnWithRKContract.bind(event.address);
+    token.balance = erc721Contract.balanceOf(event.params.to);
   }
   token.save();
 }

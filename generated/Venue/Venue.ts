@@ -296,24 +296,6 @@ export class VenueFeesUpdated__Params {
   }
 }
 
-export class VenueRentalCommissionUpdated extends ethereum.Event {
-  get params(): VenueRentalCommissionUpdated__Params {
-    return new VenueRentalCommissionUpdated__Params(this);
-  }
-}
-
-export class VenueRentalCommissionUpdated__Params {
-  _event: VenueRentalCommissionUpdated;
-
-  constructor(event: VenueRentalCommissionUpdated) {
-    this._event = event;
-  }
-
-  get venueRentalCommission(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-}
-
 export class venue__getInfoResult {
   value0: string;
   value1: string;
@@ -620,29 +602,6 @@ export class venue extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  getVenueRentalCommission(): BigInt {
-    let result = super.call(
-      "getVenueRentalCommission",
-      "getVenueRentalCommission():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_getVenueRentalCommission(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getVenueRentalCommission",
-      "getVenueRentalCommission():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   isApprovedForAll(owner: Address, operator: Address): boolean {
@@ -1121,36 +1080,6 @@ export class UpdateVenueFeesCall__Outputs {
   _call: UpdateVenueFeesCall;
 
   constructor(call: UpdateVenueFeesCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateVenueRentalCommissionCall extends ethereum.Call {
-  get inputs(): UpdateVenueRentalCommissionCall__Inputs {
-    return new UpdateVenueRentalCommissionCall__Inputs(this);
-  }
-
-  get outputs(): UpdateVenueRentalCommissionCall__Outputs {
-    return new UpdateVenueRentalCommissionCall__Outputs(this);
-  }
-}
-
-export class UpdateVenueRentalCommissionCall__Inputs {
-  _call: UpdateVenueRentalCommissionCall;
-
-  constructor(call: UpdateVenueRentalCommissionCall) {
-    this._call = call;
-  }
-
-  get _venueRentalCommission(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class UpdateVenueRentalCommissionCall__Outputs {
-  _call: UpdateVenueRentalCommissionCall;
-
-  constructor(call: UpdateVenueRentalCommissionCall) {
     this._call = call;
   }
 }

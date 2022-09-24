@@ -82,13 +82,14 @@ type Erc20TokenEvent @entity {
   tokenDecimal: BigInt
 }
 
-type Erc721TokenEvent @entity {
+type Erc721EventToken @entity {
   id: ID!
   tokenAddress: Bytes
   status: Boolean
   tokenName: String
   tokenSymbol: String
   tokenDecimal: String
+  freePass: BigInt
 }
 
 type Favourite @entity {
@@ -197,10 +198,12 @@ type EventId @entity {
   ticketNFTAddress: Bytes
 }
 
-type Erc721Token @entity {
+type Erc721UserToken @entity {
   id: ID!
   owner: Bytes
   from: Bytes
   tokenID: BigInt
   nftContractAddress: Bytes
+  balance: BigInt
+  isUsed: Boolean
 }
