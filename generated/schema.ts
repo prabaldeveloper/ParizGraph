@@ -591,6 +591,15 @@ export class EventList extends Entity {
     this.set("isEventCanceled", Value.fromBoolean(value));
   }
 
+  get isEventCompleted(): boolean {
+    let value = this.get("isEventCompleted");
+    return value.toBoolean();
+  }
+
+  set isEventCompleted(value: boolean) {
+    this.set("isEventCompleted", Value.fromBoolean(value));
+  }
+
   get canceledTime(): BigInt | null {
     let value = this.get("canceledTime");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -1087,13 +1096,21 @@ export class Erc721EventToken extends Entity {
     }
   }
 
-  get status(): boolean {
-    let value = this.get("status");
-    return value.toBoolean();
+  get eventTokenId(): BigInt | null {
+    let value = this.get("eventTokenId");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set status(value: boolean) {
-    this.set("status", Value.fromBoolean(value));
+  set eventTokenId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("eventTokenId");
+    } else {
+      this.set("eventTokenId", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get tokenName(): string | null {
@@ -1145,6 +1162,15 @@ export class Erc721EventToken extends Entity {
     } else {
       this.set("tokenDecimal", Value.fromString(value as string));
     }
+  }
+
+  get status(): boolean {
+    let value = this.get("status");
+    return value.toBoolean();
+  }
+
+  set status(value: boolean) {
+    this.set("status", Value.fromBoolean(value));
   }
 
   get freePass(): BigInt | null {
@@ -1955,6 +1981,114 @@ export class Join extends Entity {
       this.set("ticketId", Value.fromBigInt(value as BigInt));
     }
   }
+
+  get isJoined(): boolean {
+    let value = this.get("isJoined");
+    return value.toBoolean();
+  }
+
+  set isJoined(value: boolean) {
+    this.set("isJoined", Value.fromBoolean(value));
+  }
+}
+
+export class Exit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Exit entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Exit entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Exit", id.toString(), this);
+  }
+
+  static load(id: string): Exit | null {
+    return store.get("Exit", id) as Exit | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get eventTokenId(): BigInt | null {
+    let value = this.get("eventTokenId");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set eventTokenId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("eventTokenId");
+    } else {
+      this.set("eventTokenId", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get userAddress(): Bytes | null {
+    let value = this.get("userAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set userAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("userAddress");
+    } else {
+      this.set("userAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get leavingTime(): BigInt | null {
+    let value = this.get("leavingTime");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set leavingTime(value: BigInt | null) {
+    if (value === null) {
+      this.unset("leavingTime");
+    } else {
+      this.set("leavingTime", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get ticketId(): BigInt | null {
+    let value = this.get("ticketId");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set ticketId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("ticketId");
+    } else {
+      this.set("ticketId", Value.fromBigInt(value as BigInt));
+    }
+  }
 }
 
 export class TicketBought extends Entity {
@@ -2591,6 +2725,80 @@ export class Erc721UserToken extends Entity {
       this.unset("balance");
     } else {
       this.set("balance", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get isUsed(): boolean {
+    let value = this.get("isUsed");
+    return value.toBoolean();
+  }
+
+  set isUsed(value: boolean) {
+    this.set("isUsed", Value.fromBoolean(value));
+  }
+}
+
+export class isTokenUsed extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save isTokenUsed entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save isTokenUsed entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("isTokenUsed", id.toString(), this);
+  }
+
+  static load(id: string): isTokenUsed | null {
+    return store.get("isTokenUsed", id) as isTokenUsed | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get nftContractAddress(): Bytes | null {
+    let value = this.get("nftContractAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set nftContractAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("nftContractAddress");
+    } else {
+      this.set("nftContractAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get tokenID(): BigInt | null {
+    let value = this.get("tokenID");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set tokenID(value: BigInt | null) {
+    if (value === null) {
+      this.unset("tokenID");
+    } else {
+      this.set("tokenID", Value.fromBigInt(value as BigInt));
     }
   }
 

@@ -3,6 +3,37 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "baseTokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "decimal",
+        "type": "uint256"
+      }
+    ],
+    "name": "BaseTokenUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "address",
         "name": "conversionContract",
@@ -39,6 +70,24 @@
         "internalType": "bool",
         "name": "status",
         "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "decimal",
+        "type": "uint256"
       }
     ],
     "name": "Erc20TokenUpdated",
@@ -47,6 +96,12 @@
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
       {
         "indexed": true,
         "internalType": "address",
@@ -63,6 +118,24 @@
         "indexed": false,
         "internalType": "uint256",
         "name": "freePassStatus",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "decimal",
         "type": "uint256"
       }
     ],
@@ -288,6 +361,11 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -299,6 +377,19 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAdminTreasuryContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -448,6 +539,40 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "tokenType",
+        "type": "string"
+      }
+    ],
+    "name": "getTokenDetails",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "getTreasuryContract",
     "outputs": [
@@ -501,25 +626,6 @@
         "type": "address"
       }
     ],
-    "name": "isERC721TokenFreePass",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      }
-    ],
     "name": "isErc20TokenWhitelisted",
     "outputs": [
       {
@@ -533,6 +639,35 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "isErc721TokenFreePass",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
       {
         "internalType": "address",
         "name": "tokenAddress",
@@ -655,6 +790,11 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -680,6 +820,32 @@
       }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "_adminTreasuryContract",
+        "type": "address"
+      }
+    ],
+    "name": "updateAdminTreasuryContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_baseTokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "updateBaseToken",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -910,6 +1076,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
       {
         "internalType": "address",
         "name": "tokenAddress",

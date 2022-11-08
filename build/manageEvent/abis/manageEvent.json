@@ -225,6 +225,12 @@
         "internalType": "uint256",
         "name": "leavingTime",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "ticketId",
+        "type": "uint256"
       }
     ],
     "name": "Exited",
@@ -505,16 +511,6 @@
   {
     "inputs": [
       {
-        "internalType": "bytes",
-        "name": "signature",
-        "type": "bytes"
-      },
-      {
-        "internalType": "address",
-        "name": "ticketHolder",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "eventTokenId",
         "type": "uint256"
@@ -599,29 +595,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "signature",
-        "type": "bytes"
-      },
-      {
-        "internalType": "address",
-        "name": "ticketHolder",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "eventTokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "exit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -936,6 +909,34 @@
       }
     ],
     "name": "updateAgenda",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "signature",
+        "type": "bytes"
+      },
+      {
+        "internalType": "address",
+        "name": "ticketHolder",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ticketId",
+        "type": "uint256"
+      }
+    ],
+    "name": "userExitEvent",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

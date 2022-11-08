@@ -246,6 +246,10 @@ export class Exited__Params {
   get leavingTime(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
+
+  get ticketId(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
 }
 
 export class Initialized extends ethereum.Event {
@@ -1007,16 +1011,8 @@ export class EndCall__Inputs {
     this._call = call;
   }
 
-  get signature(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-
-  get ticketHolder(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get eventTokenId(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[0].value.toBigInt();
   }
 }
 
@@ -1024,44 +1020,6 @@ export class EndCall__Outputs {
   _call: EndCall;
 
   constructor(call: EndCall) {
-    this._call = call;
-  }
-}
-
-export class ExitCall extends ethereum.Call {
-  get inputs(): ExitCall__Inputs {
-    return new ExitCall__Inputs(this);
-  }
-
-  get outputs(): ExitCall__Outputs {
-    return new ExitCall__Outputs(this);
-  }
-}
-
-export class ExitCall__Inputs {
-  _call: ExitCall;
-
-  constructor(call: ExitCall) {
-    this._call = call;
-  }
-
-  get signature(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-
-  get ticketHolder(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get eventTokenId(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-}
-
-export class ExitCall__Outputs {
-  _call: ExitCall;
-
-  constructor(call: ExitCall) {
     this._call = call;
   }
 }
@@ -1304,6 +1262,48 @@ export class UpdateAgendaCall__Outputs {
   _call: UpdateAgendaCall;
 
   constructor(call: UpdateAgendaCall) {
+    this._call = call;
+  }
+}
+
+export class UserExitEventCall extends ethereum.Call {
+  get inputs(): UserExitEventCall__Inputs {
+    return new UserExitEventCall__Inputs(this);
+  }
+
+  get outputs(): UserExitEventCall__Outputs {
+    return new UserExitEventCall__Outputs(this);
+  }
+}
+
+export class UserExitEventCall__Inputs {
+  _call: UserExitEventCall;
+
+  constructor(call: UserExitEventCall) {
+    this._call = call;
+  }
+
+  get signature(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get ticketHolder(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get eventTokenId(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+
+  get ticketId(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+}
+
+export class UserExitEventCall__Outputs {
+  _call: UserExitEventCall;
+
+  constructor(call: UserExitEventCall) {
     this._call = call;
   }
 }

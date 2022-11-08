@@ -39,6 +39,7 @@ type EventList @entity {
   venueFeeAmount: BigInt
   ticketNFTAddress: Bytes
   isEventCanceled: Boolean
+  isEventCompleted: Boolean
   canceledTime: BigInt
   isEventStarted: Boolean
   isEventEnded: Boolean
@@ -82,13 +83,14 @@ type Erc20TokenEvent @entity {
   tokenDecimal: BigInt
 }
 
-type Erc721EventToken @entity {
+type Erc721EventToken @entity{
   id: ID!
   tokenAddress: Bytes
-  status: Boolean
+  eventTokenId: BigInt
   tokenName: String
   tokenSymbol: String
   tokenDecimal: String
+  status: Boolean
   freePass: BigInt
 }
 
@@ -152,6 +154,16 @@ type Join @entity {
   userAddress: Bytes
   joinTime: BigInt
   ticketId: BigInt
+  isJoined: Boolean
+}
+
+type Exit @entity {
+  id: ID!
+  eventTokenId: BigInt
+  userAddress: Bytes
+  leavingTime: BigInt
+  ticketId: BigInt
+
 }
 
 type TicketBought @entity{
@@ -205,5 +217,12 @@ type Erc721UserToken @entity {
   tokenID: BigInt
   nftContractAddress: Bytes
   balance: BigInt
+  isUsed: Boolean
+}
+
+type isTokenUsed @entity {
+  id: ID!
+  nftContractAddress: Bytes
+  tokenID: BigInt
   isUsed: Boolean
 }

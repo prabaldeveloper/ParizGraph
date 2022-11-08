@@ -64,9 +64,9 @@ dataSources:
     name: admin
     network: mumbai
     source:
-      address: "0x8e8AC44aF92fB9b853cc70eC300F6D9793b1F2Fe"
+      address: "0xcE0A81Ae0e9353d7716d346d50D1BC9A63662530"
       abi: admin
-      startBlock: 28234931
+      startBlock: 28596078
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -79,9 +79,9 @@ dataSources:
       eventHandlers:
         - event: WhiteList(address,bool)
           handler: handleWhiteList
-        - event: Erc20TokenUpdated(indexed address,bool)
+        - event: Erc20TokenUpdated(indexed address,bool,string,string,uint256)
           handler: handleErc20TokenUpdatedEvent
-        - event: Erc721TokenUpdated(indexed address,bool,uint256)
+        - event: Erc721TokenUpdated(indexed uint256,indexed address,bool,uint256,string,string,uint256)
           handler: handleErc721TokenUpdatedEvent
         - event: PlatformFeeUpdated(uint256)
           handler: handlePlatformFee
@@ -89,6 +89,8 @@ dataSources:
           handler: handleEventStatus
         - event: VenueRentalCommissionUpdated(uint256)
           handler: handleRentalCommission
+        - event: BaseTokenUpdated(indexed address,string,string,uint256)
+          handler: handleBaseTokenUpdated
       file: ./src/mapping.ts
 
   - kind: ethereum/contract
@@ -166,6 +168,10 @@ dataSources:
           handler: handleCanceledEvent
         - event: EventEnded(indexed uint256)
           handler: handleEventEnded
+        - event: EventCompleted(indexed uint256)
+          handler: handleEventCompleted
+        - event: Exited(indexed uint256,indexed address,uint256,uint256)
+          handler: handleEventExited
         - event: TicketFeesRefund(indexed uint256,address,uint256)
           handler: handleTicketRefund
       file: ./src/mapping.ts
@@ -190,69 +196,6 @@ dataSources:
         - event: Bought(indexed uint256,indexed address,uint256,address,uint256)
           handler: handleTicketBought
       file: ./src/mapping.ts
-
-  - kind: ethereum/contract
-    name: erc721Token
-    network: mumbai
-    source:
-      address: "0x8e3db4bf0cbfed015f56643b6030bdb2aa45a06f"
-      abi: erc721Token
-      startBlock: 28182428
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Erc721Token
-      abis:
-        - name: erc721Token
-          file: ./abis/erc721Token.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleErc721Transfer
-      file: ./src/mapping.ts
-  
-  - kind: ethereum/contract
-    name: RareGuys
-    network: mumbai
-    source:
-      address: "0x60f969dd2c310c65e13bb9c9fec75dc4f9144576"
-      abi: RareGuys
-      startBlock: 28182428
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/mapping.ts
-      entities:
-        - Erc721Token
-      abis:
-        - name: RareGuys
-          file: ./abis/RareGuys.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleRareGuysTransfer
-    
-  - kind: ethereum/contract
-    name: EarnWithRK
-    network: mumbai
-    source:
-      address: "0x11c3a46087b34870c23452e5a62326e324ec1360"
-      abi: EarnWithRK
-      startBlock: 28182428
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/mapping.ts
-      entities:
-        - Erc721Token
-      abis:
-        - name: EarnWithRK
-          file: ./abis/EarnWithRK.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleEarnWithRKTransfer
 
 
 templates:
