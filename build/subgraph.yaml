@@ -23,6 +23,8 @@ dataSources:
           handler: handleVenueAdded
         - event: VenueFeesUpdated(indexed uint256,uint256)
           handler: handleVenueFeesUpdated
+        - event: ActiveStatusUpdated(indexed uint256,bool)
+          handler: handleActiveStatusUpdated
       file: venue\venue.wasm
   - kind: ethereum/contract
     name: events
@@ -118,9 +120,9 @@ dataSources:
     name: history
     network: mumbai
     source:
-      address: "0x2395ae63aEF621513253B12AF7197d4c1DE864b1"
+      address: "0xE7654b400BB8622f24b80Ba79E8b70B0D5249d62"
       abi: history
-      startBlock: 28066131
+      startBlock: 32980016
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

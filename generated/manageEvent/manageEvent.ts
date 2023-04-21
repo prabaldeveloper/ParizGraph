@@ -1283,20 +1283,24 @@ export class UserExitEventCall__Inputs {
     this._call = call;
   }
 
-  get signature(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
+  get signature(): Array<Bytes> {
+    return this._call.inputValues[0].value.toBytesArray();
   }
 
-  get ticketHolder(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get ticketHolder(): Array<Address> {
+    return this._call.inputValues[1].value.toAddressArray();
   }
 
-  get eventTokenId(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+  get eventTokenId(): Array<BigInt> {
+    return this._call.inputValues[2].value.toBigIntArray();
   }
 
-  get ticketId(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+  get ticketId(): Array<BigInt> {
+    return this._call.inputValues[3].value.toBigIntArray();
+  }
+
+  get exitTime(): Array<BigInt> {
+    return this._call.inputValues[4].value.toBigIntArray();
   }
 }
 

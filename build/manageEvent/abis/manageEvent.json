@@ -916,24 +916,29 @@
   {
     "inputs": [
       {
-        "internalType": "bytes",
+        "internalType": "bytes[]",
         "name": "signature",
-        "type": "bytes"
+        "type": "bytes[]"
       },
       {
-        "internalType": "address",
+        "internalType": "address[]",
         "name": "ticketHolder",
-        "type": "address"
+        "type": "address[]"
       },
       {
-        "internalType": "uint256",
+        "internalType": "uint256[]",
         "name": "eventTokenId",
-        "type": "uint256"
+        "type": "uint256[]"
       },
       {
-        "internalType": "uint256",
+        "internalType": "uint256[]",
         "name": "ticketId",
-        "type": "uint256"
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "exitTime",
+        "type": "uint256[]"
       }
     ],
     "name": "userExitEvent",

@@ -194,6 +194,15 @@ export class VenueList extends Entity {
       this.set("timestamp", Value.fromBigInt(value as BigInt));
     }
   }
+
+  get isActive(): boolean {
+    let value = this.get("isActive");
+    return value.toBoolean();
+  }
+
+  set isActive(value: boolean) {
+    this.set("isActive", Value.fromBoolean(value));
+  }
 }
 
 export class VenueRental extends Entity {
@@ -1499,6 +1508,15 @@ export class BookedTime extends Entity {
     }
   }
 
+  get isActive(): boolean {
+    let value = this.get("isActive");
+    return value.toBoolean();
+  }
+
+  set isActive(value: boolean) {
+    this.set("isActive", Value.fromBoolean(value));
+  }
+
   get times(): Array<string | null> {
     let value = this.get("times");
     return value.toStringArray();
@@ -1849,20 +1867,20 @@ export class History extends Entity {
     }
   }
 
-  get data(): string | null {
+  get data(): Array<string> | null {
     let value = this.get("data");
     if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toString();
+      return value.toStringArray();
     }
   }
 
-  set data(value: string | null) {
+  set data(value: Array<string> | null) {
     if (value === null) {
       this.unset("data");
     } else {
-      this.set("data", Value.fromString(value as string));
+      this.set("data", Value.fromStringArray(value as Array<string>));
     }
   }
 

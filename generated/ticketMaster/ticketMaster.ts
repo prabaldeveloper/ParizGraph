@@ -1097,20 +1097,24 @@ export class BuyTicketCall__Inputs {
     this._call = call;
   }
 
-  get buyTicketId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get userAddress(): Array<Address> {
+    return this._call.inputValues[0].value.toAddressArray();
   }
 
-  get tokenAddress(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get buyTicketId(): Array<BigInt> {
+    return this._call.inputValues[1].value.toBigIntArray();
   }
 
-  get tokenAmount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+  get tokenAddress(): Array<Address> {
+    return this._call.inputValues[2].value.toAddressArray();
   }
 
-  get tokenType(): string {
-    return this._call.inputValues[3].value.toString();
+  get tokenAmount(): Array<BigInt> {
+    return this._call.inputValues[3].value.toBigIntArray();
+  }
+
+  get tokenType(): Array<string> {
+    return this._call.inputValues[4].value.toStringArray();
   }
 }
 
@@ -1203,6 +1207,10 @@ export class Init_deployCall__Inputs {
 
   get _time(): Array<BigInt> {
     return this._call.inputValues[4].value.toBigIntArray();
+  }
+
+  get _ticketMaster(): Address {
+    return this._call.inputValues[5].value.toAddress();
   }
 }
 

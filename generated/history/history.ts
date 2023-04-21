@@ -36,51 +36,192 @@ export class DataAdded__Params {
   }
 }
 
+export class Initialized extends ethereum.Event {
+  get params(): Initialized__Params {
+    return new Initialized__Params(this);
+  }
+}
+
+export class Initialized__Params {
+  _event: Initialized;
+
+  constructor(event: Initialized) {
+    this._event = event;
+  }
+
+  get version(): i32 {
+    return this._event.parameters[0].value.toI32();
+  }
+}
+
+export class OwnershipTransferred extends ethereum.Event {
+  get params(): OwnershipTransferred__Params {
+    return new OwnershipTransferred__Params(this);
+  }
+}
+
+export class OwnershipTransferred__Params {
+  _event: OwnershipTransferred;
+
+  constructor(event: OwnershipTransferred) {
+    this._event = event;
+  }
+
+  get previousOwner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newOwner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class history extends ethereum.SmartContract {
   static bind(address: Address): history {
     return new history("history", address);
   }
 
-  tokenIdToData(param0: BigInt): string {
+  getEventData(eventTokenId: BigInt): Array<string> {
     let result = super.call(
-      "tokenIdToData",
-      "tokenIdToData(uint256):(string)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
+      "getEventData",
+      "getEventData(uint256):(string[])",
+      [ethereum.Value.fromUnsignedBigInt(eventTokenId)]
     );
 
-    return result[0].toString();
+    return result[0].toStringArray();
   }
 
-  try_tokenIdToData(param0: BigInt): ethereum.CallResult<string> {
+  try_getEventData(eventTokenId: BigInt): ethereum.CallResult<Array<string>> {
     let result = super.tryCall(
-      "tokenIdToData",
-      "tokenIdToData(uint256):(string)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
+      "getEventData",
+      "getEventData(uint256):(string[])",
+      [ethereum.Value.fromUnsignedBigInt(eventTokenId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toString());
+    return ethereum.CallResult.fromValue(value[0].toStringArray());
   }
 
-  userData(param0: Address): string {
-    let result = super.call("userData", "userData(address):(string)", [
-      ethereum.Value.fromAddress(param0)
-    ]);
+  getMessageHash(
+    userAddress: Address,
+    eventTokenId: BigInt,
+    data: string
+  ): Bytes {
+    let result = super.call(
+      "getMessageHash",
+      "getMessageHash(address,uint256,string):(bytes32)",
+      [
+        ethereum.Value.fromAddress(userAddress),
+        ethereum.Value.fromUnsignedBigInt(eventTokenId),
+        ethereum.Value.fromString(data)
+      ]
+    );
 
-    return result[0].toString();
+    return result[0].toBytes();
   }
 
-  try_userData(param0: Address): ethereum.CallResult<string> {
-    let result = super.tryCall("userData", "userData(address):(string)", [
-      ethereum.Value.fromAddress(param0)
-    ]);
+  try_getMessageHash(
+    userAddress: Address,
+    eventTokenId: BigInt,
+    data: string
+  ): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "getMessageHash",
+      "getMessageHash(address,uint256,string):(bytes32)",
+      [
+        ethereum.Value.fromAddress(userAddress),
+        ethereum.Value.fromUnsignedBigInt(eventTokenId),
+        ethereum.Value.fromString(data)
+      ]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toString());
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  getUserData(userAddress: Address): Array<string> {
+    let result = super.call("getUserData", "getUserData(address):(string[])", [
+      ethereum.Value.fromAddress(userAddress)
+    ]);
+
+    return result[0].toStringArray();
+  }
+
+  try_getUserData(userAddress: Address): ethereum.CallResult<Array<string>> {
+    let result = super.tryCall(
+      "getUserData",
+      "getUserData(address):(string[])",
+      [ethereum.Value.fromAddress(userAddress)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toStringArray());
+  }
+
+  owner(): Address {
+    let result = super.call("owner", "owner():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_owner(): ethereum.CallResult<Address> {
+    let result = super.tryCall("owner", "owner():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  recoverSigner(hash: Bytes, signature: Bytes): Address {
+    let result = super.call(
+      "recoverSigner",
+      "recoverSigner(bytes32,bytes):(address)",
+      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromBytes(signature)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_recoverSigner(
+    hash: Bytes,
+    signature: Bytes
+  ): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "recoverSigner",
+      "recoverSigner(bytes32,bytes):(address)",
+      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromBytes(signature)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  signerAddress(): Address {
+    let result = super.call("signerAddress", "signerAddress():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_signerAddress(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "signerAddress",
+      "signerAddress():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 }
 
@@ -101,16 +242,20 @@ export class AddDataCall__Inputs {
     this._call = call;
   }
 
-  get userAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get signature(): Array<Bytes> {
+    return this._call.inputValues[0].value.toBytesArray();
   }
 
-  get eventTokenId(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get userAddress(): Array<Address> {
+    return this._call.inputValues[1].value.toAddressArray();
   }
 
-  get data(): string {
-    return this._call.inputValues[2].value.toString();
+  get eventTokenId(): Array<BigInt> {
+    return this._call.inputValues[2].value.toBigIntArray();
+  }
+
+  get data(): Array<string> {
+    return this._call.inputValues[3].value.toStringArray();
   }
 }
 
@@ -118,6 +263,92 @@ export class AddDataCall__Outputs {
   _call: AddDataCall;
 
   constructor(call: AddDataCall) {
+    this._call = call;
+  }
+}
+
+export class AddSignerCall extends ethereum.Call {
+  get inputs(): AddSignerCall__Inputs {
+    return new AddSignerCall__Inputs(this);
+  }
+
+  get outputs(): AddSignerCall__Outputs {
+    return new AddSignerCall__Outputs(this);
+  }
+}
+
+export class AddSignerCall__Inputs {
+  _call: AddSignerCall;
+
+  constructor(call: AddSignerCall) {
+    this._call = call;
+  }
+
+  get _signerAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class AddSignerCall__Outputs {
+  _call: AddSignerCall;
+
+  constructor(call: AddSignerCall) {
+    this._call = call;
+  }
+}
+
+export class InitializeCall extends ethereum.Call {
+  get inputs(): InitializeCall__Inputs {
+    return new InitializeCall__Inputs(this);
+  }
+
+  get outputs(): InitializeCall__Outputs {
+    return new InitializeCall__Outputs(this);
+  }
+}
+
+export class InitializeCall__Inputs {
+  _call: InitializeCall;
+
+  constructor(call: InitializeCall) {
+    this._call = call;
+  }
+}
+
+export class InitializeCall__Outputs {
+  _call: InitializeCall;
+
+  constructor(call: InitializeCall) {
+    this._call = call;
+  }
+}
+
+export class TransferOwnershipCall extends ethereum.Call {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
     this._call = call;
   }
 }

@@ -9,6 +9,7 @@ type VenueList @entity {
   tokenCID: String
   transactionHash: String
   timestamp: BigInt
+  isActive: Boolean
 }
 
 type VenueRental @entity {
@@ -115,6 +116,7 @@ type BookedTime @entity {
   tokenCID: String
   transactionHash: String
   timestamp: BigInt
+  isActive: Boolean
   times: [EventTime]!
 }
 
@@ -144,7 +146,7 @@ type Agenda @entity {
 type History @entity {
   id: ID!
   eventTokenId: BigInt
-  data: String
+  data: [String!]
   userAddress: Bytes
 }
 
