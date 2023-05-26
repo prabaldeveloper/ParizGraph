@@ -309,6 +309,23 @@ export class EventList extends Entity {
     }
   }
 
+  get venueVersion(): string | null {
+    let value = this.get("venueVersion");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set venueVersion(value: string | null) {
+    if (value === null) {
+      this.unset("venueVersion");
+    } else {
+      this.set("venueVersion", Value.fromString(value as string));
+    }
+  }
+
   get eventName(): string | null {
     let value = this.get("eventName");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -994,6 +1011,23 @@ export class Erc20TokenEvent extends Entity {
       this.unset("tokenAddress");
     } else {
       this.set("tokenAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get eventTokenId(): BigInt | null {
+    let value = this.get("eventTokenId");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set eventTokenId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("eventTokenId");
+    } else {
+      this.set("eventTokenId", Value.fromBigInt(value as BigInt));
     }
   }
 
@@ -2007,6 +2041,32 @@ export class Join extends Entity {
 
   set isJoined(value: boolean) {
     this.set("isJoined", Value.fromBoolean(value));
+  }
+
+  get exitTime(): BigInt | null {
+    let value = this.get("exitTime");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set exitTime(value: BigInt | null) {
+    if (value === null) {
+      this.unset("exitTime");
+    } else {
+      this.set("exitTime", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get isExit(): boolean {
+    let value = this.get("isExit");
+    return value.toBoolean();
+  }
+
+  set isExit(value: boolean) {
+    this.set("isExit", Value.fromBoolean(value));
   }
 }
 

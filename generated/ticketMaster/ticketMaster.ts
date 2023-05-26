@@ -1116,6 +1116,10 @@ export class BuyTicketCall__Inputs {
   get tokenType(): Array<string> {
     return this._call.inputValues[4].value.toStringArray();
   }
+
+  get ticketTime(): Array<BigInt> {
+    return this._call.inputValues[5].value.toBigIntArray();
+  }
 }
 
 export class BuyTicketCall__Outputs {

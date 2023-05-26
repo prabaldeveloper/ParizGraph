@@ -2,7 +2,8 @@ import { Address, BigInt, Bytes, DataSourceTemplate } from "@graphprotocol/graph
 import {
   VenueAdded,
   VenueFeesUpdated,
-  ActiveStatusUpdated
+  ActiveStatusUpdated,
+  VenueVersionUpdated
 } from "../generated/Venue/Venue";
 
 import {
@@ -11,9 +12,10 @@ import {
   conversion as conversionContractAddress
 } from "../generated/conversion/conversion";
 
-import { VenueList, EventList, WhiteList, Erc20TokenEvent, Favourite, 
+import { VenueList, EventList, WhiteList, Favourite, 
   BookedTime, VenueRental, PlatformFee, IsEventPublic, BaseToken, History, Agenda,
-  Join, TicketBought, TicketBalance, EventTime, TicketRefund, VenueRefund, EventId, Erc721EventToken, Erc721UserToken, isTokenUsed, Exit } from "../generated/schema";
+  Join, TicketBought, TicketBalance, EventTime, TicketRefund, VenueRefund, EventId,
+  Erc20TokenEvent, Erc721EventToken, Erc721UserToken, isTokenUsed, Exit } from "../generated/schema";
 
 import {
   events as EventsContract,
@@ -30,8 +32,10 @@ import {
 import {
   admin as adminContract,
   WhiteList as WhiteListEvent,
-  Erc20TokenUpdated as Erc20TokenUpdatedEvent,
-  Erc721TokenUpdated as Erc721TokenUpdatedEvent,
+  Erc20TokenUpdated as Erc20TokenUpdatedMaster,
+  Erc721TokenUpdated as Erc721TokenUpdatedMaster,
+  // Erc20TokenUpdatedEvent as Erc20TokenUpdatedEvent,
+  // Erc721TokenUpdatedEvent as Erc721TokenUpdatedEvent,
   PlatformFeeUpdated as PlatformFeeUpdated,
   EventStatusUpdated,
   VenueRentalCommissionUpdated,
@@ -96,6 +100,7 @@ export function handleEventAdded(event: EventAdded): void {
       token.participantsList = [null];
       token.ticketBoughtList = [null];
       token.ticketBalance = [null];
+      token.venueVersion = "1.0";
       
       // let conversionContract = conversionContractAddress.bind(contract.getConversionContract());
       // token.conversionAddress = contract.getConversionContract();
@@ -307,17 +312,16 @@ export function handleWhiteList(event: WhiteListEvent): void {
   token.save();
 }
 
-export function handleErc20TokenUpdatedEvent(event: Erc20TokenUpdatedEvent): void {
-  let tokenDetail = Erc20TokenEvent.load(event.params.tokenAddress.toString());
+export function handleErc20TokenUpdatedMaster(event: Erc20TokenUpdatedMaster): void {
+  let tokenDetail = Erc20TokenEvent.load(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
   if(!tokenDetail) {
-    tokenDetail = new Erc20TokenEvent(event.params.tokenAddress.toString());
+    tokenDetail = new Erc20TokenEvent(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
     tokenDetail.tokenAddress = event.params.tokenAddress;
     tokenDetail.status = event.params.status;
-    // let admincontract = adminContract.bind(event.address);
-    // let value = admincontract.getTokenDetails(event.params.tokenAddress, "ERC20");
     tokenDetail.tokenName = event.params.name;
     tokenDetail.tokenSymbol = event.params.symbol;
     tokenDetail.tokenDecimal = event.params.decimal;
+    tokenDetail.eventTokenId = event.params.eventTokenId;
   }
   else {
     tokenDetail.status = event.params.status;
@@ -326,19 +330,17 @@ export function handleErc20TokenUpdatedEvent(event: Erc20TokenUpdatedEvent): voi
   tokenDetail.save();
 }
 
-export function handleErc721TokenUpdatedEvent(event: Erc721TokenUpdatedEvent): void {
+export function handleErc721TokenUpdatedMaster(event: Erc721TokenUpdatedMaster): void {
   let tokenDetail = Erc721EventToken.load(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
   if(!tokenDetail) {
     tokenDetail = new Erc721EventToken(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
     tokenDetail.tokenAddress = event.params.tokenAddress;
     tokenDetail.status = event.params.status;
     tokenDetail.freePass = event.params.freePassStatus;
-    tokenDetail.eventTokenId = event.params.eventTokenId;
-    let admincontract = adminContract.bind(event.address);
-    // let value = admincontract.getTokenDetails(event.params.tokenAddress, "ERC721");
     tokenDetail.tokenName = event.params.name;
     tokenDetail.tokenSymbol = event.params.symbol;
     tokenDetail.tokenDecimal = event.params.decimal.toString();
+    tokenDetail.eventTokenId = event.params.eventTokenId;
 
   }
   else {
@@ -360,6 +362,44 @@ export function handleErc721TokenUpdatedEvent(event: Erc721TokenUpdatedEvent): v
   tokenDetail.save();
 }
 
+// export function handleErc20TokenUpdatedEvent(event: Erc20TokenUpdatedEvent): void {
+//   let tokenDetail = Erc20TokenEvent.load(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
+//   if(!tokenDetail) {
+//     tokenDetail = new Erc20TokenEvent(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
+//     tokenDetail.tokenAddress = event.params.tokenAddress;
+//     tokenDetail.status = event.params.status;
+//     tokenDetail.tokenName = event.params.name;
+//     tokenDetail.tokenSymbol = event.params.symbol;
+//     tokenDetail.tokenDecimal = event.params.decimal;
+//     tokenDetail.eventTokenId = event.params.eventTokenId;
+//   }
+//   else {
+//     tokenDetail.status = event.params.status;
+//     tokenDetail.tokenAddress = event.params.tokenAddress;
+//   }
+//   tokenDetail.save();
+// }
+
+// export function handleErc721TokenUpdatedEvent(event: Erc721TokenUpdatedEvent): void {
+//   let tokenDetail = Erc721TokenEvent.load(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
+//   if(!tokenDetail) {
+//     tokenDetail = new Erc721TokenEvent(event.params.tokenAddress.toString() + event.params.eventTokenId.toString());
+//     tokenDetail.tokenAddress = event.params.tokenAddress;
+//     tokenDetail.status = event.params.status;
+//     tokenDetail.freePass = event.params.freePassStatus;
+//     tokenDetail.tokenName = event.params.name;
+//     tokenDetail.tokenSymbol = event.params.symbol;
+//     tokenDetail.tokenDecimal = event.params.decimal.toString();
+//     tokenDetail.eventTokenId = event.params.eventTokenId;
+
+//   }
+//   else {
+//     tokenDetail.status = event.params.status;
+//     tokenDetail.freePass = event.params.freePassStatus;
+//   }  
+//   tokenDetail.save();
+// }
+
 export function handlePlatformFee(event: PlatformFeeUpdated): void {
   let token = PlatformFee.load(event.params.platformFeePercent.toString());
   if(!token){
@@ -371,7 +411,6 @@ export function handlePlatformFee(event: PlatformFeeUpdated): void {
   }
   token.save();
 }
-
 
 export function handleEventStatus(event: EventStatusUpdated): void {
   let token = IsEventPublic.load(event.address.toString());
@@ -609,6 +648,13 @@ export function handleDataAdded(event: DataAdded): void {
   token.save();
 }
 
+export function handleVenueVersionUpdated(event: VenueVersionUpdated): void {
+  let token = EventList.load(event.params.eventTokenId.toString());
+  if(token) {
+    token.venueVersion = event.params.venueVersion;
+    token.save();
+  }
+}
 /******************************* Manage Event Functions  *******************************************/
 
 export function handleAgendaAdded(event: AgendaAdded): void {

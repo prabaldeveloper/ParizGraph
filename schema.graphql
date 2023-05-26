@@ -21,6 +21,7 @@ type EventList @entity {
   id: ID!
   eventTokenId: BigInt
   venueTokenId: BigInt
+  venueVersion: String
   eventName: String
   eventCategory: String
   eventDescription: String
@@ -75,9 +76,11 @@ type WhiteList @entity {
   status: Boolean
 }
 
+"returns erc20 tokens at master level and event level "
 type Erc20TokenEvent @entity {
   id: ID!
   tokenAddress: Bytes
+  eventTokenId: BigInt
   status: Boolean
   tokenName: String
   tokenSymbol: String
@@ -94,6 +97,28 @@ type Erc721EventToken @entity{
   status: Boolean
   freePass: BigInt
 }
+
+# type Erc20TokenEvent @entity {
+#   id: ID!
+#   tokenAddress: Bytes
+#   tokenName: String
+#   eventTokenId: BigInt
+#   tokenSymbol: String
+#   tokenDecimal: BigInt
+#   status: Boolean
+# }
+
+# type Erc721TokenEvent @entity{
+#   id: ID!
+#   tokenAddress: Bytes
+#   eventTokenId: BigInt
+#   tokenName: String
+#   tokenSymbol: String
+#   tokenDecimal: String
+#   status: Boolean
+#   freePass: BigInt
+# }
+
 
 type Favourite @entity {
   id: ID!
@@ -157,6 +182,8 @@ type Join @entity {
   joinTime: BigInt
   ticketId: BigInt
   isJoined: Boolean
+  exitTime: BigInt
+  isExit: Boolean
 }
 
 type Exit @entity {

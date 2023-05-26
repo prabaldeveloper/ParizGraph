@@ -80,11 +80,11 @@ dataSources:
       eventHandlers:
         - event: WhiteList(address,bool)
           handler: handleWhiteList
-        - event: Erc20TokenUpdated(indexed address,bool,string,string,uint256)
-          handler: handleErc20TokenUpdatedEvent
+        - event: Erc20TokenUpdated(indexed uint256,indexed address,bool,string,string,uint256)
+          handler: handleErc20TokenUpdatedMaster
         - event: Erc721TokenUpdated(indexed uint256,indexed
             address,bool,uint256,string,string,uint256)
-          handler: handleErc721TokenUpdatedEvent
+          handler: handleErc721TokenUpdatedMaster
         - event: PlatformFeeUpdated(uint256)
           handler: handlePlatformFee
         - event: EventStatusUpdated(bool)
@@ -120,9 +120,9 @@ dataSources:
     name: history
     network: mumbai
     source:
-      address: "0xE7654b400BB8622f24b80Ba79E8b70B0D5249d62"
+      address: "0x9739990261bF5BA72be02D72c447022Cd6DCE324"
       abi: history
-      startBlock: 32980016
+      startBlock: 34354683
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

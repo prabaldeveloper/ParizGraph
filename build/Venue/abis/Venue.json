@@ -321,7 +321,7 @@
       },
       {
         "internalType": "bool",
-        "name": "_active",
+        "name": "_status",
         "type": "bool"
       }
     ],
@@ -374,6 +374,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "adminContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -418,6 +431,30 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_venueTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_venueOwner",
+        "type": "address"
+      }
+    ],
+    "name": "claimVenueFeesInternal",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -707,6 +744,40 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "eventOrganiser",
+        "type": "address"
+      }
+    ],
+    "name": "refundVenueFeesInternal",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "from",
         "type": "address"
@@ -875,6 +946,19 @@
       }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_adminContract",
+        "type": "address"
+      }
+    ],
+    "name": "updateAdminContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

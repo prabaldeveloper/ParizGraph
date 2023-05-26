@@ -314,6 +314,11 @@
         "internalType": "string[]",
         "name": "tokenType",
         "type": "string[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "ticketTime",
+        "type": "uint256[]"
       }
     ],
     "name": "buyTicket",

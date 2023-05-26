@@ -104,45 +104,6 @@ export class history extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toStringArray());
   }
 
-  getMessageHash(
-    userAddress: Address,
-    eventTokenId: BigInt,
-    data: string
-  ): Bytes {
-    let result = super.call(
-      "getMessageHash",
-      "getMessageHash(address,uint256,string):(bytes32)",
-      [
-        ethereum.Value.fromAddress(userAddress),
-        ethereum.Value.fromUnsignedBigInt(eventTokenId),
-        ethereum.Value.fromString(data)
-      ]
-    );
-
-    return result[0].toBytes();
-  }
-
-  try_getMessageHash(
-    userAddress: Address,
-    eventTokenId: BigInt,
-    data: string
-  ): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "getMessageHash",
-      "getMessageHash(address,uint256,string):(bytes32)",
-      [
-        ethereum.Value.fromAddress(userAddress),
-        ethereum.Value.fromUnsignedBigInt(eventTokenId),
-        ethereum.Value.fromString(data)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
   getUserData(userAddress: Address): Array<string> {
     let result = super.call("getUserData", "getUserData(address):(string[])", [
       ethereum.Value.fromAddress(userAddress)
@@ -172,32 +133,6 @@ export class history extends ethereum.SmartContract {
 
   try_owner(): ethereum.CallResult<Address> {
     let result = super.tryCall("owner", "owner():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
-  recoverSigner(hash: Bytes, signature: Bytes): Address {
-    let result = super.call(
-      "recoverSigner",
-      "recoverSigner(bytes32,bytes):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromBytes(signature)]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_recoverSigner(
-    hash: Bytes,
-    signature: Bytes
-  ): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "recoverSigner",
-      "recoverSigner(bytes32,bytes):(address)",
-      [ethereum.Value.fromFixedBytes(hash), ethereum.Value.fromBytes(signature)]
-    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -242,20 +177,16 @@ export class AddDataCall__Inputs {
     this._call = call;
   }
 
-  get signature(): Array<Bytes> {
-    return this._call.inputValues[0].value.toBytesArray();
-  }
-
   get userAddress(): Array<Address> {
-    return this._call.inputValues[1].value.toAddressArray();
+    return this._call.inputValues[0].value.toAddressArray();
   }
 
   get eventTokenId(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
+    return this._call.inputValues[1].value.toBigIntArray();
   }
 
   get data(): Array<string> {
-    return this._call.inputValues[3].value.toStringArray();
+    return this._call.inputValues[2].value.toStringArray();
   }
 }
 

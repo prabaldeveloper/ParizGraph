@@ -59,11 +59,6 @@
   {
     "inputs": [
       {
-        "internalType": "bytes[]",
-        "name": "signature",
-        "type": "bytes[]"
-      },
-      {
         "internalType": "address[]",
         "name": "userAddress",
         "type": "address[]"
@@ -122,35 +117,6 @@
         "internalType": "address",
         "name": "userAddress",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "eventTokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "data",
-        "type": "string"
-      }
-    ],
-    "name": "getMessageHash",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "userAddress",
-        "type": "address"
       }
     ],
     "name": "getUserData",
@@ -182,30 +148,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "hash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes",
-        "name": "signature",
-        "type": "bytes"
-      }
-    ],
-    "name": "recoverSigner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "pure",
     "type": "function"
   },
   {
