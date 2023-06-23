@@ -27,6 +27,8 @@ dataSources:
           handler: handleActiveStatusUpdated
         - event: VenueVersionUpdated(uint256,uint256,string)
           handler: handleVenueVersionUpdated
+        - event: VenueOwnerUpdated(indexed uint256,address)
+          handler: handleVenueOwnerUpdated
       file: ./src/mapping.ts
       
   - kind: ethereum/contract
@@ -95,6 +97,8 @@ dataSources:
           handler: handleRentalCommission
         - event: BaseTokenUpdated(indexed address,string,string,uint256)
           handler: handleBaseTokenUpdated
+        - event: TicketCommissionUpdated(uint256)
+          handler: handleTicketCommissionUpdated
       file: ./src/mapping.ts
 
   - kind: ethereum/contract

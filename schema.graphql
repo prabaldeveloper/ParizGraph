@@ -10,6 +10,7 @@ type VenueList @entity {
   transactionHash: String
   timestamp: BigInt
   isActive: Boolean
+  venueOwner: Bytes
 }
 
 type VenueRental @entity {
@@ -254,4 +255,60 @@ type isTokenUsed @entity {
   nftContractAddress: Bytes
   tokenID: BigInt
   isUsed: Boolean
+}
+
+
+
+type eventStat @entity {
+  id: ID!
+  eventTokenId: BigInt
+  eventEndTime: BigInt
+  likeCount: BigInt
+  ticketCount: BigInt
+  joinedCount: BigInt
+  liveUsersCount: BigInt
+  oneTicketPrice: BigInt
+}
+
+type likeCount @entity {
+  id: ID!
+  eventTokenId: BigInt
+  likeCounts: BigInt
+}
+
+type ticketCount @entity {
+  id: ID!
+  eventTokenId: BigInt
+  ticketCount: BigInt
+}
+
+
+type joinCount @entity {
+  id: ID!
+  eventTokenId: BigInt
+  joinedCount: BigInt
+  liveUsersCount: BigInt  
+}
+
+type eventActivity @entity {
+  id: ID!
+  userAddress: Bytes 
+  uniqueUserCount: BigInt
+  liveUsersCount: BigInt
+  eventTokenId: BigInt
+  eventEndTime: BigInt
+  joinTime: BigInt
+  exitTime: BigInt
+}
+
+type uniqueUserExit @entity {
+  id: ID!
+  uniqueUserAddress: Bytes 
+  eventTokenId: BigInt
+}
+
+
+type ticketCommission @entity {
+  id: ID!
+  ticketCommissionPercent: BigInt
 }

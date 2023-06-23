@@ -1254,6 +1254,39 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "eventTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address[]",
+        "name": "tokenAddress",
+        "type": "address[]"
+      },
+      {
+        "internalType": "bool[]",
+        "name": "status",
+        "type": "bool[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "tokenType",
+        "type": "string[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "freePassStatus",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "updateWhitelistToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -1291,29 +1324,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "eventTokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
-      }
-    ],
-    "name": "whitelistErc20TokenAddressEvent",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "tokenAddress",
         "type": "address"
@@ -1342,22 +1352,22 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
+        "internalType": "address[]",
         "name": "tokenAddress",
-        "type": "address"
+        "type": "address[]"
       },
       {
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
+        "internalType": "string[]",
+        "name": "tokenType",
+        "type": "string[]"
       },
       {
-        "internalType": "uint256",
+        "internalType": "uint256[]",
         "name": "freePassStatus",
-        "type": "uint256"
+        "type": "uint256[]"
       }
     ],
-    "name": "whitelistErc721TokenAddressEvent",
+    "name": "whitelistToken",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

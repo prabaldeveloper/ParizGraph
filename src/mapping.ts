@@ -3,7 +3,8 @@ import {
   VenueAdded,
   VenueFeesUpdated,
   ActiveStatusUpdated,
-  VenueVersionUpdated
+  VenueVersionUpdated,
+  VenueOwnerUpdated
 } from "../generated/Venue/Venue";
 
 import {
@@ -15,7 +16,8 @@ import {
 import { VenueList, EventList, WhiteList, Favourite, 
   BookedTime, VenueRental, PlatformFee, IsEventPublic, BaseToken, History, Agenda,
   Join, TicketBought, TicketBalance, EventTime, TicketRefund, VenueRefund, EventId,
-  Erc20TokenEvent, Erc721EventToken, Erc721UserToken, isTokenUsed, Exit } from "../generated/schema";
+  Erc20TokenEvent, Erc721EventToken, Erc721UserToken, isTokenUsed, Exit, eventStat, 
+  likeCount, ticketCount, joinCount, eventActivity, uniqueUserExit, ticketCommission } from "../generated/schema";
 
 import {
   events as EventsContract,
@@ -34,12 +36,11 @@ import {
   WhiteList as WhiteListEvent,
   Erc20TokenUpdated as Erc20TokenUpdatedMaster,
   Erc721TokenUpdated as Erc721TokenUpdatedMaster,
-  // Erc20TokenUpdatedEvent as Erc20TokenUpdatedEvent,
-  // Erc721TokenUpdatedEvent as Erc721TokenUpdatedEvent,
   PlatformFeeUpdated as PlatformFeeUpdated,
   EventStatusUpdated,
   VenueRentalCommissionUpdated,
-  BaseTokenUpdated
+  BaseTokenUpdated,
+  TicketCommissionUpdated as TicketCommissionUpdated
 } from "../generated/admin/admin";
 
 import {
@@ -196,7 +197,27 @@ export function handleEventAdded(event: EventAdded): void {
         tokenValues.eventId = event.params.tokenId;
       }
       tokenValues.save();
-    }
+  }
+
+    // For eventStat
+    let entity = eventStat.load(event.params.tokenId.toString());
+    if (!entity) {
+        entity = new eventStat(event.params.tokenId.toString());
+        entity.oneTicketPrice = event.params.ticketPrice;
+        entity.eventTokenId = event.params.tokenId;
+        let contract = EventsContract.bind(event.address);
+        let value = contract.getInfo(event.params.tokenId);
+        entity.eventEndTime = value.value5;
+        entity.save();
+      }
+      else {
+        entity.oneTicketPrice = event.params.ticketPrice;
+        entity.eventTokenId = event.params.tokenId;
+        let contract = EventsContract.bind(event.address);
+        let value = contract.getInfo(event.params.tokenId);
+        entity.eventEndTime = value.value5;
+        entity.save();
+      }
 }
 
 export function handleTimeUpdated(event: EventUpdated): void {
@@ -222,6 +243,13 @@ export function handleTimeUpdated(event: EventUpdated): void {
   tokenTime.save();
   tokenValue.save();
   token.save();
+
+  //For eventStat
+  let entity = eventStat.load(event.params.tokenId.toString());
+  if(entity) {
+    entity.eventEndTime = event.params.endTime;;
+    entity.save();
+  } 
 }
 
 export function handleFeatured(event: FeaturedEvent): void {
@@ -245,6 +273,37 @@ export function handleFavourite(event: FavouriteEvent): void {
     token.isFavourite = event.params.isFavourite;
   }
   token.save();
+
+  //for getting the total like count
+
+  let entity = likeCount.load(event.params.tokenId.toString());
+  if(!entity) {
+    entity = new likeCount(event.params.tokenId.toString());
+    entity.eventTokenId = event.params.tokenId;
+    entity.likeCounts = BigInt.fromI32(1);
+  }
+  else {
+    if(entity.likeCounts == null) {
+      entity.likeCounts = BigInt.fromI32(1);
+    }
+    if(event.params.isFavourite == true) {
+      entity.likeCounts = entity.likeCounts.plus(BigInt.fromI32(1));
+    }
+    else {
+      entity.likeCounts = entity.likeCounts.minus(BigInt.fromI32(1));
+    }
+  }
+  entity.save();
+  let eventDetails = eventStat.load(event.params.tokenId.toString());
+  if(!eventDetails) {
+    eventDetails = new eventStat(event.params.tokenId.toString());
+    eventDetails.likeCount = entity.likeCounts;
+    eventDetails.eventTokenId = entity.eventTokenId;
+  }
+  else {
+    eventDetails.likeCount = entity.likeCounts;
+  }
+  eventDetails.save();
 }
 
 export function handleEventPaid(event: EventPaid): void {
@@ -293,6 +352,50 @@ export function handleJoined(event: Joined): void {
   }
   token.save();
   tokenValue.save();
+
+  //for getting the total joined count
+  // For getting unique users in event
+  let entity = joinCount.load(event.params.tokenId.toString());
+  let uniqueUsers = eventActivity.load(event.params.tokenId.toString() + event.params.user.toString());
+  if(!uniqueUsers) {
+    uniqueUsers = new eventActivity(event.params.tokenId.toString() + event.params.user.toString());
+    uniqueUsers.userAddress = event.params.user;
+    uniqueUsers.uniqueUserCount = BigInt.fromI32(1);
+    uniqueUsers.liveUsersCount = BigInt.fromI32(1);
+    uniqueUsers.eventTokenId = event.params.tokenId;
+    uniqueUsers.joinTime = event.params.joiningTime;
+    
+    if(!entity) {
+      entity = new joinCount(event.params.tokenId.toString());
+      entity.eventTokenId = event.params.tokenId;
+      entity.joinedCount = BigInt.fromI32(1);
+      entity.liveUsersCount = BigInt.fromI32(1);
+    }
+    else {
+      if(entity.joinedCount == null || entity.liveUsersCount == null) {
+        entity.joinedCount = BigInt.fromI32(1);
+        entity.liveUsersCount = BigInt.fromI32(1);
+      }
+      entity.joinedCount = entity.joinedCount.plus(BigInt.fromI32(1));
+      entity.liveUsersCount = entity.liveUsersCount.plus(BigInt.fromI32(1));
+      entity.eventTokenId = event.params.tokenId;
+    }
+    entity.save();
+    let eventDetails = eventStat.load(event.params.tokenId.toString()); 
+    if(!eventDetails) {
+      eventDetails = new eventStat(event.params.tokenId.toString());
+      eventDetails.joinedCount = entity.joinedCount;
+      eventDetails.liveUsersCount = entity.liveUsersCount;
+    }
+    else {
+      eventDetails.joinedCount = entity.joinedCount;
+      eventDetails.liveUsersCount = entity.liveUsersCount;
+    }
+    uniqueUsers.eventEndTime = eventDetails.eventEndTime;
+    uniqueUsers.save();
+    eventDetails.save();
+    
+  }
 }
 
 /******************************************************* Admin Functions **********************************************************/
@@ -485,6 +588,7 @@ export function handleVenueAdded(event: VenueAdded): void {
     entity.transactionHash = event.transaction.hash.toHex();
     entity.timestamp = event.block.timestamp;
     entity.isActive = true;
+    entity.venueOwner = event.params.owner;
     let token = BookedTime.load(event.params.tokenId.toString());
     if(!token) {
       token = new BookedTime(event.params.tokenId.toString());
@@ -655,6 +759,16 @@ export function handleVenueVersionUpdated(event: VenueVersionUpdated): void {
     token.save();
   }
 }
+
+export function handleVenueOwnerUpdated(event: VenueOwnerUpdated): void {
+  let token = VenueList.load(event.params.tokenId.toHex());
+  if(token) {
+    token.venueOwner = event.params.owner;
+    token.save();
+  }
+}
+
+
 /******************************* Manage Event Functions  *******************************************/
 
 export function handleAgendaAdded(event: AgendaAdded): void {
@@ -733,6 +847,52 @@ export function handleEventExited(event: Exited): void {
   if(token) {
     token.isJoined = false;
     token.save();
+  }
+  //for getting the live users count
+  let uniqueUsers = uniqueUserExit.load(event.params.tokenId.toString() + event.params.user.toString());
+  let entity = joinCount.load(event.params.tokenId.toString());
+  if(!uniqueUsers) {
+    uniqueUsers = new uniqueUserExit(event.params.tokenId.toString() + event.params.user.toString());
+    uniqueUsers.uniqueUserAddress = event.params.user;
+    uniqueUsers.eventTokenId = event.params.tokenId;
+    uniqueUsers.save();
+    if(!entity) {
+      entity = new joinCount(event.params.tokenId.toString());
+      entity.eventTokenId = event.params.tokenId;
+      entity.joinedCount = BigInt.fromI32(1);
+      entity.liveUsersCount = BigInt.fromI32(0);
+    }
+    else {
+      if(entity.liveUsersCount >= BigInt.fromI32(1)) {
+        entity.liveUsersCount = entity.liveUsersCount.minus(BigInt.fromI32(1));
+      }
+    }
+    entity.save();
+  //   //save in eventDetails
+    let eventDetails = eventStat.load(event.params.tokenId.toString()); 
+    if(!eventDetails) {
+      eventDetails = new eventStat(event.params.tokenId.toString());
+      eventDetails.liveUsersCount = entity.liveUsersCount;
+    }
+    else {
+      eventDetails.liveUsersCount = entity.liveUsersCount;
+    }
+    eventDetails.save();
+  
+  }
+
+  let unique = eventActivity.load(event.params.tokenId.toString() + event.params.user.toString());
+  if(unique) {
+  //   // if(unique.exitTime.length == 0 ) {
+  //   //   let exitingTime = unique.exitTime;
+  //   //   unique.exitTime = exitingTime.concat([event.params.leavingTime]);
+  //   // }
+  //   // else {
+  //   //   let exitingTime = unique.exitTime;
+  //   //   unique.exitTime = exitingTime.concat([event.params.leavingTime]);
+  //   // }
+    unique.exitTime = event.params.leavingTime;
+    unique.save();
   }
   
 }
@@ -814,6 +974,32 @@ export function handleTicketBought(event: Bought): void {
   tokenValues2.save();
   tokenValue.save();
   token.save();
+
+  //for getting the total ticket sold
+  let entity = ticketCount.load(event.params.tokenId.toString());
+  if(!entity) {
+    entity = new ticketCount(event.params.tokenId.toString());
+    entity.eventTokenId = event.params.tokenId;
+    entity.ticketCount = BigInt.fromI32(1);
+  }
+  else {
+    if(entity.ticketCount == null) {
+      entity.ticketCount = BigInt.fromI32(1);
+    }
+    entity.ticketCount = entity.ticketCount.plus(BigInt.fromI32(1));
+    entity.eventTokenId = event.params.tokenId;
+  }
+  let eventDetails = eventStat.load(event.params.tokenId.toString());
+  if(!eventDetails) {
+    eventDetails = new eventStat(event.params.tokenId.toString());
+    eventDetails.ticketCount = entity.ticketCount;
+    eventDetails.eventTokenId = entity.eventTokenId;
+  }
+  else {
+    eventDetails.ticketCount = entity.ticketCount;
+  }
+  entity.save();
+  eventDetails.save();
 
 }
 
@@ -918,3 +1104,15 @@ export function handleTicketTransfer(event: TransferTicket): void {
 //   }
 //   token.save();
 // }
+
+export function handleTicketCommissionUpdated(event: TicketCommissionUpdated): void {
+  let ticketFee = ticketCommission.load(event.params.ticketCommissionPercent.toString());
+  if(!ticketFee) {
+    ticketFee = new ticketCommission(event.params.ticketCommissionPercent.toString());
+    ticketFee.ticketCommissionPercent = event.params.ticketCommissionPercent;
+  }
+  else {
+    ticketFee.ticketCommissionPercent = event.params.ticketCommissionPercent;
+  }
+  ticketFee.save();
+}
