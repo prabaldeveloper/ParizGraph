@@ -77,148 +77,148 @@ import {
 } from "../generated/templates";
 
 
-// export function handleEventAdded(event: EventAdded): void {
-//   let token = EventList.load(event.params.tokenId.toString());
-//   if (!token) {
-//       token = new EventList(event.params.tokenId.toString());
-//       let contract = EventsContract.bind(event.address);
-//       let value = contract.getInfo(event.params.tokenId);
-//       token.eventTokenId = event.params.tokenId;
-//       token.venueTokenId = event.params.venueTokenId;
-//       token.eventName = value.value0;
-//       token.eventCategory = value.value1;
-//       token.eventDescription = value.value2;
-//       token.eventStartTime = value.value4;
-//       token.eventEndTime = value.value5;
-//       token.tokenCID = event.params.tokenCID;
-//       token.isVenueFeesPaid = event.params.isVenueFeesPaid;
-//       token.isPaid = event.params.isEventPaid;
-//       token.ticketPrice = event.params.ticketPrice;
-//       token.transactionHash = event.transaction.hash.toHexString();
-//       token.timestamp = event.block.timestamp;
-//       token.eventOrganiserAddress = event.params.eventOrganiser;
-//       token.isFeatured = false;
-//       token.participantsList = ["null"];
-//       token.ticketBoughtList = ["null"];
-//       token.ticketBalance = ["null"];
-//       token.venueVersion = "1.0";
+export function handleEventAdded(event: EventAdded): void {
+  let token = EventList.load(event.params.tokenId.toString());
+  if (!token) {
+      token = new EventList(event.params.tokenId.toString());
+      let contract = EventsContract.bind(event.address);
+      let value = contract.getInfo(event.params.tokenId);
+      token.eventTokenId = event.params.tokenId;
+      token.venueTokenId = event.params.venueTokenId;
+      token.eventName = value.value0;
+      token.eventCategory = value.value1;
+      token.eventDescription = value.value2;
+      token.eventStartTime = value.value4;
+      token.eventEndTime = value.value5;
+      token.tokenCID = event.params.tokenCID;
+      token.isVenueFeesPaid = event.params.isVenueFeesPaid;
+      token.isPaid = event.params.isEventPaid;
+      token.ticketPrice = event.params.ticketPrice;
+      token.transactionHash = event.transaction.hash.toHexString();
+      token.timestamp = event.block.timestamp;
+      token.eventOrganiserAddress = event.params.eventOrganiser;
+      token.isFeatured = false;
+      token.participantsList = ["null"];
+      token.ticketBoughtList = ["null"];
+      token.ticketBalance = ["null"];
+      token.venueVersion = "1.0";
       
-//       // let conversionContract = conversionContractAddress.bind(contract.getConversionContract());
-//       // token.conversionAddress = contract.getConversionContract();
-//       //let address = conversionContract.getBaseToken();
-//       // token.tokenAddress = address;
-//       token.tokenAddress = Address.fromString("0xD028C2a5156069c7eFaeA40acCA7d9Da6f219A5f");
-//       token.venueFeeAmount = event.params.venueFeeAmount;
-//       token.ticketNFTAddress = event.params.ticketNFTAddress;
-//       token.isEventCanceled = false;
-//       token.isEventStarted = false;
-//       token.isEventEnded = false;
+      // let conversionContract = conversionContractAddress.bind(contract.getConversionContract());
+      // token.conversionAddress = contract.getConversionContract();
+      //let address = conversionContract.getBaseToken();
+      // token.tokenAddress = address;
+      token.tokenAddress = Address.fromString("0xD028C2a5156069c7eFaeA40acCA7d9Da6f219A5f");
+      token.venueFeeAmount = event.params.venueFeeAmount;
+      token.ticketNFTAddress = event.params.ticketNFTAddress;
+      token.isEventCanceled = false;
+      token.isEventStarted = false;
+      token.isEventEnded = false;
       
-//       token.save();
-//       let tokenValue = BookedTime.load(event.params.venueTokenId.toString());
-//       if(!tokenValue) {
-//         tokenValue = new BookedTime(event.params.venueTokenId.toString());
-//         tokenValue.venueId = event.params.venueTokenId;
-//         if(tokenValue.eventTokenId.length == 0) {
-//           let eventTokenIds = tokenValue.eventTokenId;
-//           tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
-//         }
-//         else {
-//           let eventTokenIds = tokenValue.eventTokenId;
-//           tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
-//         }
+      token.save();
+      let tokenValue = BookedTime.load(event.params.venueTokenId.toString());
+      if(!tokenValue) {
+        tokenValue = new BookedTime(event.params.venueTokenId.toString());
+        tokenValue.venueId = event.params.venueTokenId;
+        if(tokenValue.eventTokenId.length == 0) {
+          let eventTokenIds = tokenValue.eventTokenId;
+          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
+        }
+        else {
+          let eventTokenIds = tokenValue.eventTokenId;
+          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
+        }
     
-//         if(tokenValue.eventStartTime.length == 0 ) {
-//           let eventStartTimes = tokenValue.eventStartTime;
-//           tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
-//         }
-//         else {
-//           let eventStartTimes = tokenValue.eventStartTime;
-//           tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
-//         }
+        if(tokenValue.eventStartTime.length == 0 ) {
+          let eventStartTimes = tokenValue.eventStartTime;
+          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+        }
+        else {
+          let eventStartTimes = tokenValue.eventStartTime;
+          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+        }
     
-//         if(tokenValue.eventEndTime.length== 0 ) {
-//           let eventEndTimes = tokenValue.eventEndTime;
-//           tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
-//         }
-//         else {
-//           let eventEndTimes = tokenValue.eventEndTime;
-//           tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
-//         }
-//       }
+        if(tokenValue.eventEndTime.length== 0 ) {
+          let eventEndTimes = tokenValue.eventEndTime;
+          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+        }
+        else {
+          let eventEndTimes = tokenValue.eventEndTime;
+          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+        }
+      }
     
-//       else {
-//         tokenValue = BookedTime.load(event.params.venueTokenId.toString());
-//         if(tokenValue.eventTokenId.length == 0) {
-//           let eventTokenIds = tokenValue.eventTokenId;
-//           tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
-//         }
-//         else {
-//           let eventTokenIds = tokenValue.eventTokenId;
-//           tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
-//         }
+      else {
+        tokenValue = BookedTime.load(event.params.venueTokenId.toString());
+        if(tokenValue.eventTokenId.length == 0) {
+          let eventTokenIds = tokenValue.eventTokenId;
+          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
+        }
+        else {
+          let eventTokenIds = tokenValue.eventTokenId;
+          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
+        }
     
-//         if(tokenValue.eventStartTime.length == 0 ) {
-//           let eventStartTimes = tokenValue.eventStartTime;
-//           tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
-//         }
-//         else {
-//           let eventStartTimes = tokenValue.eventStartTime;
-//           tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
-//         }
+        if(tokenValue.eventStartTime.length == 0 ) {
+          let eventStartTimes = tokenValue.eventStartTime;
+          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+        }
+        else {
+          let eventStartTimes = tokenValue.eventStartTime;
+          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+        }
     
-//         if(tokenValue.eventEndTime.length== 0 ) {
-//           let eventEndTimes = tokenValue.eventEndTime;
-//           tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
-//         }
-//         else {
-//           let eventEndTimes = tokenValue.eventEndTime;
-//           tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
-//         }
-//       }
-//       TicketNFTContract.create(event.params.ticketNFTAddress);
-//       let tokenTime = EventTime.load(event.params.tokenId.toString());
-//       if(!tokenTime) {
-//         tokenTime = new EventTime(event.params.tokenId.toString());
-//         tokenTime.eventTokenId = event.params.tokenId;
-//         tokenTime.eventStartTime = value.value4;
-//         tokenTime.eventEndTime = value.value5;
-//         tokenTime.venueId = event.params.venueTokenId;
-//         tokenTime.isEventCanceled = false;
-//       }
-//       tokenTime.save();
-//       let tokenTimes = tokenValue.times;
-//       tokenValue.times = tokenTimes.concat([tokenTime.id]);
-//       tokenValue.save();
-//       let tokenValues = EventId.load(event.params.ticketNFTAddress.toString());
-//       if(!tokenValues) {
-//         tokenValues = new EventId(event.params.ticketNFTAddress.toString());
-//         tokenValues.ticketNFTAddress = event.params.ticketNFTAddress;
-//         tokenValues.eventId = event.params.tokenId;
-//       }
-//       tokenValues.save();
-//   }
+        if(tokenValue.eventEndTime.length== 0 ) {
+          let eventEndTimes = tokenValue.eventEndTime;
+          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+        }
+        else {
+          let eventEndTimes = tokenValue.eventEndTime;
+          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+        }
+      }
+      TicketNFTContract.create(event.params.ticketNFTAddress);
+      let tokenTime = EventTime.load(event.params.tokenId.toString());
+      if(!tokenTime) {
+        tokenTime = new EventTime(event.params.tokenId.toString());
+        tokenTime.eventTokenId = event.params.tokenId;
+        tokenTime.eventStartTime = value.value4;
+        tokenTime.eventEndTime = value.value5;
+        tokenTime.venueId = event.params.venueTokenId;
+        tokenTime.isEventCanceled = false;
+      }
+      tokenTime.save();
+      let tokenTimes = tokenValue.times;
+      tokenValue.times = tokenTimes.concat([tokenTime.id]);
+      tokenValue.save();
+      let tokenValues = EventId.load(event.params.ticketNFTAddress.toString());
+      if(!tokenValues) {
+        tokenValues = new EventId(event.params.ticketNFTAddress.toString());
+        tokenValues.ticketNFTAddress = event.params.ticketNFTAddress;
+        tokenValues.eventId = event.params.tokenId;
+      }
+      tokenValues.save();
+  }
 
-//     // For eventStat
-//     let entity = eventStat.load(event.params.tokenId.toString());
-//     if (!entity) {
-//         entity = new eventStat(event.params.tokenId.toString());
-//         entity.oneTicketPrice = event.params.ticketPrice;
-//         entity.eventTokenId = event.params.tokenId;
-//         let contract = EventsContract.bind(event.address);
-//         let value = contract.getInfo(event.params.tokenId);
-//         entity.eventEndTime = value.value5;
-//         entity.save();
-//       }
-//       else {
-//         entity.oneTicketPrice = event.params.ticketPrice;
-//         entity.eventTokenId = event.params.tokenId;
-//         let contract = EventsContract.bind(event.address);
-//         let value = contract.getInfo(event.params.tokenId);
-//         entity.eventEndTime = value.value5;
-//         entity.save();
-//       }
-// }
+    // For eventStat
+    let entity = eventStat.load(event.params.tokenId.toString());
+    if (!entity) {
+        entity = new eventStat(event.params.tokenId.toString());
+        entity.oneTicketPrice = event.params.ticketPrice;
+        entity.eventTokenId = event.params.tokenId;
+        let contract = EventsContract.bind(event.address);
+        let value = contract.getInfo(event.params.tokenId);
+        entity.eventEndTime = value.value5;
+        entity.save();
+    }
+    else {
+      entity.oneTicketPrice = event.params.ticketPrice;
+      entity.eventTokenId = event.params.tokenId;
+      let contract = EventsContract.bind(event.address);
+      let value = contract.getInfo(event.params.tokenId);
+      entity.eventEndTime = value.value5;
+      entity.save();
+    }
+}
 
 // export function handleTimeUpdated(event: EventUpdated): void {
 //   let token = EventList.load(event.params.tokenId.toString());
@@ -1034,12 +1034,33 @@ export function handleTicketTransfer(event: TransferTicket): void {
   let tokenValues = EventId.load(event.address.toString());
     let contract = TicketTokenContract.bind(event.address);
     token.balance = contract.balanceOf(event.params.to);
+    if(tokenValues != null && tokenValues.eventId != null) {
+
       let eventList = EventList.load(tokenValues.eventId.toString());
+
+      if(eventList != null) {
+
         let balance = eventList.ticketBalance;
+
         eventList.ticketBalance = balance.concat([token.id]);
+
         eventList.save();
-      tokenValues.save();
-    token.save();
+
+      }
+
+      if(tokenValues != null) {
+
+        tokenValues.save();
+
+      }
+
+    }
+    //   let eventList = EventList.load(tokenValues.eventId.toString());
+    //     let balance = eventList.ticketBalance;
+    //     eventList.ticketBalance = balance.concat([token.id]);
+    //     eventList.save();
+    //   tokenValues.save();
+    // token.save();
 }
 
 // /*************************************** ERC721 contract *********************************************************/
