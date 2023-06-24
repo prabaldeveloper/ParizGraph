@@ -380,6 +380,18 @@ export class admin__getTokenDetailsResult {
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
   }
+
+  getValue0(): string {
+    return this.value0;
+  }
+
+  getValue1(): string {
+    return this.value1;
+  }
+
+  getValue2(): BigInt {
+    return this.value2;
+  }
 }
 
 export class admin extends ethereum.SmartContract {
@@ -1964,6 +1976,52 @@ export class UpdateWhitelistCall__Outputs {
   }
 }
 
+export class UpdateWhitelistTokenCall extends ethereum.Call {
+  get inputs(): UpdateWhitelistTokenCall__Inputs {
+    return new UpdateWhitelistTokenCall__Inputs(this);
+  }
+
+  get outputs(): UpdateWhitelistTokenCall__Outputs {
+    return new UpdateWhitelistTokenCall__Outputs(this);
+  }
+}
+
+export class UpdateWhitelistTokenCall__Inputs {
+  _call: UpdateWhitelistTokenCall;
+
+  constructor(call: UpdateWhitelistTokenCall) {
+    this._call = call;
+  }
+
+  get eventTokenId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get tokenAddress(): Array<Address> {
+    return this._call.inputValues[1].value.toAddressArray();
+  }
+
+  get status(): Array<boolean> {
+    return this._call.inputValues[2].value.toBooleanArray();
+  }
+
+  get tokenType(): Array<string> {
+    return this._call.inputValues[3].value.toStringArray();
+  }
+
+  get freePassStatus(): Array<BigInt> {
+    return this._call.inputValues[4].value.toBigIntArray();
+  }
+}
+
+export class UpdateWhitelistTokenCall__Outputs {
+  _call: UpdateWhitelistTokenCall;
+
+  constructor(call: UpdateWhitelistTokenCall) {
+    this._call = call;
+  }
+}
+
 export class WhitelistErc20TokenAddressCall extends ethereum.Call {
   get inputs(): WhitelistErc20TokenAddressCall__Inputs {
     return new WhitelistErc20TokenAddressCall__Inputs(this);
@@ -1994,44 +2052,6 @@ export class WhitelistErc20TokenAddressCall__Outputs {
   _call: WhitelistErc20TokenAddressCall;
 
   constructor(call: WhitelistErc20TokenAddressCall) {
-    this._call = call;
-  }
-}
-
-export class WhitelistErc20TokenAddressEventCall extends ethereum.Call {
-  get inputs(): WhitelistErc20TokenAddressEventCall__Inputs {
-    return new WhitelistErc20TokenAddressEventCall__Inputs(this);
-  }
-
-  get outputs(): WhitelistErc20TokenAddressEventCall__Outputs {
-    return new WhitelistErc20TokenAddressEventCall__Outputs(this);
-  }
-}
-
-export class WhitelistErc20TokenAddressEventCall__Inputs {
-  _call: WhitelistErc20TokenAddressEventCall;
-
-  constructor(call: WhitelistErc20TokenAddressEventCall) {
-    this._call = call;
-  }
-
-  get eventTokenId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get tokenAddress(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get status(): boolean {
-    return this._call.inputValues[2].value.toBoolean();
-  }
-}
-
-export class WhitelistErc20TokenAddressEventCall__Outputs {
-  _call: WhitelistErc20TokenAddressEventCall;
-
-  constructor(call: WhitelistErc20TokenAddressEventCall) {
     this._call = call;
   }
 }
@@ -2074,20 +2094,20 @@ export class WhitelistErc721TokenAddressCall__Outputs {
   }
 }
 
-export class WhitelistErc721TokenAddressEventCall extends ethereum.Call {
-  get inputs(): WhitelistErc721TokenAddressEventCall__Inputs {
-    return new WhitelistErc721TokenAddressEventCall__Inputs(this);
+export class WhitelistTokenCall extends ethereum.Call {
+  get inputs(): WhitelistTokenCall__Inputs {
+    return new WhitelistTokenCall__Inputs(this);
   }
 
-  get outputs(): WhitelistErc721TokenAddressEventCall__Outputs {
-    return new WhitelistErc721TokenAddressEventCall__Outputs(this);
+  get outputs(): WhitelistTokenCall__Outputs {
+    return new WhitelistTokenCall__Outputs(this);
   }
 }
 
-export class WhitelistErc721TokenAddressEventCall__Inputs {
-  _call: WhitelistErc721TokenAddressEventCall;
+export class WhitelistTokenCall__Inputs {
+  _call: WhitelistTokenCall;
 
-  constructor(call: WhitelistErc721TokenAddressEventCall) {
+  constructor(call: WhitelistTokenCall) {
     this._call = call;
   }
 
@@ -2095,23 +2115,23 @@ export class WhitelistErc721TokenAddressEventCall__Inputs {
     return this._call.inputValues[0].value.toBigInt();
   }
 
-  get tokenAddress(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get tokenAddress(): Array<Address> {
+    return this._call.inputValues[1].value.toAddressArray();
   }
 
-  get status(): boolean {
-    return this._call.inputValues[2].value.toBoolean();
+  get tokenType(): Array<string> {
+    return this._call.inputValues[2].value.toStringArray();
   }
 
-  get freePassStatus(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+  get freePassStatus(): Array<BigInt> {
+    return this._call.inputValues[3].value.toBigIntArray();
   }
 }
 
-export class WhitelistErc721TokenAddressEventCall__Outputs {
-  _call: WhitelistErc721TokenAddressEventCall;
+export class WhitelistTokenCall__Outputs {
+  _call: WhitelistTokenCall;
 
-  constructor(call: WhitelistErc721TokenAddressEventCall) {
+  constructor(call: WhitelistTokenCall) {
     this._call = call;
   }
 }

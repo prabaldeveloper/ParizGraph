@@ -77,7 +77,7 @@ import {
 } from "../generated/templates";
 
 
-export function handleEventAdded(event: EventAdded): void {
+export function handleEventAdded(event: EventAdded): void { 
   let token = EventList.load(event.params.tokenId.toString());
   if (!token) {
       token = new EventList(event.params.tokenId.toString());
@@ -119,62 +119,125 @@ export function handleEventAdded(event: EventAdded): void {
       if(!tokenValue) {
         tokenValue = new BookedTime(event.params.venueTokenId.toString());
         tokenValue.venueId = event.params.venueTokenId;
-        if(tokenValue.eventTokenId.length == 0) {
-          let eventTokenIds = tokenValue.eventTokenId;
-          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
+        // if(tokenValue.eventTokenId.length == 0) {
+        //   let eventTokenIds = tokenValue.eventTokenId;
+        //   tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
+        // }
+        // else {
+        //   let eventTokenIds = tokenValue.eventTokenId;
+        //   tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
+        // }
+
+        let eventTokenIdArr = new Array<BigInt>(0);
+        if(tokenValue.eventTokenId === null) {
+          tokenValue.eventTokenId = eventTokenIdArr;
+          tokenValue.eventTokenId = eventTokenIdArr.concat([event.params.tokenId]);
         }
         else {
-          let eventTokenIds = tokenValue.eventTokenId;
-          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
+          eventTokenIdArr = tokenValue.eventTokenId!;
+          tokenValue.eventTokenId = eventTokenIdArr.concat([event.params.tokenId]);
+        }
+        
+        // if(tokenValue.eventStartTime.length == 0 ) {
+        //   let eventStartTimes = tokenValue.eventStartTime;
+        //   tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+        // }
+        // else {
+        //   let eventStartTimes = tokenValue.eventStartTime;
+        //   tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+        // }
+
+        let startTimeArr = new Array<BigInt>(0);
+        if(tokenValue.eventStartTime === null) {
+          tokenValue.eventStartTime = startTimeArr;
+          tokenValue.eventStartTime = startTimeArr.concat([value.value4]);
+        }
+        else {
+          startTimeArr = tokenValue.eventStartTime!;
+          tokenValue.eventStartTime = startTimeArr.concat([value.value4]);
         }
     
-        if(tokenValue.eventStartTime.length == 0 ) {
-          let eventStartTimes = tokenValue.eventStartTime;
-          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+        //  if(tokenValue.eventEndTime.length== 0 ) {
+        //    let eventEndTimes = tokenValue.eventEndTime;
+        //    tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+        //  }
+        //  else {
+        //    let eventEndTimes = tokenValue.eventEndTime;
+        //    tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+        //  }
+
+        let endTimeArr = new Array<BigInt>(0);
+        if(tokenValue.eventEndTime === null) {
+          tokenValue.eventEndTime = endTimeArr;
+          tokenValue.eventEndTime = endTimeArr.concat([value.value5]);
         }
         else {
-          let eventStartTimes = tokenValue.eventStartTime;
-          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
-        }
-    
-        if(tokenValue.eventEndTime.length== 0 ) {
-          let eventEndTimes = tokenValue.eventEndTime;
-          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
-        }
-        else {
-          let eventEndTimes = tokenValue.eventEndTime;
-          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+          endTimeArr = tokenValue.eventEndTime!;
+          tokenValue.eventEndTime = endTimeArr.concat([value.value5]);
+
         }
       }
-    
+       
       else {
         tokenValue = BookedTime.load(event.params.venueTokenId.toString());
-        if(tokenValue.eventTokenId.length == 0) {
-          let eventTokenIds = tokenValue.eventTokenId;
-          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
-        }
-        else {
-          let eventTokenIds = tokenValue.eventTokenId;
-          tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
-        }
+        // if(tokenValue.eventTokenId.length == 0) {
+        //   let eventTokenIds = tokenValue.eventTokenId;
+        //   tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);
+        // }
+        // else {
+        //   let eventTokenIds = tokenValue.eventTokenId;
+        //   tokenValue.eventTokenId = eventTokenIds.concat([event.params.tokenId]);   
+        // }
+        if(tokenValue) {
+          let eventTokenIdArr = new Array<BigInt>(0);
+          if(tokenValue.eventTokenId === null) {
+            tokenValue.eventTokenId = eventTokenIdArr;
+            tokenValue.eventTokenId = eventTokenIdArr.concat([event.params.tokenId]);
+          }
+          else {
+            eventTokenIdArr = tokenValue.eventTokenId!;
+            tokenValue.eventTokenId = eventTokenIdArr.concat([event.params.tokenId]);
+          }
     
-        if(tokenValue.eventStartTime.length == 0 ) {
-          let eventStartTimes = tokenValue.eventStartTime;
-          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
-        }
-        else {
-          let eventStartTimes = tokenValue.eventStartTime;
-          tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
-        }
-    
-        if(tokenValue.eventEndTime.length== 0 ) {
-          let eventEndTimes = tokenValue.eventEndTime;
-          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
-        }
-        else {
-          let eventEndTimes = tokenValue.eventEndTime;
-          tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
-        }
+          //   if(tokenValue.eventStartTime.length == 0 ) {
+          //     let eventStartTimes = tokenValue.eventStartTime;
+          //     tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+          //   }
+          //   else {
+          //     let eventStartTimes = tokenValue.eventStartTime;
+          //     tokenValue.eventStartTime = eventStartTimes.concat([value.value4]);
+          //   }
+         
+          let startTimeArr = new Array<BigInt>(0);
+          if(tokenValue.eventStartTime === null) {
+            tokenValue.eventStartTime = startTimeArr;
+            tokenValue.eventStartTime = startTimeArr.concat([value.value4]);
+          }
+          else {
+            startTimeArr = tokenValue.eventStartTime!;
+            tokenValue.eventStartTime = startTimeArr.concat([value.value4]);
+          }
+        
+          //   if(tokenValue.eventEndTime.length== 0 ) {
+          //     let eventEndTimes = tokenValue.eventEndTime;
+          //     tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+          //   }
+          //   else {
+          //     let eventEndTimes = tokenValue.eventEndTime;
+          //     tokenValue.eventEndTime = eventEndTimes.concat([value.value5]);
+          //   }
+          // }
+
+          let endTimeArr = new Array<BigInt>(0);
+          if(tokenValue.eventEndTime === null) {
+           tokenValue.eventEndTime = endTimeArr;
+           tokenValue.eventEndTime = endTimeArr.concat([value.value5]);
+          }
+          else {
+           endTimeArr = tokenValue.eventEndTime!;
+           tokenValue.eventEndTime = endTimeArr.concat([value.value5]);
+          }
+        }        
       }
       TicketNFTContract.create(event.params.ticketNFTAddress);
       let tokenTime = EventTime.load(event.params.tokenId.toString());
@@ -187,9 +250,11 @@ export function handleEventAdded(event: EventAdded): void {
         tokenTime.isEventCanceled = false;
       }
       tokenTime.save();
-      let tokenTimes = tokenValue.times;
-      tokenValue.times = tokenTimes.concat([tokenTime.id]);
-      tokenValue.save();
+      if(tokenValue) {
+        let tokenTimes = tokenValue.times;
+        tokenValue.times = tokenTimes.concat([tokenTime.id]);
+        tokenValue.save();
+      }
       let tokenValues = EventId.load(event.params.ticketNFTAddress.toString());
       if(!tokenValues) {
         tokenValues = new EventId(event.params.ticketNFTAddress.toString());
@@ -202,13 +267,13 @@ export function handleEventAdded(event: EventAdded): void {
     // For eventStat
     let entity = eventStat.load(event.params.tokenId.toString());
     if (!entity) {
-        entity = new eventStat(event.params.tokenId.toString());
-        entity.oneTicketPrice = event.params.ticketPrice;
-        entity.eventTokenId = event.params.tokenId;
-        let contract = EventsContract.bind(event.address);
-        let value = contract.getInfo(event.params.tokenId);
-        entity.eventEndTime = value.value5;
-        entity.save();
+      entity = new eventStat(event.params.tokenId.toString());
+      entity.oneTicketPrice = event.params.ticketPrice;
+      entity.eventTokenId = event.params.tokenId;
+      let contract = EventsContract.bind(event.address);
+      let value = contract.getInfo(event.params.tokenId);
+      entity.eventEndTime = value.value5;
+      entity.save();
     }
     else {
       entity.oneTicketPrice = event.params.ticketPrice;
@@ -228,21 +293,26 @@ export function handleTimeUpdated(event: EventUpdated): void {
     token.eventEndTime = event.params.endTime;
     token.eventDescription = event.params.description;
     token.venueFeeAmount = event.params.venueFeeAmount;
+    token.save();
   }
-  token.save();
   let tokenTime = EventTime.load(event.params.tokenId.toString());
   if(tokenTime) {
     tokenTime.eventTokenId = event.params.tokenId;
     tokenTime.eventStartTime =  event.params.startTime;
     tokenTime.eventEndTime = event.params.endTime;
   }
-  let tokenValue = BookedTime.load(tokenTime.venueId.toString());
-  let tokenTimes = tokenValue.times;
-  tokenValue.times = tokenTimes.concat([tokenTime.id]);
-
-  tokenTime.save();
-  tokenValue.save();
-  token.save();
+  if(tokenTime) {
+    let tokenVenueId = tokenTime.venueId!;
+    let tokenValue = BookedTime.load(tokenVenueId.toString());
+    if(tokenValue) {
+      let tokenTimes = tokenValue.times;
+      tokenValue.times = tokenTimes.concat([tokenTime.id]);
+      tokenValue.save();
+    }
+    tokenTime.save();
+  }
+  
+  //token.save();
 
   //For eventStat
   let entity = eventStat.load(event.params.tokenId.toString());
@@ -275,7 +345,7 @@ export function handleFavourite(event: FavouriteEvent): void {
   }
   token.save();
 
-//   //for getting the total like count
+  //   //for getting the total like count
 
   let entity = likeCount.load(event.params.tokenId.toString());
   if(!entity) {
@@ -284,14 +354,16 @@ export function handleFavourite(event: FavouriteEvent): void {
     entity.likeCounts = BigInt.fromI32(1);
   }
   else {
-    if(entity.likeCounts == null) {
+    if(entity.likeCounts === null) {
       entity.likeCounts = BigInt.fromI32(1);
     }
     if(event.params.isFavourite == true) {
-      entity.likeCounts = entity.likeCounts.plus(BigInt.fromI32(1));
+      let entityLikeCounts = entity.likeCounts!;
+      entity.likeCounts = entityLikeCounts.plus(BigInt.fromI32(1));
     }
     else {
-      entity.likeCounts = entity.likeCounts.minus(BigInt.fromI32(1));
+      let entityLikeCounts = entity.likeCounts!;
+      entity.likeCounts = entityLikeCounts.minus(BigInt.fromI32(1));
     }
   }
   entity.save();
@@ -341,21 +413,23 @@ export function handleJoined(event: Joined): void {
     token.joinTime = event.params.joiningTime;
     token.userAddress = event.params.user;
     token.isJoined = true;
-  }
+ }
   let contract = EventsContract.bind(event.address);
   let nftAddress = contract.ticketNFTAddress(event.params.tokenId);
   let ticketBalance = TicketBalance.load(nftAddress.toString() + event.params.ticketId.toString());
-  ticketBalance.isUsed = true;
+  if(ticketBalance != null) {
+    ticketBalance.isUsed = true;
+  }
   let tokenValue = EventList.load(event.params.tokenId.toString());
   if(tokenValue) {
     let userAddress = tokenValue.participantsList;
     tokenValue.participantsList = userAddress.concat([token.id]);
+    tokenValue.save();
   }
   token.save();
-  tokenValue.save();
 
-  //for getting the total joined count
-  // For getting unique users in event
+ //for getting the total joined count
+ // For getting unique users in event
   let entity = joinCount.load(event.params.tokenId.toString());
   let uniqueUsers = eventActivity.load(event.params.tokenId.toString() + event.params.user.toString());
   if(!uniqueUsers) {
@@ -373,12 +447,14 @@ export function handleJoined(event: Joined): void {
       entity.liveUsersCount = BigInt.fromI32(1);
     }
     else {
-      if(entity.joinedCount == null || entity.liveUsersCount == null) {
+      if(entity.joinedCount === null || entity.liveUsersCount === null) {
         entity.joinedCount = BigInt.fromI32(1);
         entity.liveUsersCount = BigInt.fromI32(1);
       }
-      entity.joinedCount = entity.joinedCount.plus(BigInt.fromI32(1));
-      entity.liveUsersCount = entity.liveUsersCount.plus(BigInt.fromI32(1));
+      let entityJoinedCount = entity.joinedCount!;
+      entity.joinedCount = entityJoinedCount.plus(BigInt.fromI32(1));
+      let entityLiveUsersCount = entity.liveUsersCount!;
+      entity.liveUsersCount = entityLiveUsersCount.plus(BigInt.fromI32(1));
       entity.eventTokenId = event.params.tokenId;
     }
     entity.save();
@@ -735,10 +811,15 @@ export function handleDataAdded(event: DataAdded): void {
     //   let Data = token.data;
     //   token.data = Data.concat([event.params.data]);
     // }
-    let Data = token.data;
-    if(Data) {
-      token.data = Data.concat([event.params.data]);
-      token.userAddress = event.params.userAddress;
+
+    //array push after migration
+    let arr = new Array<string>(0);
+    if (token.data === null) {
+      token.data = arr;
+      token.data = arr.concat([event.params.data]);
+    } else {
+      arr = token.data!;
+      token.data = arr.concat([event.params.data]);
     }
   }
   else {
@@ -750,12 +831,15 @@ export function handleDataAdded(event: DataAdded): void {
     //   let Data = token.data;
     //   token.data = Data.concat([event.params.data]);
     // }
-    let Data = token.data;
-    if(Data) {
-      token.data = Data.concat([event.params.data]);
-      token.userAddress = event.params.userAddress;
+    let arr = new Array<string>(0);
+    if (token.data === null) {
+      token.data = arr;
+      token.data = arr.concat([event.params.data]);
+    } else {
+      arr = token.data!;
+      token.data = arr.concat([event.params.data]);
     }
-    
+
     token.userAddress = event.params.userAddress;
   }
   token.save();
@@ -858,7 +942,7 @@ export function handleEventExited(event: Exited): void {
     token.isJoined = false;
     token.save();
   }
-  //for getting the live users count
+ //for getting the live users count
   let uniqueUsers = uniqueUserExit.load(event.params.tokenId.toString() + event.params.user.toString());
   let entity = joinCount.load(event.params.tokenId.toString());
   if(!uniqueUsers) {
@@ -873,8 +957,9 @@ export function handleEventExited(event: Exited): void {
       entity.liveUsersCount = BigInt.fromI32(0);
     }
     else {
-      if(entity.liveUsersCount >= BigInt.fromI32(1)) {
-        entity.liveUsersCount = entity.liveUsersCount.minus(BigInt.fromI32(1));
+      let entityLive = entity.liveUsersCount!;
+      if(entityLive >= BigInt.fromI32(1)) {
+        entity.liveUsersCount = entityLive.minus(BigInt.fromI32(1));
       }
     }
     entity.save();
@@ -959,6 +1044,7 @@ export function handleTicketBought(event: Bought): void {
   if(tokenValue) {
     let userAddress = tokenValue.ticketBoughtList;
     tokenValue.ticketBoughtList = userAddress.concat([token.id]);
+    tokenValue.save();
   }
   let contract = TicketMasterContract.bind(event.address);
   let nftAddress = contract.ticketNFTAddress(event.params.tokenId);
@@ -967,6 +1053,7 @@ export function handleTicketBought(event: Bought): void {
     tokenValues2.tokenAddress = event.params.tokenAddress;
     tokenValues2.ticketFeeAmount = event.params.tokenAmount;
     tokenValues2.eventTokenId = event.params.tokenId;
+    tokenValues2.save();
   }
   
   // let tokenUsed = Erc721UserToken.load(event.params.tokenAddress.toString() + event.params.tokenAmount.toString());
@@ -982,8 +1069,6 @@ export function handleTicketBought(event: Bought): void {
     tokenIdUsed.isUsed = true;
     tokenIdUsed.save();
   }
-  tokenValues2.save();
-  tokenValue.save();
   token.save();
 
   //for getting the total ticket sold
@@ -994,10 +1079,11 @@ export function handleTicketBought(event: Bought): void {
     entity.ticketCount = BigInt.fromI32(1);
   }
   else {
-    if(entity.ticketCount == null) {
+    if(entity.ticketCount === null) {
       entity.ticketCount = BigInt.fromI32(1);
     }
-    entity.ticketCount = entity.ticketCount.plus(BigInt.fromI32(1));
+    let entityTicketCount = entity.ticketCount!;
+    entity.ticketCount = entityTicketCount.plus(BigInt.fromI32(1));
     entity.eventTokenId = event.params.tokenId;
   }
   let eventDetails = eventStat.load(event.params.tokenId.toString());
@@ -1034,33 +1120,44 @@ export function handleTicketTransfer(event: TransferTicket): void {
   let tokenValues = EventId.load(event.address.toString());
     let contract = TicketTokenContract.bind(event.address);
     token.balance = contract.balanceOf(event.params.to);
-    if(tokenValues != null && tokenValues.eventId != null) {
-
-      let eventList = EventList.load(tokenValues.eventId.toString());
-
-      if(eventList != null) {
-
-        let balance = eventList.ticketBalance;
-
-        eventList.ticketBalance = balance.concat([token.id]);
-
-        eventList.save();
-
-      }
-
-      if(tokenValues != null) {
-
-        tokenValues.save();
-
-      }
-
-    }
     //   let eventList = EventList.load(tokenValues.eventId.toString());
     //     let balance = eventList.ticketBalance;
     //     eventList.ticketBalance = balance.concat([token.id]);
     //     eventList.save();
     //   tokenValues.save();
     // token.save();
+    if(tokenValues != null) {
+      let eventIDTemp = tokenValues.eventId!;
+        let eventList = EventList.load(eventIDTemp.toString());
+          if(eventList != null) {
+            let balance = eventList.ticketBalance;
+            eventList.ticketBalance = balance.concat([token.id]);
+            eventList.save();
+          }
+        tokenValues.save();
+    }
+
+// if(tokenValues != null && tokenValues.eventId != null) {
+
+//       let eventList = EventList.load(tokenValues.eventId.toString());
+
+//       if(eventList != null) {
+
+//         let balance = eventList.ticketBalance;
+
+//         eventList.ticketBalance = balance.concat([token.id]);
+
+//         eventList.save();
+
+//       }
+
+//       if(tokenValues != null) {
+
+//         tokenValues.save();
+
+//       }
+
+//     }
 }
 
 // /*************************************** ERC721 contract *********************************************************/

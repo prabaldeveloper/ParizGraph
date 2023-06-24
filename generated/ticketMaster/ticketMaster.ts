@@ -225,6 +225,14 @@ export class ticketMaster__getUserTicketDetailsResult {
     map.set("value1", ethereum.Value.fromAddress(this.value1));
     return map;
   }
+
+  getValue0(): BigInt {
+    return this.value0;
+  }
+
+  getValue1(): Address {
+    return this.value1;
+  }
 }
 
 export class ticketMaster extends ethereum.SmartContract {

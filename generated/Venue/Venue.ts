@@ -318,6 +318,28 @@ export class VenueFeesUpdated__Params {
   }
 }
 
+export class VenueOwnerUpdated extends ethereum.Event {
+  get params(): VenueOwnerUpdated__Params {
+    return new VenueOwnerUpdated__Params(this);
+  }
+}
+
+export class VenueOwnerUpdated__Params {
+  _event: VenueOwnerUpdated;
+
+  constructor(event: VenueOwnerUpdated) {
+    this._event = event;
+  }
+
+  get tokenId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+
+  get owner(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
 export class VenueVersionUpdated extends ethereum.Event {
   get params(): VenueVersionUpdated__Params {
     return new VenueVersionUpdated__Params(this);
@@ -386,6 +408,38 @@ export class venue__getInfoResult {
     map.set("value7", ethereum.Value.fromString(this.value7));
     return map;
   }
+
+  getName(): string {
+    return this.value0;
+  }
+
+  getLocation(): string {
+    return this.value1;
+  }
+
+  getCategory(): string {
+    return this.value2;
+  }
+
+  getTokenId(): BigInt {
+    return this.value3;
+  }
+
+  getOwner(): Address {
+    return this.value4;
+  }
+
+  getTotalCapacity(): BigInt {
+    return this.value5;
+  }
+
+  getRentPerBlock(): BigInt {
+    return this.value6;
+  }
+
+  getTokenCID(): string {
+    return this.value7;
+  }
 }
 
 export class venue__refundVenueFeesInternalResult {
@@ -402,6 +456,14 @@ export class venue__refundVenueFeesInternalResult {
     map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
     map.set("value1", ethereum.Value.fromAddress(this.value1));
     return map;
+  }
+
+  getValue0(): BigInt {
+    return this.value0;
+  }
+
+  getValue1(): Address {
+    return this.value1;
   }
 }
 
@@ -1351,6 +1413,40 @@ export class UpdateVenueFeesCall__Outputs {
   _call: UpdateVenueFeesCall;
 
   constructor(call: UpdateVenueFeesCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateVenueOwnerCall extends ethereum.Call {
+  get inputs(): UpdateVenueOwnerCall__Inputs {
+    return new UpdateVenueOwnerCall__Inputs(this);
+  }
+
+  get outputs(): UpdateVenueOwnerCall__Outputs {
+    return new UpdateVenueOwnerCall__Outputs(this);
+  }
+}
+
+export class UpdateVenueOwnerCall__Inputs {
+  _call: UpdateVenueOwnerCall;
+
+  constructor(call: UpdateVenueOwnerCall) {
+    this._call = call;
+  }
+
+  get venueTokenId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get owner(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+}
+
+export class UpdateVenueOwnerCall__Outputs {
+  _call: UpdateVenueOwnerCall;
+
+  constructor(call: UpdateVenueOwnerCall) {
     this._call = call;
   }
 }

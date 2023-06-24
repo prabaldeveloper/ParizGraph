@@ -46,9 +46,9 @@ type EventList @entity {
   canceledTime: BigInt
   isEventStarted: Boolean
   isEventEnded: Boolean
-  participantsList: [Join]!
-  ticketBoughtList: [TicketBought]!
-  ticketBalance: [TicketBalance]!
+  participantsList: [Join!]!
+  ticketBoughtList: [TicketBought!]!
+  ticketBalance: [TicketBalance!]!
   conversionAddress: Bytes
 }
 
@@ -143,7 +143,7 @@ type BookedTime @entity {
   transactionHash: String
   timestamp: BigInt
   isActive: Boolean
-  times: [EventTime]!
+  times: [EventTime!]!
 }
 
 type EventTime @entity {
