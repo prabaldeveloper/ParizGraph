@@ -1,4 +1,4 @@
-specVersion: 0.0.4
+specVersion: 0.0.5
 schema:
   file: ./schema.graphql
 dataSources:
@@ -11,8 +11,8 @@ dataSources:
       startBlock: 28234578
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscripts
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
       entities:
         - VenueList
       abis:
@@ -40,8 +40,8 @@ dataSources:
       startBlock: 28234831
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscripts
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
       entities:
         - EventList
       abis:
@@ -75,8 +75,8 @@ dataSources:
       startBlock: 28596078
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscripts
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
       entities:
         - EventList
       abis:
@@ -110,8 +110,8 @@ dataSources:
       startBlock: 28182449
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscripts
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
       entities:
         - EventList
       abis:
@@ -133,8 +133,8 @@ dataSources:
       startBlock: 34354683
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscripts
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
       entities:
         - History
       abis:
@@ -154,7 +154,7 @@ dataSources:
       startBlock: 28234838
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Agenda
@@ -193,8 +193,8 @@ dataSources:
       startBlock: 28234512
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscripts
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
       entities:
         - EventList
       abis:
@@ -214,7 +214,7 @@ templates:
       abi: ticket
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       file: ./src/mapping.ts
       entities:
